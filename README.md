@@ -1,121 +1,462 @@
 # CareerSync AI
 
-CareerSync AI is an AI-powered career intelligence platform designed to help students, fresh graduates, and internship seekers understand how well they match real-world job opportunities.
+CareerSync AI is an AI-powered Career OS platform designed to help students, fresh graduates, internship seekers, employers, and universities make smarter career and hiring decisions.
 
-The platform analyzes a user's resume, portfolio, skills, projects, and experience against employer job descriptions to generate a detailed career match report, skill gap analysis, personalized learning roadmap, and AI-powered career guidance.
+The platform transforms a candidate’s resume, portfolio, projects, skills, certifications, and experience into a living career profile. It then compares that profile with real employer job descriptions to generate job match scores, skill gap analysis, personalized roadmaps, interview preparation feedback, and employer-ready candidate fit reports.
 
-CareerSync AI was developed as part of the Talentbank Tech Hackathon under the Career OS concept, focusing on improving employability, career readiness, and smarter candidate-job matching.
+CareerSync AI was developed for the Talentbank Tech Hackathon as a full-stack Career OS solution using React.js, Node.js, Firebase Authentication, MongoDB / Azure Cosmos DB, and Azure AI services.
 
 ---
 
 ## Overview
 
-Many students apply for internships and jobs without knowing whether their skills truly match the employer's expectations. They often struggle to identify missing skills, improve their portfolio, or understand what they need to learn next.
+Many students apply for internships and entry-level jobs without knowing whether their current skills, projects, and portfolio actually match the role. Most rejection processes also provide little feedback, leaving students unsure about what to improve.
 
-CareerSync AI solves this by acting as an intelligent career copilot. Users can upload their resume or portfolio, paste a job description, and receive instant AI-generated insights about their suitability for the role.
+At the same time, employers spend time manually reviewing candidates, while universities often lack real-time visibility into whether students are industry-ready.
 
-The platform helps users answer important career questions such as:
+CareerSync AI solves this by connecting three sides of the career ecosystem:
 
-- Am I suitable for this job?
-- What skills am I missing?
-- How can I improve my portfolio?
-- What should I learn next?
-- How can I become more employable?
-- Which career path fits my current profile?
+* **Candidates** improve their readiness and understand job fit.
+* **Employers** discover suitable talent using AI-powered matching.
+* **Universities** monitor student readiness and curriculum-to-market skill gaps.
 
 ---
 
-## Key Features
+## Core Features
 
-### AI Job Match Analyzer
+## Candidate Features
 
-CareerSync AI compares the user's resume, portfolio, projects, and skills against a real employer job description.
+### Living Portfolio Profile
 
-The system generates:
+Candidates can create a reusable career profile that includes:
 
-- Overall job match percentage
-- Matched skills
-- Missing skills
-- Role suitability summary
-- Strengths and weaknesses
-- AI-generated improvement suggestions
+* Personal details
+* Education background
+* Resume information
+* Technical skills
+* Soft skills
+* Projects
+* Certifications
+* GitHub profile
+* Portfolio links
+* Career interests
+* Work or internship experience
 
-This helps users stop applying blindly and make better career decisions.
-
----
-
-### Resume and Portfolio Analysis
-
-Users can submit their resume, portfolio link, GitHub profile, or project details. The system analyzes the candidate profile and identifies the most relevant skills, experiences, and project strengths.
-
-The analysis helps users understand how their current profile appears from an employer's perspective.
+This profile becomes the foundation for all AI analysis inside the platform.
 
 ---
 
-### Skill Gap Detection
+### Resume and Portfolio Analyzer
 
-CareerSync AI identifies the difference between the user's current skill set and the skills required by the job description.
+CareerSync AI analyzes a candidate’s resume and portfolio to identify:
 
-Example skill gaps may include:
+* Key technical skills
+* Relevant project experience
+* Tools and frameworks used
+* Career strengths
+* Missing profile details
+* Employability readiness level
 
-- Docker
-- CI/CD
-- Cloud deployment
-- Unit testing
-- API integration
-- Database optimization
-- Soft skills or communication skills
+This helps candidates understand how their profile appears from an employer’s perspective.
 
-The platform does not only list missing skills. It also explains why those skills matter and how they can improve the user's employability.
+---
+
+### AI Job Description Analyzer
+
+Candidates can paste a real employer job description into the platform. CareerSync AI compares the job description with the candidate’s living portfolio profile and generates:
+
+* Overall match score
+* Matched requirements
+* Missing requirements
+* Strengths
+* Weaknesses
+* Role suitability explanation
+* Improvement recommendations
+
+This helps candidates stop applying blindly and make better career decisions.
+
+---
+
+### Skill Gap Intelligence
+
+The platform identifies missing skills and groups them into categories such as:
+
+* Technical skills
+* Tools and frameworks
+* Soft skills
+* Certifications
+* Experience gaps
+* Project evidence gaps
+
+Each gap is also ranked by priority, difficulty, and estimated learning effort.
+
+---
+
+### Career Path Navigator
+
+CareerSync AI recommends realistic career paths based on the candidate’s profile, interests, education, and project evidence.
+
+Example suggested paths:
+
+* Frontend Developer
+* Full Stack Developer
+* Backend Developer
+* DevOps Engineer
+* Data Analyst
+* UI Engineer
+* Product Intern
+
+Each recommendation includes an explanation of why the path fits the candidate.
 
 ---
 
 ### Personalized Career Roadmap
 
-Based on the user's profile and missing skills, CareerSync AI generates a personalized learning roadmap.
+After analyzing a candidate’s profile and job description, CareerSync AI generates a personalized roadmap.
 
 The roadmap may include:
 
-- Recommended skills to learn
-- Suggested project ideas
-- Certification recommendations
-- Weekly learning plan
-- Career progression steps
-- Estimated improvement timeline
+* Skills to learn
+* Projects to build
+* Certifications to consider
+* Portfolio improvements
+* Weekly learning plan
+* Estimated improvement timeline
 
-This allows users to move from their current skill level toward their target career path in a structured way.
-
----
-
-### AI Career Coach Chatbot
-
-CareerSync AI includes an interactive AI chatbot that acts as a personal career assistant.
-
-Users can ask questions such as:
-
-- Am I ready for a frontend developer internship?
-- What should I learn to become a full-stack developer?
-- How can I improve my resume?
-- Which skills are most important for this role?
-- How do I increase my job match score?
-
-The chatbot provides personalized answers based on the user's profile, job analysis, and career roadmap.
+This helps candidates move from “not ready yet” to “ready with a clear action plan.”
 
 ---
 
-### Employer-Candidate Compatibility Insights
+### AI Career Coach
 
-CareerSync AI can also support employers and recruiters by helping them understand how well a candidate matches a role.
+CareerSync AI includes an AI-powered chatbot that acts as a personal career assistant.
 
-The system can highlight:
+Candidates can ask questions such as:
 
-- Candidate strengths
-- Missing requirements
-- Suitable roles
-- Hiring readiness
-- Skills that align with the job description
+* Am I suitable for this internship?
+* What should I learn next?
+* How can I improve my portfolio?
+* What career path fits me best?
+* Why is my match score low?
+* How do I become more employable?
 
-This feature supports faster and smarter early-stage candidate screening.
+The AI Career Coach responds based on the candidate’s profile, latest job analysis, roadmap, and interview results.
+
+---
+
+### AI Mock Interview Test
+
+CareerSync AI includes a mock interview test feature for candidates.
+
+Users can choose:
+
+* Role-based interview
+* Job-description-based interview
+* Technical interview
+* Behavioral interview
+* Project-based interview
+* Mixed interview
+
+The system generates interview questions based on the candidate’s target role and profile.
+
+---
+
+### Interview Answer Evaluation
+
+After the candidate answers a question, the AI evaluates the response and provides:
+
+* Answer score
+* Strengths
+* Weaknesses
+* Improved sample answer
+* Technical accuracy feedback
+* Communication feedback
+* Suggested improvement tips
+
+---
+
+### Interview Readiness Score
+
+After completing a mock interview, CareerSync AI generates an interview readiness score based on:
+
+* Technical accuracy
+* Communication clarity
+* Project explanation
+* Problem-solving ability
+* Confidence
+* Role relevance
+
+The system also recommends a personalized interview practice plan.
+
+---
+
+## Employer Features
+
+### Employer Dashboard
+
+Employers can access a dedicated dashboard to manage job roles, candidate matches, and hiring insights.
+
+The dashboard includes:
+
+* Active job descriptions
+* Recommended candidates
+* Candidate match scores
+* Shortlisted candidates
+* AI hiring insights
+* Candidate fit summaries
+
+---
+
+### Smart Talent Matching
+
+Employers can paste a job description and receive ranked candidate recommendations based on:
+
+* Skill match
+* Project relevance
+* Experience fit
+* Missing requirements
+* Growth potential
+* Interview readiness
+
+This helps employers identify suitable candidates faster and more accurately.
+
+---
+
+### Candidate Fit Report
+
+For each candidate, CareerSync AI generates an employer-facing report containing:
+
+* Candidate match score
+* Relevant skills
+* Project evidence
+* Strengths
+* Risk areas
+* Missing requirements
+* Recommended hiring decision
+
+Example recommendation:
+
+> This candidate is a strong fit for a Frontend Developer Internship due to React.js, JavaScript, and UI project experience. However, they may need support in testing and CI/CD workflows.
+
+---
+
+### Growth Potential Score
+
+CareerSync AI does not only evaluate where a candidate is today. It also estimates whether the candidate can grow into the role with reasonable training.
+
+The score considers:
+
+* Current skill foundation
+* Learning roadmap
+* Related project experience
+* Transferable skills
+* Career direction
+
+---
+
+### AI Interview Question Generator
+
+Employers can generate interview questions based on:
+
+* Job description
+* Candidate profile
+* Candidate skill gaps
+* Required role responsibilities
+
+This helps employers conduct more focused and fair interviews.
+
+---
+
+### Talent Pipeline Board
+
+Employers can manage candidates through a simple hiring pipeline:
+
+* Recommended
+* Shortlisted
+* Interview
+* Offer
+* Rejected
+
+Each candidate card displays key information such as match score, readiness level, strongest skills, and AI summary.
+
+---
+
+## University Features
+
+### University Readiness Dashboard
+
+Universities can view aggregated student employability data, including:
+
+* Average career readiness score
+* Internship readiness percentage
+* Most common missing skills
+* Strongest career tracks
+* Students needing support
+* Cohort-level readiness trends
+
+---
+
+### Adaptive Readiness Profile
+
+Each student can have a readiness profile that grows over time through:
+
+* Coursework
+* Projects
+* Certifications
+* Internships
+* Career activities
+* Mock interview results
+* Portfolio improvements
+
+This helps universities track student employability development continuously.
+
+---
+
+### Curriculum Skill Gap Map
+
+CareerSync AI compares university-taught skills with real employer job requirements.
+
+Example comparison:
+
+**University curriculum:**
+
+* Java
+* Database systems
+* Web development
+* Software engineering principles
+
+**Employer demand:**
+
+* React.js
+* Node.js
+* Docker
+* Cloud deployment
+* CI/CD
+* Testing
+
+The platform highlights curriculum-to-market gaps and helps universities improve career preparation.
+
+---
+
+### Cohort Employability Heatmap
+
+Universities can view readiness by career track, such as:
+
+* Frontend readiness
+* Backend readiness
+* Full-stack readiness
+* Cloud readiness
+* DevOps readiness
+* Data readiness
+* UI/UX readiness
+
+This gives academic teams better visibility into student strengths and weaknesses.
+
+---
+
+### Internship Matching Support
+
+University career offices can match students to internship opportunities based on:
+
+* Skills
+* Readiness score
+* Career interests
+* Portfolio evidence
+* Job requirements
+
+---
+
+## Authentication
+
+CareerSync AI uses Firebase Authentication for secure user login and registration.
+
+Supported authentication features:
+
+* Candidate registration
+* Employer registration
+* University registration
+* Login
+* Logout
+* Role selection
+* Protected routes
+* User-owned data access
+* Firebase ID token verification through backend
+
+User roles:
+
+```txt
+candidate
+employer
+university
+```
+
+Each role is redirected to the correct dashboard after login.
+
+---
+
+## AI and Cloud Architecture
+
+CareerSync AI uses Azure AI services to power the intelligence layer of the platform.
+
+### Azure AI Foundry / Azure OpenAI
+
+Used for:
+
+* Job match analysis
+* Skill gap detection
+* Roadmap generation
+* Career path recommendation
+* AI Career Coach responses
+* Mock interview feedback
+* Employer fit reports
+
+---
+
+### Azure Document Intelligence
+
+Used for extracting structured data from resumes and certificates, including:
+
+* Education
+* Skills
+* Work experience
+* Projects
+* Certifications
+* Dates
+* Resume sections
+
+---
+
+### Azure Blob Storage
+
+Used for storing:
+
+* Resume PDFs
+* Certificates
+* Portfolio screenshots
+* Project evidence files
+* Employer job description files
+
+---
+
+### Azure AI Search
+
+Used for profile-based search and retrieval. It helps the AI Career Coach and analysis engine retrieve the most relevant portfolio evidence before generating personalized responses.
+
+---
+
+### Azure Cosmos DB / MongoDB
+
+Used for storing:
+
+* User profiles
+* Candidate skills
+* Projects
+* Job analyses
+* Roadmaps
+* Chat history
+* Mock interview results
+* Employer reports
+* University readiness data
 
 ---
 
@@ -123,105 +464,344 @@ This feature supports faster and smarter early-stage candidate screening.
 
 ### Frontend
 
-- React.js
-- Vite
-- Tailwind CSS
-- React Router
-- Lucide React Icons
-- Framer Motion
+* React.js
+* Vite
+* Tailwind CSS
+* React Router
+* Lucide React Icons
+* Framer Motion
 
 ### Backend
 
-- Node.js
-- Express.js
-
-### Database
-
-- MongoDB
-
-### AI Integration
-
-- Groq API
-- Llama / GPT-OSS model via GroqCloud
+* Node.js
+* Express.js
 
 ### Authentication
 
-- JWT / Firebase Auth
+* Firebase Authentication
+* Firebase Admin SDK
+
+### Database
+
+* MongoDB
+* Azure Cosmos DB for MongoDB API
+
+### AI and Cloud
+
+* Azure AI Foundry / Azure OpenAI
+* Azure Document Intelligence
+* Azure Blob Storage
+* Azure AI Search
+* Azure Application Insights
 
 ### Deployment
 
-- Frontend: Vercel
-- Backend: Render / Railway
+* Azure Static Web Apps
+* Azure App Service
+* Vercel / Render as optional alternatives
 
 ---
 
-## Main Modules
-
-### 1. Landing Page
-
-Introduces CareerSync AI, explains the problem, and presents the main value proposition of the platform.
-
-### 2. Career Dashboard
-
-Displays the user's career readiness score, recent analyses, recommended career paths, skill gaps, and AI insights.
-
-### 3. Job Description Analyzer
-
-Allows users to paste an employer's job description and compare it with their resume or portfolio.
-
-### 4. AI Analysis Results
-
-Shows the AI-generated job match score, matched skills, missing skills, strengths, weaknesses, and recommendations.
-
-### 5. Career Roadmap
-
-Provides a personalized improvement plan to help users increase their employability score.
-
-### 6. AI Career Coach
-
-An AI chatbot that helps users ask career-related questions and receive personalized guidance.
-
----
-
-## How It Works
-
-1. The user uploads their resume or enters portfolio details.
-2. The user pastes a job description.
-3. CareerSync AI analyzes the user's profile against the job requirements.
-4. The platform generates a match score and skill gap report.
-5. The user receives personalized recommendations and a career roadmap.
-6. The user can ask follow-up questions through the AI Career Coach.
-
----
-
-## Example AI Output
+## System Architecture
 
 ```txt
-Role: Frontend Developer Intern
-Company: TechNova Solutions
+React Frontend
+        ↓
+Firebase Authentication
+        ↓
+Node.js + Express Backend
+        ↓
+Firebase Admin Token Verification
+        ↓
+MongoDB / Azure Cosmos DB
+        ↓
+Azure AI Foundry / Azure OpenAI
+        ↓
+Career Match Results, Roadmaps, AI Coach, Mock Interview Feedback
+```
 
-Match Score: 82%
+---
 
-Matched Skills:
-- React.js
-- JavaScript
-- HTML
-- CSS
-- Node.js
-- Git
-- UI/UX
+## Main User Flow
 
-Missing Skills:
-- Docker
-- CI/CD
-- Unit Testing
-- AWS Basics
+### Candidate Flow
 
-AI Summary:
-You are a strong match for this role because your React.js, JavaScript, UI development, and full-stack project experience align well with the employer's requirements.
+```txt
+Register / Login
+→ Create Living Portfolio
+→ Upload Resume / Add Skills
+→ Paste Job Description
+→ Generate AI Match Analysis
+→ View Skill Gaps
+→ Generate Career Roadmap
+→ Practice Mock Interview
+→ Ask AI Career Coach
+```
 
-Recommendations:
-- Build one project using Docker and GitHub Actions
-- Add testing with Vitest or Jest
-- Deploy a full-stack project using Vercel and Render
-- Improve portfolio project documentation
+### Employer Flow
+
+```txt
+Register / Login
+→ Create Employer Profile
+→ Add Job Description
+→ View Candidate Matches
+→ Open Candidate Fit Report
+→ Generate Interview Questions
+→ Manage Talent Pipeline
+```
+
+### University Flow
+
+```txt
+Register / Login
+→ View Readiness Dashboard
+→ Monitor Student Skill Gaps
+→ Review Cohort Heatmap
+→ Analyze Curriculum Gaps
+→ Support Internship Matching
+```
+
+---
+
+## Example AI Job Match Output
+
+```json
+{
+  "role": "Frontend Developer Intern",
+  "company": "TechNova Solutions",
+  "matchScore": 82,
+  "matchedSkills": [
+    "React.js",
+    "JavaScript",
+    "HTML",
+    "CSS",
+    "Node.js",
+    "Git"
+  ],
+  "missingSkills": [
+    "Docker",
+    "CI/CD",
+    "Unit Testing",
+    "AWS Basics"
+  ],
+  "summary": "The candidate is a strong match for this role due to relevant frontend development experience and practical React.js projects.",
+  "recommendations": [
+    "Build one project using Docker",
+    "Add unit testing with Vitest or Jest",
+    "Deploy a full-stack project",
+    "Improve portfolio documentation"
+  ]
+}
+```
+
+---
+
+## Installation and Setup
+
+Clone the repository:
+
+```bash
+git clone https://github.com/your-username/careersync-ai.git
+```
+
+Navigate into the project folder:
+
+```bash
+cd careersync-ai
+```
+
+Install frontend dependencies:
+
+```bash
+cd client
+npm install
+```
+
+Install backend dependencies:
+
+```bash
+cd ../server
+npm install
+```
+
+---
+
+## Environment Variables
+
+Create a `.env` file inside the backend folder:
+
+```env
+PORT=5000
+
+MONGODB_URI=your_mongodb_connection_string
+
+AZURE_OPENAI_ENDPOINT=your_azure_openai_endpoint
+AZURE_OPENAI_API_KEY=your_azure_openai_api_key
+AZURE_OPENAI_DEPLOYMENT=your_model_deployment_name
+AZURE_OPENAI_API_VERSION=your_api_version
+
+AZURE_STORAGE_CONNECTION_STRING=your_azure_blob_storage_connection_string
+AZURE_AI_SEARCH_ENDPOINT=your_azure_ai_search_endpoint
+AZURE_AI_SEARCH_KEY=your_azure_ai_search_key
+
+FIREBASE_PROJECT_ID=your_firebase_project_id
+FIREBASE_CLIENT_EMAIL=your_firebase_client_email
+FIREBASE_PRIVATE_KEY=your_firebase_private_key
+```
+
+Create a `.env` file inside the frontend folder:
+
+```env
+VITE_API_BASE_URL=http://localhost:5000
+
+VITE_FIREBASE_API_KEY=your_firebase_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_firebase_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_firebase_app_id
+```
+
+---
+
+## Run the Project
+
+Start the backend server:
+
+```bash
+cd server
+npm run dev
+```
+
+Start the frontend:
+
+```bash
+cd client
+npm run dev
+```
+
+Open the application:
+
+```txt
+http://localhost:5173
+```
+
+---
+
+## API Modules
+
+### Authentication
+
+```txt
+POST /api/auth/register-role
+GET /api/auth/me
+```
+
+### Candidate Profile
+
+```txt
+POST /api/profile
+GET /api/profile/me
+PUT /api/profile/me
+```
+
+### Job Analysis
+
+```txt
+POST /api/analyze
+GET /api/analysis/me
+GET /api/analysis/:id
+```
+
+### AI Career Coach
+
+```txt
+POST /api/coach
+GET /api/coach/history
+```
+
+### Mock Interview
+
+```txt
+POST /api/interview/generate
+POST /api/interview/evaluate
+GET /api/interview/history
+```
+
+### Employer
+
+```txt
+POST /api/employer/jobs
+GET /api/employer/matches
+GET /api/employer/candidate/:id
+POST /api/employer/interview-questions
+```
+
+### University
+
+```txt
+GET /api/university/readiness
+GET /api/university/skill-gaps
+GET /api/university/cohort-heatmap
+GET /api/university/curriculum-gap
+```
+
+---
+
+## Project Goals
+
+CareerSync AI aims to:
+
+* Help students apply for jobs with confidence
+* Turn resumes and portfolios into living career profiles
+* Provide explainable job match analysis
+* Identify realistic skill gaps
+* Generate personalized learning roadmaps
+* Help candidates prepare for interviews
+* Help employers discover suitable talent
+* Help universities understand employability readiness
+* Support Talentbank’s Career OS vision
+
+---
+
+## Future Improvements
+
+Planned improvements include:
+
+* LinkedIn profile import
+* GitHub repository analysis
+* Real-time job market trend analysis
+* Employer-candidate messaging
+* University admin role management
+* Advanced analytics dashboard
+* AI-generated cover letters
+* Video-based mock interview analysis
+* Certification recommendation engine
+* Multi-language career coaching
+
+---
+
+## Hackathon Context
+
+CareerSync AI was created for the Talentbank Tech Hackathon as a Career OS solution.
+
+The project references multiple challenge modules, including:
+
+* Career OS / Career Marketplace
+* Career Path Navigator
+* Living Portfolio
+* AI Career Coach
+* Smart Talent Matching
+* Adaptive Readiness Profile
+
+---
+
+## License
+
+This project is for educational, portfolio, and hackathon purposes.
+
+---
+
+## Author
+
+Developed by Htet Aung Lwin.
