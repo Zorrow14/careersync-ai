@@ -1,0 +1,21 @@
+{
+  "name": "careersync-ai-server",
+  "version": "1.0.0",
+  "description": "CareerSync AI — Express backend (deploy to Render / Railway)",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "@azure/openai": "^2.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "firebase-admin": "^13.4.0",
+    "mongoose": "^8.15.0",
+    "multer": "^1.4.5-lts.1",
+    "pdf-parse": "^1.1.1"
+  }
+}

@@ -33,7 +33,7 @@ export default function Navbar({ lightMode, setLightMode }) {
           className="neo-secondary flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold"
         >
           {lightMode ? <Moon size={17} /> : <Sun size={17} />}
-          {lightMode ? "Dark Mode" : "Light Mode"}
+          {lightMode ? "Switch to Dark" : "Switch to Light"}
         </button>
 
         <Link
