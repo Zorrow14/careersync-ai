@@ -10,7 +10,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/layout/Navbar";
 
 export default function Landing({ lightMode, setLightMode }) {
   return (

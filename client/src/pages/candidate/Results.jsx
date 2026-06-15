@@ -1,5 +1,5 @@
-import { mockAnalysis } from "../data/mockData";
-import SkillBadge from "../components/SkillBadge";
+import { mockAnalysis } from "../../data/mockData";
+import SkillBadge from "../../components/ui/SkillBadge";
 import { Link } from "react-router-dom";
 
 export default function Results() {

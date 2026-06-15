@@ -1,5 +1,5 @@
-import StatCard from "../components/StatCard";
-import { dashboardStats } from "../data/mockData";
+import StatCard from "../../components/ui/StatCard";
+import { dashboardStats } from "../../data/mockData";
 import { Link } from "react-router-dom";
 import { ArrowRight, Briefcase, GraduationCap, TrendingUp } from "lucide-react";
 

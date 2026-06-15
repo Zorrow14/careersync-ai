@@ -1,4 +1,4 @@
-import { roadmap } from "../data/mockData";
+import { roadmap } from "../../data/mockData";
 
 export default function Roadmap() {
   return (

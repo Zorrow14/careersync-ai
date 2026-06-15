@@ -1,13 +1,13 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import Sidebar from "./components/Sidebar";
-import Landing from "./pages/Landing";
-import Dashboard from "./pages/Dashboard";
-import Analyzer from "./pages/Analyzer";
-import Results from "./pages/Results";
-import Roadmap from "./pages/Roadmap";
-import Chatbot from "./pages/Chatbot";
+import Sidebar from "./components/layout/Sidebar";
+import Landing from "./pages/public/Landing";
+import Dashboard from "./pages/candidate/Dashboard";
+import Analyzer from "./pages/candidate/Analyzer";
+import Results from "./pages/candidate/Results";
+import Roadmap from "./pages/candidate/Roadmap";
+import Chatbot from "./pages/candidate/Chatbot";
 
 export default function App() {
   const location = useLocation();
