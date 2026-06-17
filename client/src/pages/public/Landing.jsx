@@ -42,17 +42,17 @@ export default function Landing({ lightMode, setLightMode }) {
 
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
-              to="/analyzer"
+              to="/register"
               className="neo-primary flex items-center gap-2 rounded-xl px-6 py-3"
             >
-              Analyze My Career <ArrowRight size={18} />
+              Get Started Free <ArrowRight size={18} />
             </Link>
 
             <Link
-              to="/dashboard"
+              to="/login"
               className="neo-secondary rounded-xl px-6 py-3 font-semibold"
             >
-              View Dashboard
+              Sign In
             </Link>
           </div>
 
@@ -248,10 +248,10 @@ export default function Landing({ lightMode, setLightMode }) {
           </p>
 
           <Link
-            to="/analyzer"
-            className="neo-primary mt-6 inline-flex rounded-xl px-6 py-3"
+            to="/register"
+            className="neo-primary mt-6 inline-flex items-center gap-2 rounded-xl px-6 py-3"
           >
-            Start Analysis
+            Create Free Account <ArrowRight size={18} />
           </Link>
         </div>
       </section>

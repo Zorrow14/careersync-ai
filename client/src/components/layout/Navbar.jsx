@@ -11,7 +11,7 @@ export default function Navbar({ lightMode, setLightMode }) {
 
         <div>
           <h1 className="neo-title text-xl font-bold">CareerSync AI</h1>
-          <p className="neo-muted text-xs">Cinematic Career OS Prototype</p>
+          <p className="neo-muted text-xs">Career OS for Students & Graduates</p>
         </div>
       </Link>
 
@@ -27,20 +27,28 @@ export default function Navbar({ lightMode, setLightMode }) {
         </a>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
+        {/* Icon-only theme toggle */}
         <button
           onClick={() => setLightMode(!lightMode)}
-          className="neo-secondary flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold"
+          title={lightMode ? "Switch to Dark" : "Switch to Light"}
+          className="neo-secondary rounded-xl p-2 text-sm"
         >
           {lightMode ? <Moon size={17} /> : <Sun size={17} />}
-          {lightMode ? "Switch to Dark" : "Switch to Light"}
         </button>
 
         <Link
-          to="/dashboard"
-          className="neo-primary rounded-xl px-5 py-2.5 text-sm"
+          to="/login"
+          className="neo-secondary rounded-xl px-4 py-2 text-sm font-semibold"
         >
-          Open Prototype
+          Sign In
+        </Link>
+
+        <Link
+          to="/register"
+          className="neo-primary rounded-xl px-4 py-2 text-sm font-semibold"
+        >
+          Get Started
         </Link>
       </div>
     </nav>
