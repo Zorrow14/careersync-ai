@@ -1,4 +1,16 @@
 import Profile from "../models/Profile.js";
+import multer from "multer";
+import pdfParse from "pdf-parse";
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    cb(null, file.mimetype === "application/pdf");
+  },
+});
+
+export const resumeUploadMiddleware = upload.single("resume");
 
 // GET /api/profile/me
 // Returns the authenticated user's profile.
@@ -55,8 +67,40 @@ export async function updateProfile(req, res) {
   }
 }
 
+// POST /api/profile/resume
+// Accepts a PDF file, extracts text via pdf-parse, and stores it in profile.resumeText.
+// The uploaded file is NOT persisted — only the extracted text is saved.
+export async function uploadResume(req, res) {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No PDF file provided." });
+    }
+
+    const { text } = await pdfParse(req.file.buffer);
+
+    if (!text || !text.trim()) {
+      return res.status(422).json({ message: "Could not extract text from the PDF." });
+    }
+
+    const profile = await Profile.findOneAndUpdate(
+      { firebaseUid: req.firebaseUid },
+      {
+        $set: { resumeText: text.trim() },
+        $setOnInsert: { firebaseUid: req.firebaseUid },
+      },
+      { new: true, upsert: true, runValidators: true }
+    );
+
+    return res.status(200).json(profile);
+  } catch (err) {
+    console.error("uploadResume error:", err.message);
+    return res.status(500).json({ message: "Server error." });
+  }
+}
+
 // Whitelist allowed profile fields from the request body.
 // Prevents firebaseUid from being overwritten via the request.
+// resumeText is intentionally excluded — only POST /api/profile/resume may set it.
 function sanitizeProfileBody(body) {
   const {
     education,
@@ -66,7 +110,6 @@ function sanitizeProfileBody(body) {
     certifications,
     githubLink,
     portfolioLink,
-    resumeText,
     experience,
     institution,
     optInForEmployerMatching,
@@ -80,7 +123,6 @@ function sanitizeProfileBody(body) {
     ...(certifications !== undefined && { certifications }),
     ...(githubLink !== undefined && { githubLink }),
     ...(portfolioLink !== undefined && { portfolioLink }),
-    ...(resumeText !== undefined && { resumeText }),
     ...(experience !== undefined && { experience }),
     ...(institution !== undefined && { institution }),
     ...(optInForEmployerMatching !== undefined && { optInForEmployerMatching }),

@@ -11,11 +11,13 @@ import {
   Sun,
   LogOut,
   Building2,
+  UserCircle,
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth.js";
 
 const candidateLinks = [
   { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { path: "/profile", label: "My Profile", icon: UserCircle },
   { path: "/analyzer", label: "JD Analyzer", icon: SearchCheck },
   { path: "/results", label: "AI Results", icon: BarChart3 },
   { path: "/roadmap", label: "Roadmap", icon: Route },

@@ -21,6 +21,7 @@ import Results from "./pages/candidate/Results";
 import Roadmap from "./pages/candidate/Roadmap";
 import Chatbot from "./pages/candidate/Chatbot";
 import MockInterview from "./pages/candidate/MockInterview";
+import ProfileSetup from "./pages/candidate/ProfileSetup";
 
 // Employer + University placeholders
 import EmployerDashboard from "./pages/employer/Dashboard";
@@ -122,6 +123,16 @@ export default function App() {
                   <ProtectedRoute>
                     <RoleRoute allowedRole="candidate">
                       <MockInterview />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="candidate">
+                      <ProfileSetup />
                     </RoleRoute>
                   </ProtectedRoute>
                 }

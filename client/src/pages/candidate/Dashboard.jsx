@@ -1,9 +1,51 @@
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import {
+  ArrowRight,
+  Briefcase,
+  GraduationCap,
+  TrendingUp,
+  UserCircle,
+  Loader2,
+} from "lucide-react";
 import StatCard from "../../components/ui/StatCard";
 import { dashboardStats } from "../../data/mockData";
-import { Link } from "react-router-dom";
-import { ArrowRight, Briefcase, GraduationCap, TrendingUp } from "lucide-react";
+import { getMyProfile } from "../../services/profileService.js";
 
 export default function Dashboard() {
+  const [profile, setProfile] = useState(null);
+  const [profileLoading, setProfileLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await getMyProfile();
+        setProfile(data);
+      } catch {
+        // 404 or error — no profile yet
+      } finally {
+        setProfileLoading(false);
+      }
+    })();
+  }, []);
+
+  const hasProfile = !!profile;
+  const skillCount = profile?.skills?.length || 0;
+  const projectCount = profile?.projects?.length || 0;
+  const educationCount = profile?.education?.length || 0;
+  const experienceCount = profile?.experience?.length || 0;
+
+  const completionItems = [
+    !!profile?.resumeText,
+    skillCount > 0,
+    projectCount > 0,
+    educationCount > 0,
+    (profile?.careerInterests?.length || 0) > 0,
+  ];
+  const completionPct = hasProfile
+    ? Math.round((completionItems.filter(Boolean).length / completionItems.length) * 100)
+    : 0;
+
   return (
     <div>
       <div className="mb-8 flex items-end justify-between">
@@ -23,6 +65,90 @@ export default function Dashboard() {
         </Link>
       </div>
 
+      {/* ─── Profile Summary / Empty State ─── */}
+      {profileLoading ? (
+        <div className="neo-card mb-8 flex items-center justify-center rounded-2xl p-10">
+          <Loader2 className="animate-spin text-amber-400" size={28} />
+        </div>
+      ) : hasProfile ? (
+        <div className="neo-card mb-8 rounded-2xl p-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="rounded-xl bg-amber-500/15 p-3 text-amber-300">
+                <UserCircle size={28} />
+              </div>
+              <div>
+                <h2 className="neo-title text-lg font-bold">Your Living Profile</h2>
+                <p className="neo-muted text-sm">
+                  {skillCount} skill{skillCount !== 1 && "s"} · {projectCount} project{projectCount !== 1 && "s"} · {educationCount} education · {experienceCount} experience
+                </p>
+              </div>
+            </div>
+            <Link
+              to="/profile"
+              className="flex items-center gap-2 text-sm font-semibold text-amber-300 hover:text-amber-200"
+            >
+              Edit Profile <ArrowRight size={16} />
+            </Link>
+          </div>
+
+          {/* Completion bar */}
+          <div className="mt-5">
+            <div className="mb-2 flex items-center justify-between">
+              <span className="neo-muted text-xs font-medium">Profile Completeness</span>
+              <span className="text-xs font-bold text-amber-300">{completionPct}%</span>
+            </div>
+            <div className="neo-progress-track h-2 overflow-hidden rounded-full">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-300 transition-all duration-500"
+                style={{ width: `${completionPct}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Quick tags */}
+          {skillCount > 0 && (
+            <div className="mt-4 flex flex-wrap gap-2">
+              {profile.skills.slice(0, 8).map((s) => (
+                <span key={s} className="neo-badge-match rounded-full px-3 py-1 text-xs font-medium">
+                  {s}
+                </span>
+              ))}
+              {skillCount > 8 && (
+                <span className="neo-muted text-xs self-center">+{skillCount - 8} more</span>
+              )}
+            </div>
+          )}
+
+          {profile.resumeText && (
+            <p className="neo-muted mt-3 text-xs flex items-center gap-1">
+              <span className="inline-block h-2 w-2 rounded-full bg-emerald-400" />
+              Resume uploaded and parsed
+            </p>
+          )}
+        </div>
+      ) : (
+        <div className="neo-card mb-8 rounded-2xl p-8 text-center">
+          <div className="mx-auto w-fit rounded-xl bg-amber-500/15 p-4 text-amber-300">
+            <UserCircle size={36} />
+          </div>
+          <h2 className="neo-title mt-4 text-xl font-bold">
+            Complete Your Living Profile
+          </h2>
+          <p className="neo-text mx-auto mt-2 max-w-md">
+            Set up your career profile to unlock personalized AI analysis, smart
+            matching, and tailored roadmaps.
+          </p>
+          <Link
+            to="/profile"
+            className="neo-primary mt-6 inline-flex items-center gap-2 rounded-xl px-6 py-3 font-semibold"
+          >
+            Build Your Profile <ArrowRight size={16} />
+          </Link>
+        </div>
+      )}
+
+      {/* ─── Stats (mock data preserved) ─── */}
       <div className="grid grid-cols-1 gap-5 md:grid-cols-4">
         {dashboardStats.map((stat) => (
           <StatCard key={stat.label} {...stat} />
