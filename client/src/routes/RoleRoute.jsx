@@ -7,12 +7,11 @@ const roleDefaults = {
   university: "/university",
 };
 
-// Use this to guard a route that belongs to a specific role.
-// If the logged-in user has a different role they are redirected to their own home.
+// Guards a route that belongs to a specific role.
+// If the user has a different role they are redirected to their own home.
 export default function RoleRoute({ children, allowedRole }) {
-  const { user, role, loading } = useAuth();
+  const { user, role } = useAuth();
 
-  if (loading) return null;
   if (!user) return <Navigate to="/login" replace />;
 
   if (role && role !== allowedRole) {

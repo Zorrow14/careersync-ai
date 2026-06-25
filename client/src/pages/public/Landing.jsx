@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   Brain,
@@ -8,11 +8,21 @@ import {
   Upload,
   FileSearch,
   CheckCircle2,
+  Play,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import Navbar from "../../components/layout/Navbar";
+import { useAuth } from "../../hooks/useAuth.js";
 
 export default function Landing({ lightMode, setLightMode }) {
+  const navigate = useNavigate();
+  const { demoLogin } = useAuth();
+
+  function handleTryDemo() {
+    demoLogin("candidate", "Sarah Tan", "sarah.tan@example.com");
+    navigate("/dashboard");
+  }
+
   return (
     <div className="min-h-screen">
       <Navbar lightMode={lightMode} setLightMode={setLightMode} />
@@ -41,18 +51,19 @@ export default function Landing({ lightMode, setLightMode }) {
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">
-            <Link
-              to="/register"
-              className="neo-primary flex items-center gap-2 rounded-xl px-6 py-3"
+            <button
+              onClick={handleTryDemo}
+              className="neo-primary flex items-center gap-2 rounded-xl px-6 py-3 font-semibold"
             >
-              Get Started Free <ArrowRight size={18} />
-            </Link>
+              <Play size={18} />
+              Try Demo
+            </button>
 
             <Link
-              to="/login"
-              className="neo-secondary rounded-xl px-6 py-3 font-semibold"
+              to="/register"
+              className="neo-secondary flex items-center gap-2 rounded-xl px-6 py-3 font-semibold"
             >
-              Sign In
+              Get Started Free <ArrowRight size={18} />
             </Link>
           </div>
 
@@ -94,9 +105,7 @@ export default function Landing({ lightMode, setLightMode }) {
               </div>
 
               <div>
-                <h4 className="neo-title font-semibold">
-                  Frontend Developer Intern
-                </h4>
+                <h4 className="neo-title font-semibold">Frontend Developer Intern</h4>
                 <p className="neo-muted text-sm">TechNova Solutions</p>
               </div>
             </div>
@@ -148,36 +157,18 @@ export default function Landing({ lightMode, setLightMode }) {
               From Portfolio to Career Roadmap
             </h2>
             <p className="neo-text mx-auto mt-3 max-w-2xl">
-              CareerSync AI transforms student profiles into actionable career
-              intelligence.
+              CareerSync AI transforms student profiles into actionable career intelligence.
             </p>
           </div>
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-4">
             {[
-              {
-                icon: Upload,
-                title: "Upload Profile",
-                text: "Add resume, portfolio, skills, and project experience.",
-              },
-              {
-                icon: FileSearch,
-                title: "Paste Job Description",
-                text: "Compare your profile against real employer requirements.",
-              },
-              {
-                icon: Brain,
-                title: "AI Analysis",
-                text: "Generate match score, strengths, weaknesses, and gaps.",
-              },
-              {
-                icon: Route,
-                title: "Career Roadmap",
-                text: "Receive a personalized improvement plan.",
-              },
+              { icon: Upload, title: "Upload Profile", text: "Add resume, portfolio, skills, and project experience." },
+              { icon: FileSearch, title: "Paste Job Description", text: "Compare your profile against real employer requirements." },
+              { icon: Brain, title: "AI Analysis", text: "Generate match score, strengths, weaknesses, and gaps." },
+              { icon: Route, title: "Career Roadmap", text: "Receive a personalized improvement plan." },
             ].map((item) => {
               const Icon = item.icon;
-
               return (
                 <div key={item.title} className="neo-soft rounded-2xl p-6">
                   <div className="mb-4 inline-flex rounded-xl bg-amber-500/15 p-3 text-amber-300">
@@ -197,29 +188,12 @@ export default function Landing({ lightMode, setLightMode }) {
         className="mx-auto grid max-w-7xl grid-cols-1 gap-5 px-8 pb-20 md:grid-cols-4"
       >
         {[
-          {
-            icon: Brain,
-            title: "AI Job Match",
-            text: "Compare your resume and portfolio with employer job descriptions.",
-          },
-          {
-            icon: Target,
-            title: "Skill Gap Detection",
-            text: "Identify missing skills and technologies needed for the role.",
-          },
-          {
-            icon: Route,
-            title: "Career Roadmap",
-            text: "Get a personalized roadmap to improve career readiness.",
-          },
-          {
-            icon: Bot,
-            title: "AI Career Coach",
-            text: "Ask questions about your job fit, skills, and career direction.",
-          },
+          { icon: Brain, title: "AI Job Match", text: "Compare your resume and portfolio with employer job descriptions." },
+          { icon: Target, title: "Skill Gap Detection", text: "Identify missing skills and technologies needed for the role." },
+          { icon: Route, title: "Career Roadmap", text: "Get a personalized roadmap to improve career readiness." },
+          { icon: Bot, title: "AI Career Coach", text: "Ask questions about your job fit, skills, and career direction." },
         ].map((item) => {
           const Icon = item.icon;
-
           return (
             <motion.div
               key={item.title}
@@ -239,20 +213,18 @@ export default function Landing({ lightMode, setLightMode }) {
       <section className="mx-auto max-w-7xl px-8 pb-20">
         <div className="neo-card rounded-3xl p-10 text-center">
           <CheckCircle2 className="mx-auto mb-4 text-amber-300" size={36} />
-          <h2 className="neo-title text-3xl font-bold">
-            Ready to test your career fit?
-          </h2>
+          <h2 className="neo-title text-3xl font-bold">Ready to test your career fit?</h2>
           <p className="neo-text mx-auto mt-3 max-w-2xl">
-            Try the prototype and see how AI can help students make smarter
-            career decisions.
+            Try the prototype and see how AI can help students make smarter career decisions.
           </p>
 
-          <Link
-            to="/register"
-            className="neo-primary mt-6 inline-flex items-center gap-2 rounded-xl px-6 py-3"
+          <button
+            onClick={handleTryDemo}
+            className="neo-primary mt-6 inline-flex items-center gap-2 rounded-xl px-6 py-3 font-semibold"
           >
-            Create Free Account <ArrowRight size={18} />
-          </Link>
+            <Play size={18} />
+            Try Demo Now
+          </button>
         </div>
       </section>
     </div>

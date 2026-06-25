@@ -1,47 +1,40 @@
 import { useState } from "react";
-import { Send, Bot } from "lucide-react";
-
-const initialMessages = [
-  {
-    role: "ai",
-    text: "Hi, I’m your CareerSync AI Coach. Ask me about your job match, missing skills, or career roadmap.",
-  },
-];
-
-const mockReplies = [
-  "Based on your current profile, you are strongest in frontend development. Your next priority should be Docker, testing, and deployment.",
-  "For a Frontend Developer Internship, your React.js and UI skills are strong. Improving CI/CD and cloud deployment will make you more competitive.",
-  "I recommend building one full-stack React + Node.js project with authentication, database, deployment, and clear documentation.",
-];
+import { Send, Bot, Loader2 } from "lucide-react";
+import { usePersona } from "../../context/PersonaContext.jsx";
+import { getCoachReply } from "../../lib/mock-ai.js";
 
 export default function Chatbot() {
-  const [messages, setMessages] = useState(initialMessages);
+  const { personaId, persona } = usePersona();
+  const [messages, setMessages] = useState([
+    {
+      role: "ai",
+      text: `Hi ${persona.name.split(" ")[0]}, I'm your CareerSync AI Coach. Ask me about your job match, missing skills, or career roadmap.`,
+    },
+  ]);
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const sendMessage = () => {
-    if (!input.trim()) return;
+  async function sendMessage() {
+    if (!input.trim() || loading) return;
 
-    const reply = mockReplies[Math.floor(Math.random() * mockReplies.length)];
-
-    setMessages((prev) => [
-      ...prev,
-      { role: "user", text: input },
-      { role: "ai", text: reply },
-    ]);
-
+    const userMsg = input;
     setInput("");
-  };
+    setMessages((prev) => [...prev, { role: "user", text: userMsg }]);
+    setLoading(true);
+
+    const result = await getCoachReply(personaId, userMsg);
+
+    setMessages((prev) => [...prev, { role: "ai", text: result.reply }]);
+    setLoading(false);
+  }
 
   return (
     <div>
       <div className="mb-8">
         <p className="text-sm font-semibold text-amber-300">AI Career Coach</p>
-        <h1 className="neo-title text-4xl font-bold">
-          Chat with CareerSync AI
-        </h1>
+        <h1 className="neo-title text-4xl font-bold">Chat with CareerSync AI</h1>
         <p className="neo-text mt-2">
-          Prototype chatbot using mock AI responses. Groq API can be connected
-          later.
+          AI-powered career coaching based on {persona.name}'s profile and analysis.
         </p>
       </div>
 
@@ -51,7 +44,7 @@ export default function Chatbot() {
 
           <div className="mt-4 space-y-3">
             {[
-              "Am I suitable for frontend roles?",
+              "Am I ready for intern roles?",
               "What skills am I missing?",
               "How can I improve my portfolio?",
               "What should I learn next?",
@@ -72,9 +65,7 @@ export default function Chatbot() {
             {messages.map((msg, index) => (
               <div
                 key={index}
-                className={`flex ${
-                  msg.role === "user" ? "justify-end" : "justify-start"
-                }`}
+                className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
                   className={`max-w-[75%] rounded-2xl p-4 text-sm leading-6 ${
@@ -93,6 +84,14 @@ export default function Chatbot() {
                 </div>
               </div>
             ))}
+            {loading && (
+              <div className="flex justify-start">
+                <div className="neo-soft flex items-center gap-2 rounded-2xl p-4 text-sm text-amber-300">
+                  <Loader2 size={16} className="animate-spin" />
+                  Thinking…
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="mt-5 flex gap-3">
@@ -106,7 +105,8 @@ export default function Chatbot() {
 
             <button
               onClick={sendMessage}
-              className="neo-primary rounded-xl px-5"
+              disabled={loading}
+              className="neo-primary rounded-xl px-5 disabled:opacity-50"
             >
               <Send size={20} />
             </button>

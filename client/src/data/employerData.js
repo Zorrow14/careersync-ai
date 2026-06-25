@@ -1,0 +1,77 @@
+export const employerJobs = [
+  {
+    id: "job1",
+    title: "Frontend Developer Intern",
+    company: "TechNova Solutions",
+    location: "Kuala Lumpur",
+    requiredSkills: ["React.js", "JavaScript", "HTML", "CSS", "Git"],
+    preferredSkills: ["TypeScript", "Docker", "CI/CD"],
+    candidates: [
+      { personaId: "sarah", name: "Sarah Tan", fitScore: 82, recommendation: "recommend", topStrength: "Strong React.js project experience" },
+      { personaId: "aina", name: "Aina Rahman", fitScore: 78, recommendation: "consider", topStrength: "Full-stack with Docker experience" },
+      { personaId: "jason", name: "Jason Lim", fitScore: 45, recommendation: "decline", topStrength: "Good analytical thinking" },
+    ],
+  },
+  {
+    id: "job2",
+    title: "Junior Data Analyst",
+    company: "InsightWorks Analytics",
+    location: "Penang",
+    requiredSkills: ["Python", "SQL", "Tableau", "Statistics"],
+    preferredSkills: ["Power BI", "BigQuery", "A/B Testing"],
+    candidates: [
+      { personaId: "jason", name: "Jason Lim", fitScore: 74, recommendation: "recommend", topStrength: "Certified data analytics professional" },
+      { personaId: "sarah", name: "Sarah Tan", fitScore: 38, recommendation: "decline", topStrength: "Strong problem-solving mindset" },
+      { personaId: "aina", name: "Aina Rahman", fitScore: 42, recommendation: "decline", topStrength: "PostgreSQL and data modeling experience" },
+    ],
+  },
+  {
+    id: "job3",
+    title: "Full Stack Developer Intern",
+    company: "StackBridge Solutions",
+    location: "Cyberjaya",
+    requiredSkills: ["JavaScript", "Node.js", "React.js", "MongoDB"],
+    preferredSkills: ["Docker", "TypeScript", "PostgreSQL"],
+    candidates: [
+      { personaId: "aina", name: "Aina Rahman", fitScore: 88, recommendation: "recommend", topStrength: "Docker + full-stack TypeScript proficiency" },
+      { personaId: "sarah", name: "Sarah Tan", fitScore: 72, recommendation: "consider", topStrength: "React.js and Node.js experience" },
+      { personaId: "jason", name: "Jason Lim", fitScore: 35, recommendation: "decline", topStrength: "Python data processing skills" },
+    ],
+  },
+];
+
+export const fitReports = {
+  sarah: {
+    fitScore: 82,
+    summary: "Sarah is a strong match for the Frontend Developer Intern role. Her React.js project experience, Meta certification, and UI/UX skills demonstrate readiness. Key gaps in DevOps and testing are addressable within 4–6 weeks.",
+    matchedRequirements: ["React.js", "JavaScript", "HTML/CSS", "Git", "UI/UX Design"],
+    missingRequirements: ["Docker", "CI/CD", "Unit Testing"],
+    strengths: ["Two well-documented React projects", "Meta Front-End Developer certification", "Internship experience at TechStart Labs"],
+    risks: ["No production deployment experience", "No testing workflow established"],
+    growthPotential: "High — Strong learning trajectory with active project building",
+    hiringRecommendation: "recommend",
+    interviewSuggestions: ["Ask about React state management patterns", "Probe deployment experience", "Discuss approach to debugging"],
+  },
+  jason: {
+    fitScore: 74,
+    summary: "Jason has solid analytical fundamentals for a Junior Data Analyst role. Python, SQL, and Tableau experience align with core requirements. Needs cloud data platform exposure for competitive positioning.",
+    matchedRequirements: ["Python", "SQL", "Pandas", "Tableau", "Statistics"],
+    missingRequirements: ["Power BI", "BigQuery", "A/B Testing"],
+    strengths: ["Google Data Analytics certification", "Tableau dashboard projects", "Scikit-learn ML exposure"],
+    risks: ["No cloud platform experience", "Limited production data pipeline work"],
+    growthPotential: "Moderate — Strong foundation, needs cloud and pipeline exposure",
+    hiringRecommendation: "recommend",
+    interviewSuggestions: ["Ask about data cleaning methodology", "Discuss dashboard design decisions", "Probe SQL query optimization knowledge"],
+  },
+  aina: {
+    fitScore: 88,
+    summary: "Aina is an excellent match for Full Stack Developer positions. Rare combination of frontend, backend, and Docker skills for an intern. Two AWS/MongoDB certifications add credibility. Minor CI/CD gaps are easily addressed.",
+    matchedRequirements: ["JavaScript", "TypeScript", "React.js", "Node.js", "Express.js", "MongoDB", "Docker"],
+    missingRequirements: ["CI/CD Pipelines", "Kubernetes"],
+    strengths: ["Three substantial full-stack projects", "Docker containerization — rare for interns", "Dual certifications (AWS + MongoDB)"],
+    risks: ["No CI/CD implementation experience yet", "Missing container orchestration knowledge"],
+    growthPotential: "Very High — Already operating above intern level in several areas",
+    hiringRecommendation: "recommend",
+    interviewSuggestions: ["Ask about Docker workflow and deployment strategy", "Discuss database design trade-offs (SQL vs NoSQL)", "Probe experience with real-time systems (WebSockets)"],
+  },
+};

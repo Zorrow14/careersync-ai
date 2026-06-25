@@ -1,49 +1,63 @@
-import { createContext, useEffect, useState } from "react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "../lib/firebase.js";
-import api from "../lib/api.js";
+/**
+ * Demo-mode AuthContext.
+ *
+ * Stores the session entirely in localStorage — no Firebase, no backend calls.
+ * The public API (user, role, loading, logout) is identical to the original so
+ * that every other file (ProtectedRoute, RoleRoute, Sidebar, useAuth) keeps
+ * working without changes beyond removing Firebase-specific checks.
+ *
+ * demoLogin(role, name) — call this from Login / Register to create a session.
+ * logout()              — clears the session and returns to /.
+ */
+
+import { createContext, useState } from "react";
 
 export const AuthContext = createContext(null);
 
+const SESSION_KEY = "careersync_demo_session";
+
+function loadSession() {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveSession(session) {
+  localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+}
+
+function clearSession() {
+  localStorage.removeItem(SESSION_KEY);
+}
+
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [role, setRole] = useState(null);
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState(() => loadSession());
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        const idToken = await firebaseUser.getIdToken();
-        setUser(firebaseUser);
-        setToken(idToken);
+  // Derive the same shape the rest of the app expects:
+  //   user   — truthy when logged in; exposes displayName and email
+  //   role   — "candidate" | "employer" | "university"
+  //   loading — always false (no async init needed)
+  const user = session
+    ? { displayName: session.name, email: session.email || "" }
+    : null;
+  const role = session?.role ?? null;
 
-        try {
-          const res = await api.get("/api/auth/me");
-          setRole(res.data.role);
-        } catch {
-          setRole(null);
-        }
-      } else {
-        setUser(null);
-        setToken(null);
-        setRole(null);
-      }
-      setLoading(false);
-    });
+  function demoLogin(role, name = "Demo User", email = "") {
+    const newSession = { role, name, email };
+    saveSession(newSession);
+    setSession(newSession);
+  }
 
-    return () => unsubscribe();
-  }, []);
-
-  const logout = async () => {
-    await signOut(auth);
-    setUser(null);
-    setToken(null);
-    setRole(null);
-  };
+  function logout() {
+    clearSession();
+    setSession(null);
+  }
 
   return (
-    <AuthContext.Provider value={{ user, role, token, loading, logout }}>
+    <AuthContext.Provider value={{ user, role, loading: false, demoLogin, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,29 +1,15 @@
 import { useState } from "react";
-import { sendPasswordResetEmail } from "firebase/auth";
 import { Link } from "react-router-dom";
 import { BriefcaseBusiness, Mail } from "lucide-react";
-import { auth } from "../../lib/firebase.js";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  const handleReset = async (e) => {
+  function handleReset(e) {
     e.preventDefault();
-    setError("");
-    setLoading(true);
-
-    try {
-      await sendPasswordResetEmail(auth, email);
-      setSent(true);
-    } catch (err) {
-      setError(err.message || "Could not send reset email.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    setSent(true);
+  }
 
   return (
     <div className="neo-bg flex min-h-screen items-center justify-center px-4">
@@ -49,16 +35,12 @@ export default function ForgotPassword() {
             Enter your email and we will send you a reset link.
           </p>
 
-          {error && (
-            <div className="neo-danger mb-4 rounded-xl px-4 py-3 text-sm">{error}</div>
-          )}
-
           {sent ? (
             <div className="neo-good rounded-xl px-4 py-4 text-center text-sm">
               <p className="font-semibold">Reset email sent!</p>
               <p className="neo-muted mt-1">
                 Check <span className="text-amber-300">{email}</span> for a password
-                reset link. It may take a minute to arrive.
+                reset link. (Demo mode — no real email is sent.)
               </p>
             </div>
           ) : (
@@ -77,10 +59,9 @@ export default function ForgotPassword() {
 
               <button
                 type="submit"
-                disabled={loading}
-                className="neo-primary flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold disabled:opacity-60"
+                className="neo-primary flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold"
               >
-                {loading ? "Sending…" : "Send Reset Link"}
+                Send Reset Link
               </button>
             </form>
           )}

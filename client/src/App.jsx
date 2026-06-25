@@ -27,12 +27,12 @@ import ProfileSetup from "./pages/candidate/ProfileSetup";
 import EmployerDashboard from "./pages/employer/Dashboard";
 import UniversityDashboard from "./pages/university/Dashboard";
 
-const AUTH_ROUTES = ["/login", "/register", "/forgot-password", "/verify-email"];
-const PUBLIC_ROUTES = ["/", ...AUTH_ROUTES];
+// Routes that render WITHOUT the sidebar (full-screen layouts)
+const NO_SIDEBAR_ROUTES = ["/", "/login", "/register", "/forgot-password", "/verify-email"];
 
 export default function App() {
   const location = useLocation();
-  const isPublic = PUBLIC_ROUTES.includes(location.pathname);
+  const isPublic = NO_SIDEBAR_ROUTES.includes(location.pathname);
 
   const [lightMode, setLightMode] = useState(() => {
     return localStorage.getItem("theme") === "light";

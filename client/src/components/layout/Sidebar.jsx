@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   SearchCheck,
@@ -14,6 +14,7 @@ import {
   UserCircle,
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth.js";
+import PersonaSwitcher from "../ui/PersonaSwitcher.jsx";
 
 const candidateLinks = [
   { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -35,7 +36,13 @@ const universityLinks = [
 
 export default function Sidebar({ lightMode, setLightMode }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, role, logout } = useAuth();
+
+  function handleLogout() {
+    logout();
+    navigate("/");
+  }
 
   const links =
     role === "employer"
@@ -85,14 +92,29 @@ export default function Sidebar({ lightMode, setLightMode }) {
         })}
       </nav>
 
-      {role === "employer" || role === "university" ? (
+      {role === "candidate" && (
+        <div className="mt-6">
+          <PersonaSwitcher />
+        </div>
+      )}
+
+      {(role === "employer" || role === "university") && (
         <p className="neo-muted mt-6 text-xs leading-5">
           Full candidate prototype (JD Analyzer, Mock Interview, etc.) is available
           when signed in as a <span className="text-amber-300">Candidate</span> account.
         </p>
-      ) : null}
+      )}
 
       <div className="mt-auto space-y-2">
+        {user && (
+          <div className="neo-soft mb-1 flex items-center gap-3 rounded-xl px-4 py-3">
+            <UserCircle size={18} className="shrink-0 text-amber-300" />
+            <span className="neo-text truncate text-sm font-medium">
+              {user.displayName || "Demo User"}
+            </span>
+          </div>
+        )}
+
         <button
           onClick={() => setLightMode(!lightMode)}
           className="neo-secondary flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold"
@@ -103,7 +125,7 @@ export default function Sidebar({ lightMode, setLightMode }) {
 
         {user && (
           <button
-            onClick={logout}
+            onClick={handleLogout}
             className="flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-rose-400 transition hover:bg-rose-500/10"
           >
             <LogOut size={17} />
