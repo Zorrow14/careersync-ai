@@ -126,6 +126,54 @@ export function generateExtraCompanies(startId, count) {
   });
 }
 
+export function generateExtraTalentPool(startId, count) {
+  const names = [
+    "Hafiz Rahman", "Lydia Tan", "Ken Wong", "Siti Aminah", "Raj Kumar",
+    "Emily Chua", "Farhan Ali", "Yuki Tanaka", "Nurul Izzah", "Ahmad Faiz",
+    "Chen Wei", "Arif Hakim", "Sophia Lee", "Vikram Singh", "Amira Hassan",
+    "James Ooi", "Zara Ibrahim", "Kevin Ng", "Fatimah Zulkifli", "Marcus Teo",
+  ];
+  const universities = [
+    "UTM", "Universiti Malaya", "UPM", "MMU", "APU", "Taylor's University",
+    "Sunway University", "UTAR", "UiTM", "USM", "INTI International",
+  ];
+  const targetRoles = [
+    "Frontend Developer",
+    "Full Stack Developer",
+    "Data Analyst",
+    "Backend Developer",
+    "UX Designer",
+    "DevOps Engineer",
+  ];
+  const skillSets = [
+    ["React.js", "JavaScript", "TypeScript", "Git"],
+    ["Python", "SQL", "Pandas", "Tableau"],
+    ["Node.js", "MongoDB", "Docker", "TypeScript"],
+    ["Java", "Spring Boot", "PostgreSQL", "Git"],
+    ["Figma", "UI/UX", "CSS", "Prototyping"],
+    ["AWS", "Docker", "Linux", "CI/CD"],
+  ];
+
+  return Array.from({ length: count }, (_, i) => {
+    const seed = startId + i;
+    const name = names[i % names.length] + (i >= names.length ? ` ${Math.floor(i / names.length) + 1}` : "");
+    const parts = name.trim().split(" ");
+    const avatar = (parts[0][0] + (parts[1]?.[0] || "")).toUpperCase();
+    const skills = skillSets[i % skillSets.length];
+    return {
+      id: `t${seed}`,
+      name: name.trim(),
+      degree: i % 2 === 0 ? "BSc Computer Science" : "BEng Software Engineering",
+      university: universities[i % universities.length],
+      skills,
+      fitScore: 52 + (seed * 9) % 44,
+      targetRole: targetRoles[i % targetRoles.length],
+      experience: i % 3 === 0 ? "2 internships" : i % 2 === 0 ? "1 internship" : "No internship",
+      avatar,
+    };
+  });
+}
+
 export function generateExtraPipelineCandidates(startId, count) {
   const names = [
     "Wei Ling Choo", "Rahul Menon", "Priya Sharma", "Daniel Wong", "Mei Xin Lee",

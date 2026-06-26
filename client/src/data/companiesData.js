@@ -262,3 +262,8 @@ export function getCompanyJobs(companyName) {
 export function getCompanyById(id) {
   return companies.find((c) => c.id === id);
 }
+
+/** Look up a company by exact name (for job → company cross-links). */
+export function getCompanyByName(name) {
+  return companies.find((c) => c.name === name);
+}

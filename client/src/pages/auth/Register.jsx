@@ -6,7 +6,6 @@ import {
   GraduationCap,
   Briefcase,
   Building2,
-  Zap,
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth.js";
 import { demoUsers, roleHome } from "../../lib/demoUsers.js";
@@ -74,29 +73,6 @@ export default function Register() {
         <div className="neo-card rounded-2xl p-8">
           <h1 className="neo-title mb-1 text-2xl font-bold">Create account</h1>
           <p className="neo-muted mb-6 text-sm">Choose your role to get started.</p>
-
-          {/* ─── One-click demo entry (judge bypass) ─── */}
-          <div className="mb-6">
-            <div className="mb-3 flex items-center gap-2">
-              <Zap size={15} className="text-amber-300" />
-              <p className="neo-text text-sm font-semibold">Instant demo — skip the form</p>
-            </div>
-            <div className="grid grid-cols-3 gap-3">
-              {roles.map(({ id, label, icon: Icon }) => (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => enterDemo(id)}
-                  className="neo-secondary flex cursor-pointer flex-col items-center gap-2 rounded-xl px-2 py-4 text-center text-xs font-semibold transition hover:bg-amber-500/10 hover:text-amber-300"
-                >
-                  <Icon size={20} />
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="neo-divider neo-muted mb-6 text-xs">or register manually</div>
 
           {/* Role selector */}
           <div className="mb-6 grid grid-cols-3 gap-3">
@@ -166,6 +142,25 @@ export default function Register() {
               {loading ? "Creating account…" : "Create Account"}
             </button>
           </form>
+
+          <div className="mt-8 border-t border-white/10 pt-6">
+            <p className="neo-muted mb-3 text-center text-xs font-semibold uppercase tracking-wide">
+              Or explore as a demo user
+            </p>
+            <div className="grid grid-cols-3 gap-3">
+              {roles.map(({ id, label, icon: Icon }) => (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => enterDemo(id)}
+                  className="neo-secondary flex cursor-pointer flex-col items-center gap-2 rounded-xl px-2 py-3 text-center text-xs font-semibold transition hover:border-amber-500/30 hover:bg-amber-500/10 hover:text-amber-300"
+                >
+                  <Icon size={18} />
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
 
           <p className="neo-muted mt-6 text-center text-sm">
             Already have an account?{" "}

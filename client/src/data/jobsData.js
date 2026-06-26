@@ -513,7 +513,7 @@ const baseJobs = [
   },
 ];
 
-export const jobs = [...baseJobs, ...generateExtraJobs(19, 42)];
+export const jobs = [...baseJobs, ...generateExtraJobs(19, 32)];
 
 export function getJobMatch(job, personaId = "sarah") {
   return job.match[personaId] || job.match.default;

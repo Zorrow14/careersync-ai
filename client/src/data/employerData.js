@@ -1,5 +1,5 @@
 import { getCompanyFeedByName } from "./companyFeedData.js";
-import { generateExtraPipelineCandidates } from "./mockDataExpand.js";
+import { generateExtraPipelineCandidates, generateExtraTalentPool } from "./mockDataExpand.js";
 
 /* ─── Company Profile ─── */
 export const companyProfile = {
@@ -18,7 +18,15 @@ export const companyFeed = getCompanyFeedByName("TechNova Solutions");
 /* ─── Candidate Pipeline ─── */
 export const pipelineStages = ["Applied", "Screening", "Interview", "Offer", "Hired", "Rejected"];
 
-export const pipelineCandidates = [
+const pipelineStageQuotas = [
+  ...Array(15).fill("Applied"),
+  ...Array(10).fill("Screening"),
+  ...Array(10).fill("Interview"),
+  ...Array(5).fill("Offer"),
+  ...Array(5).fill("Hired"),
+];
+
+const basePipeline = [
   { id: "p1", name: "Sarah Tan", role: "Frontend Developer Intern", stage: "Interview", fitScore: 82, appliedDate: "Jun 18, 2026", avatar: "ST", source: "CareerSync AI" },
   { id: "p2", name: "Aina Rahman", role: "Full Stack Developer Intern", stage: "Offer", fitScore: 88, appliedDate: "Jun 15, 2026", avatar: "AR", source: "CareerSync AI" },
   { id: "p3", name: "Jason Lim", role: "Junior Data Analyst", stage: "Screening", fitScore: 74, appliedDate: "Jun 20, 2026", avatar: "JL", source: "LinkedIn" },
@@ -32,6 +40,11 @@ export const pipelineCandidates = [
   ...generateExtraPipelineCandidates(11, 35),
 ];
 
+export const pipelineCandidates = basePipeline.slice(0, 45).map((c, i) => ({
+  ...c,
+  stage: pipelineStageQuotas[i] ?? c.stage,
+}));
+
 /* ─── Talent Discovery Pool ─── */
 export const talentPool = [
   { id: "t1", name: "Sarah Tan", degree: "BSc Computer Science", university: "Universiti Malaya", skills: ["React.js", "JavaScript", "Node.js", "Tailwind CSS", "Git"], fitScore: 82, targetRole: "Frontend Developer", experience: "1 internship", avatar: "ST" },
@@ -42,6 +55,7 @@ export const talentPool = [
   { id: "t6", name: "Priya Sharma", degree: "BSc Software Engineering", university: "APU", skills: ["TypeScript", "Next.js", "Node.js", "MongoDB", "AWS", "Docker"], fitScore: 91, targetRole: "Full Stack Developer", experience: "2 internships", avatar: "PS" },
   { id: "t7", name: "Daniel Wong", degree: "BSc Computer Science", university: "Sunway University", skills: ["React.js", "JavaScript", "Node.js", "Git", "Figma"], fitScore: 71, targetRole: "Frontend Developer", experience: "1 internship", avatar: "DW" },
   { id: "t8", name: "Mei Xin Lee", degree: "BSc Computer Science", university: "USM", skills: ["React.js", "TypeScript", "Tailwind CSS", "Firebase", "Git"], fitScore: 76, targetRole: "Frontend Developer", experience: "1 internship", avatar: "ML" },
+  ...generateExtraTalentPool(9, 32),
 ];
 
 /* ─── Analytics ─── */

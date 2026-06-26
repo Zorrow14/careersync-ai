@@ -1,9 +1,11 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import AppNavbar from "./components/layout/AppNavbar";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import RoleRoute from "./routes/RoleRoute";
+import { useAuth } from "./hooks/useAuth.js";
+import { demoUsers } from "./lib/demoUsers.js";
 
 // Public
 import Landing from "./pages/public/Landing";
@@ -50,11 +52,23 @@ const NO_NAV_ROUTES = ["/", "/login", "/register", "/forgot-password", "/verify-
 
 export default function App() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { demoLogin } = useAuth();
   const isPublic = NO_NAV_ROUTES.includes(location.pathname);
 
   const [lightMode, setLightMode] = useState(() => {
     return localStorage.getItem("theme") === "light";
   });
+
+  useEffect(() => {
+    const role = searchParams.get("demo");
+    if (role && demoUsers[role]) {
+      const u = demoUsers[role];
+      demoLogin(u.role, u.name, u.email);
+      navigate(u.home, { replace: true });
+    }
+  }, [searchParams, demoLogin, navigate]);
 
   useEffect(() => {
     localStorage.setItem("theme", lightMode ? "light" : "dark");

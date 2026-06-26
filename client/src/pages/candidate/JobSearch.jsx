@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { usePersona } from "../../context/PersonaContext.jsx";
 import { jobs, getJobMatch } from "../../data/jobsData.js";
-import { companies } from "../../data/companiesData.js";
+import { companies, getCompanyByName } from "../../data/companiesData.js";
 import { savedJobs as savedJobsData } from "../../data/applicationsData.js";
 import { usePagination } from "../../hooks/usePagination.js";
 import Pagination from "../../components/ui/Pagination.jsx";
@@ -169,7 +169,9 @@ export default function JobSearch() {
 
       {/* job cards */}
       <div className="space-y-4">
-        {paged.map(({ job, match }) => (
+        {paged.map(({ job, match }) => {
+          const companyRecord = getCompanyByName(job.company);
+          return (
           <div key={job.id} className="neo-card rounded-2xl p-6">
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-start gap-4">
@@ -181,6 +183,14 @@ export default function JobSearch() {
                     {job.title}
                   </Link>
                   <p className="neo-muted text-sm">{job.company}</p>
+                  {companyRecord && (
+                    <Link
+                      to={`/companies/${companyRecord.id}`}
+                      className="neo-link mt-1 inline-flex items-center gap-1 text-xs font-semibold"
+                    >
+                      View Company →
+                    </Link>
+                  )}
                   <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
                     <span className="neo-muted flex items-center gap-1"><MapPin size={12} /> {job.location}</span>
                     <span className="neo-muted flex items-center gap-1"><Briefcase size={12} /> {job.type}</span>
@@ -224,7 +234,8 @@ export default function JobSearch() {
               </button>
             </div>
           </div>
-        ))}
+          );
+        })}
 
         {filtered.length === 0 && (
           <div className="neo-card flex flex-col items-center justify-center rounded-2xl p-16 text-center">

@@ -1,5 +1,5 @@
 export const universityInsights = {
-  institutionName: "Malaysian Universities — Combined Cohort",
+  institutionName: "Universiti Malaya",
   totalStudents: 156,
   averageReadinessScore: 72,
   readinessPercentage: 58,
@@ -50,31 +50,48 @@ export const universityInsights = {
     "Provide career counseling for the 34 students scoring below readiness threshold",
   ],
 
-  readinessTracker: {
-    readinessBands: [
-      { band: "Excellent", range: "85-100", count: 38, color: "emerald" },
-      { band: "Ready", range: "70-84", count: 53, color: "amber" },
-      { band: "Developing", range: "55-69", count: 43, color: "blue" },
-      { band: "Needs Support", range: "<55", count: 22, color: "rose" },
+  employabilityTracker: {
+    institutionName: "Universiti Malaya",
+    reportingPeriod: "Graduating classes 2021–2025",
+    definition:
+      "Employability rate = share of graduates from this university who secured employment within 6 months of graduation.",
+    summary: {
+      totalGraduatesTracked: 1240,
+      employedCount: 967,
+      employabilityRate: 78,
+      stillSeeking: 142,
+      furtherStudy: 131,
+      avgTimeToEmploymentMonths: 3.4,
+      nationalBenchmark: 72,
+      yearOverYearChange: "+4%",
+    },
+    cohortByYear: [
+      { year: "2025", graduates: 248, employed: 156, rate: 63, status: "in-window" },
+      { year: "2024", graduates: 262, employed: 204, rate: 78, status: "complete" },
+      { year: "2023", graduates: 255, employed: 208, rate: 82, status: "complete" },
+      { year: "2022", graduates: 241, employed: 198, rate: 82, status: "complete" },
+      { year: "2021", graduates: 234, employed: 201, rate: 86, status: "complete" },
     ],
-    internshipPipeline: [
-      { stage: "Profile Complete", count: 126, rate: 81 },
-      { stage: "Resume Reviewed", count: 112, rate: 72 },
-      { stage: "Mock Interview Passed", count: 87, rate: 56 },
-      { stage: "Shortlisted", count: 64, rate: 41 },
-      { stage: "Offer / Placement", count: 39, rate: 25 },
+    byFaculty: [
+      { faculty: "Faculty of Computer Science & IT", graduates: 186, employed: 158, rate: 85 },
+      { faculty: "Faculty of Engineering", graduates: 312, employed: 241, rate: 77 },
+      { faculty: "Faculty of Business & Economics", graduates: 278, employed: 218, rate: 78 },
+      { faculty: "Faculty of Science", graduates: 224, employed: 168, rate: 75 },
+      { faculty: "Faculty of Arts & Social Sciences", graduates: 240, employed: 182, rate: 76 },
     ],
-    graduateOutcomes: [
-      { outcome: "Employed within 6 months", count: 72, rate: 46 },
-      { outcome: "Internship converted to full-time", count: 31, rate: 20 },
-      { outcome: "Postgraduate study", count: 18, rate: 12 },
-      { outcome: "Actively seeking", count: 35, rate: 22 },
+    employmentOutcomes: [
+      { outcome: "Full-time employment", count: 812, rate: 65 },
+      { outcome: "Internship converted to full-time", count: 98, rate: 8 },
+      { outcome: "Freelance / self-employed", count: 57, rate: 5 },
+      { outcome: "Postgraduate study", count: 131, rate: 11 },
+      { outcome: "Actively seeking", count: 142, rate: 11 },
     ],
-    interventionQueue: [
-      { studentGroup: "Year 2 Data Analytics", issue: "Portfolio completion below target", severity: "medium", students: 18 },
-      { studentGroup: "Final Year Backend", issue: "Low interview confidence", severity: "high", students: 12 },
-      { studentGroup: "Year 3 Cloud Elective", issue: "Missing deployment projects", severity: "high", students: 16 },
-      { studentGroup: "Foundation Programming", issue: "Weak Git collaboration evidence", severity: "medium", students: 21 },
+    timeToEmployment: [
+      { window: "Within 1 month", count: 218, rate: 18 },
+      { window: "1–3 months", count: 324, rate: 26 },
+      { window: "3–6 months", count: 425, rate: 34 },
+      { window: "After 6 months", count: 131, rate: 11 },
+      { window: "Not yet employed", count: 142, rate: 11 },
     ],
   },
 
@@ -174,38 +191,38 @@ export const universityInsights = {
   },
 
   outcomeMetrics: {
-    employedWithin6Months: 72,
-    employedWithin6MonthsRate: 46,
-    internshipToFullTime: 31,
-    internshipConversionRate: 20,
-    activelySeeking: 35,
-    postgraduateStudy: 18,
+    employedWithin6Months: 967,
+    employedWithin6MonthsRate: 78,
+    internshipToFullTime: 98,
+    internshipConversionRate: 8,
+    activelySeeking: 142,
+    postgraduateStudy: 131,
     avgSalaryProgression: "+12% YoY",
-    lifelongTracking: "156 alumni tracked post-graduation",
+    lifelongTracking: "1,240 alumni tracked post-graduation",
   },
 
   sdgMetrics: [
     { code: "SDG 4", metric: "Curriculum-market alignment score", value: "74%", detail: "Programs mapped to employer skill demand" },
-    { code: "SDG 8", metric: "Graduate employment within 6 months", value: "46%", detail: "Up from 38% baseline in 2024" },
+    { code: "SDG 8", metric: "Graduate employment within 6 months", value: "78%", detail: "Up from 72% national benchmark" },
     { code: "SDG 8", metric: "Internship placement rate", value: "63%", detail: "91 students internship-ready this semester" },
   ],
 
   reports: [
     {
-      title: "Monthly Employability Summary",
+      title: "Graduate Employability Report",
       type: "PDF",
       audience: "Dean, Faculty Leads",
       period: "June 2026",
       status: "Ready",
-      metrics: ["Readiness score", "At-risk cohorts", "Placement funnel"],
+      metrics: ["Employability rate", "Faculty breakdown", "Time to employment"],
     },
     {
-      title: "Curriculum Gap Analysis",
+      title: "AI Cohort Insights Export",
       type: "PDF",
       audience: "Program Directors",
       period: "Q2 2026",
       status: "Ready",
-      metrics: ["Skill gaps", "Market demand", "Module coverage"],
+      metrics: ["Skill gaps", "Track performance", "AI recommendations"],
     },
     {
       title: "Industry Demand Dashboard Export",
@@ -221,7 +238,7 @@ export const universityInsights = {
       audience: "Academic Advisors",
       period: "Current Semester",
       status: "Generating",
-      metrics: ["Portfolio progress", "Interview readiness", "Intervention queue"],
+      metrics: ["Portfolio progress", "Interview readiness", "At-risk cohorts"],
     },
   ],
 };

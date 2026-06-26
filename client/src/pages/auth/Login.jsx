@@ -6,7 +6,6 @@ import {
   GraduationCap,
   Briefcase,
   Building2,
-  Zap,
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth.js";
 import { demoUsers } from "../../lib/demoUsers.js";
@@ -57,32 +56,6 @@ export default function Login() {
           <h1 className="neo-title mb-1 text-2xl font-bold">Welcome back</h1>
           <p className="neo-muted mb-6 text-sm">Sign in to your career dashboard.</p>
 
-          {/* ─── One-click demo entry (judge bypass) ─── */}
-          <div className="mb-6">
-            <div className="mb-3 flex items-center gap-2">
-              <Zap size={15} className="text-amber-300" />
-              <p className="neo-text text-sm font-semibold">Instant demo — no password needed</p>
-            </div>
-            <div className="grid grid-cols-3 gap-3">
-              {Object.entries(demoUsers).map(([key, u]) => {
-                const Icon = roleIcons[key];
-                return (
-                  <button
-                    key={key}
-                    type="button"
-                    onClick={() => enterDemo(key)}
-                    className="neo-secondary flex cursor-pointer flex-col items-center gap-2 rounded-xl px-2 py-4 text-center text-xs font-semibold transition hover:bg-amber-500/10 hover:text-amber-300"
-                  >
-                    <Icon size={20} />
-                    {u.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="neo-divider neo-muted mb-6 text-xs">or sign in</div>
-
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label htmlFor="login-email" className="neo-label">Email</label>
@@ -124,6 +97,28 @@ export default function Login() {
               {loading ? "Signing in…" : "Sign In"}
             </button>
           </form>
+
+          <div className="mt-8 border-t border-white/10 pt-6">
+            <p className="neo-muted mb-3 text-center text-xs font-semibold uppercase tracking-wide">
+              Or explore as a demo user
+            </p>
+            <div className="grid grid-cols-3 gap-3">
+              {Object.entries(demoUsers).map(([key, u]) => {
+                const Icon = roleIcons[key];
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => enterDemo(key)}
+                    className="neo-secondary flex cursor-pointer flex-col items-center gap-2 rounded-xl px-2 py-3 text-center text-xs font-semibold transition hover:border-amber-500/30 hover:bg-amber-500/10 hover:text-amber-300"
+                  >
+                    <Icon size={18} />
+                    {u.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
           <p className="neo-muted mt-6 text-center text-sm">
             Don't have an account?{" "}

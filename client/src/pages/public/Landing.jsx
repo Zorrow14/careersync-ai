@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   Brain,
@@ -8,6 +7,9 @@ import {
   Bot,
   Upload,
   FileSearch,
+  User,
+  BarChart2,
+  CheckCircle,
   CheckCircle2,
   Play,
   GraduationCap,
@@ -48,39 +50,35 @@ const audiences = [
 ];
 
 const impactStats = [
-  { icon: Target, value: "82%", label: "Avg. match clarity before applying" },
-  { icon: Users, value: "156", label: "Students tracked across cohorts" },
-  { icon: TrendingUp, value: "+13%", label: "Readiness lift over a semester" },
-  { icon: Briefcase, value: "24", label: "Employer partners in the network" },
+  { value: "10,000+", label: "Students Tracked" },
+  { value: "87%", label: "Average Readiness Lift" },
+  { value: "250+", label: "Employer Partners" },
+  { value: "94%", label: "Graduate Placement Rate" },
+];
+
+const coreLoopSteps = [
+  { icon: User, title: "Build Your Profile", text: "Upload resume, skills, and portfolio projects." },
+  { icon: Briefcase, title: "Discover Matching Jobs", text: "Browse roles and companies aligned to your profile." },
+  { icon: BarChart2, title: "Analyse Skill Gaps", text: "Get explainable match scores and missing skills." },
+  { icon: CheckCircle, title: "Land the Role", text: "Apply with confidence and track your pipeline." },
 ];
 
 const sdgs = [
   {
     code: "SDG 4",
     title: "Quality Education",
-    desc: "Universities pinpoint curriculum gaps and align teaching with real industry demand.",
+    desc: "CareerSync bridges the gap between university curricula and real market demand, giving every student visibility into what skills employers actually need.",
   },
   {
     code: "SDG 8",
     title: "Decent Work & Economic Growth",
-    desc: "Candidates reach better-matched roles while employers reduce mismatched hiring.",
+    desc: "By matching graduates to the right roles with explainable AI, CareerSync reduces graduate unemployment and helps employers find qualified talent faster.",
   },
 ];
 
 export default function Landing({ lightMode, setLightMode }) {
   const navigate = useNavigate();
   const { demoLogin } = useAuth();
-  const [searchParams] = useSearchParams();
-
-  // `?demo=<role>` deep link — lets a video/deck link drop judges straight in.
-  useEffect(() => {
-    const role = searchParams.get("demo");
-    if (role && demoUsers[role]) {
-      const u = demoUsers[role];
-      demoLogin(u.role, u.name, u.email);
-      navigate(u.home);
-    }
-  }, [searchParams, demoLogin, navigate]);
 
   function enterDemo(roleKey) {
     const u = demoUsers[roleKey];
@@ -209,6 +207,21 @@ export default function Landing({ lightMode, setLightMode }) {
         </motion.div>
       </section>
 
+      {/* ─── Impact stats bar ─── */}
+      <section className="mx-auto max-w-7xl px-6 pb-12 sm:px-8">
+        <div className="neo-card rounded-3xl p-6 sm:p-8">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            {impactStats.map(({ value, label }) => (
+              <div key={label} className="neo-soft rounded-2xl p-5 text-center">
+                <h3 className="neo-title text-2xl font-bold sm:text-3xl">{value}</h3>
+                <p className="neo-muted mt-2 text-xs leading-5">{label}</p>
+              </div>
+            ))}
+          </div>
+          <p className="neo-muted mt-4 text-center text-[11px]">* Illustrative figures for demo purposes</p>
+        </div>
+      </section>
+
       {/* ─── Audience cards (one-click demo per role) ─── */}
       <section id="audiences" className="mx-auto max-w-7xl px-6 pb-16 sm:px-8 sm:pb-20">
         <div className="mb-8 text-center">
@@ -246,30 +259,11 @@ export default function Landing({ lightMode, setLightMode }) {
                   onClick={() => enterDemo(a.key)}
                   className="neo-primary mt-6 flex cursor-pointer items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold"
                 >
-                  Enter as {demoUsers[a.key].label} <ArrowRight size={16} />
+                  Explore as {demoUsers[a.key].label} <ArrowRight size={16} />
                 </button>
               </motion.div>
             );
           })}
-        </div>
-      </section>
-
-      {/* ─── Impact metrics ─── */}
-      <section className="mx-auto max-w-7xl px-6 pb-16 sm:px-8 sm:pb-20">
-        <div className="neo-card rounded-3xl p-8">
-          <div className="mb-8 text-center">
-            <p className="text-sm font-semibold text-amber-300">Why it matters</p>
-            <h2 className="neo-title mt-2 text-3xl font-bold">Built around real career impact</h2>
-          </div>
-          <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
-            {impactStats.map(({ icon: Icon, value, label }) => (
-              <div key={label} className="neo-soft rounded-2xl p-6 text-center">
-                <Icon size={22} className="mx-auto mb-3 text-amber-300" />
-                <h3 className="neo-title text-3xl font-bold">{value}</h3>
-                <p className="neo-muted mt-2 text-xs leading-5">{label}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -314,27 +308,31 @@ export default function Landing({ lightMode, setLightMode }) {
         </div>
       </section>
 
-      {/* ─── Core loop ─── */}
+      {/* ─── Core loop visual ─── */}
       <section className="mx-auto max-w-7xl px-6 pb-16 sm:px-8">
         <div className="neo-card rounded-3xl p-8">
-          <div className="mb-6 text-center">
-            <p className="text-sm font-semibold text-amber-300">Three-sided core loop</p>
-            <h2 className="neo-title mt-2 text-2xl font-bold">One score, three views</h2>
+          <div className="mb-8 text-center">
+            <p className="text-sm font-semibold text-amber-300">How candidates succeed</p>
+            <h2 className="neo-title mt-2 text-2xl font-bold">From profile to placement</h2>
           </div>
-          <div className="flex flex-col items-center justify-center gap-3 text-center text-sm font-medium sm:flex-row sm:flex-wrap sm:gap-2">
-            {[
-              "Discover jobs",
-              "Analyze fit",
-              "Close skill gaps",
-              "Apply",
-              "Employer fit report",
-              "University cohort gap",
-            ].map((step, i, arr) => (
-              <span key={step} className="flex items-center gap-2">
-                <span className="neo-soft rounded-full px-4 py-2">{step}</span>
-                {i < arr.length - 1 && <ArrowRight size={14} className="neo-muted hidden sm:block" />}
-              </span>
-            ))}
+          <div className="flex flex-col items-center gap-3 md:flex-row md:items-stretch md:justify-center">
+            {coreLoopSteps.map((step, i) => {
+              const Icon = step.icon;
+              return (
+                <div key={step.title} className="flex w-full items-center gap-3 md:w-auto md:flex-1">
+                  <div className="neo-soft w-full rounded-2xl p-5">
+                    <div className="mb-3 inline-flex rounded-xl bg-amber-500/15 p-2.5 text-amber-300">
+                      <Icon size={22} />
+                    </div>
+                    <h3 className="neo-title text-sm font-bold">{step.title}</h3>
+                    <p className="neo-muted mt-2 text-xs leading-5">{step.text}</p>
+                  </div>
+                  {i < coreLoopSteps.length - 1 && (
+                    <ArrowRight size={18} className="neo-muted hidden shrink-0 md:block" aria-hidden="true" />
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -444,6 +442,9 @@ export default function Landing({ lightMode, setLightMode }) {
                   <h3 className="neo-title font-bold">{s.title}</h3>
                 </div>
                 <p className="neo-text mt-3 text-sm leading-7">{s.desc}</p>
+                <a href="#" className="neo-link mt-3 inline-block text-xs font-semibold">
+                  Learn more
+                </a>
               </div>
             ))}
           </div>

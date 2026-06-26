@@ -160,8 +160,13 @@ export default function Companies() {
               <Link
                 key={c.id}
                 to={`/companies/${c.id}`}
-                className="neo-card group flex flex-col rounded-2xl p-5 transition hover:-translate-y-1 hover:bg-white/5"
+                className="neo-card group relative flex flex-col overflow-hidden rounded-2xl p-5 transition hover:-translate-y-1 hover:bg-white/5"
               >
+                {c.featured && (
+                  <span className="absolute right-0 top-0 rounded-bl-xl bg-amber-500/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-300">
+                    Featured
+                  </span>
+                )}
                 <div className="mb-4 flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
                     <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/15 text-sm font-bold text-amber-300">

@@ -16,7 +16,7 @@ import {
   ClipboardList,
   GraduationCap,
   BookOpen,
-  FileText,
+  Sparkles,
 } from "lucide-react";
 
 export const candidateMainLinks = [
@@ -51,7 +51,7 @@ export const universityLinks = [
   { path: "/university/students", label: "Students", icon: Users },
   { path: "/university/curriculum", label: "Curriculum", icon: BookOpen },
   { path: "/university/trends", label: "Trends", icon: TrendingUp },
-  { path: "/university/reports", label: "Reports", icon: FileText },
+  { path: "/university/reports", label: "Insights", icon: Sparkles },
 ];
 
 export function isActivePath(pathname, path) {

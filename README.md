@@ -13,7 +13,7 @@ The current version is a **hackathon-ready frontend prototype** — it runs enti
 No credentials needed. Enter any role in one click:
 
 1. Open the **[live demo](https://careersync-ai-demo.vercel.app/)** (or run locally — see [Quick Start](#quick-start))
-2. On the landing page, click **Enter as Candidate**, **Employer**, or **University**
+2. On the landing page, click **Explore as Candidate**, **Employer**, or **University**
    - Or use a deep link: `?demo=candidate`, `?demo=employer`, `?demo=university`
 3. Recommended walkthrough:
    - **Candidate:** Dashboard (Explainable Employability Score) → Jobs → Companies → Applications → JD Analyzer → Roadmap → Mock Interview → Profile
