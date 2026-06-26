@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Search,
   SlidersHorizontal,
@@ -8,7 +8,7 @@ import {
   X,
   Sparkles,
 } from "lucide-react";
-import { talentPool } from "../../data/employerData.js";
+import { talentPool, resolvePersonaId } from "../../data/employerData.js";
 import DropdownSelect from "../../components/ui/DropdownSelect.jsx";
 import FitReportPanel from "../../components/employer/FitReportPanel.jsx";
 
@@ -47,6 +47,15 @@ export default function TalentDiscovery() {
       if (sortBy === "fitScore") return b.fitScore - a.fitScore;
       return a.name.localeCompare(b.name);
     });
+
+  useEffect(() => {
+    if (!reportCandidate) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [reportCandidate]);
 
   return (
     <div>
@@ -154,6 +163,7 @@ export default function TalentDiscovery() {
                     name: c.name,
                     fitScore: c.fitScore,
                     role: c.targetRole,
+                    personaId: resolvePersonaId(c.name),
                   })
                 }
                 className="neo-primary flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl py-2 text-xs font-semibold"
@@ -178,17 +188,17 @@ export default function TalentDiscovery() {
 
       {reportCandidate && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-black/60 p-4 backdrop-blur-sm"
           role="dialog"
           aria-modal="true"
           aria-labelledby="fit-report-title"
           onClick={() => setReportCandidate(null)}
         >
           <div
-            className="neo-card max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl p-6"
+            className="neo-card flex max-h-[min(90vh,calc(100dvh-2rem))] w-full max-w-lg flex-col overflow-hidden rounded-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="mb-6 flex items-start justify-between gap-4">
+            <div className="flex shrink-0 items-start justify-between gap-4 border-b border-white/10 p-6 pb-4">
               <div>
                 <p className="text-sm font-semibold text-amber-300">Explainable Fit Report</p>
                 <h2 id="fit-report-title" className="neo-title text-xl font-bold">
@@ -205,7 +215,9 @@ export default function TalentDiscovery() {
                 <X size={20} />
               </button>
             </div>
-            <FitReportPanel candidate={reportCandidate} />
+            <div className="neo-scroll-hidden min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 py-4">
+              <FitReportPanel compact candidate={reportCandidate} />
+            </div>
           </div>
         </div>
       )}

@@ -627,6 +627,17 @@ button:disabled {
   background: linear-gradient(90deg, #6b5b4f, var(--neo-accent-bright));
 }
 
+.neo-scroll-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.neo-scroll-hidden::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 .neo-badge-match {
   font-family: var(--font-body);
   border: 1px solid rgba(52, 211, 153, 0.3);
