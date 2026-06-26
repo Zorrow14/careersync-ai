@@ -1,7 +1,7 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import Sidebar from "./components/layout/Sidebar";
+import AppNavbar from "./components/layout/AppNavbar";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import RoleRoute from "./routes/RoleRoute";
 
@@ -22,17 +22,35 @@ import Roadmap from "./pages/candidate/Roadmap";
 import Chatbot from "./pages/candidate/Chatbot";
 import MockInterview from "./pages/candidate/MockInterview";
 import ProfileSetup from "./pages/candidate/ProfileSetup";
+import JobSearch from "./pages/candidate/JobSearch";
+import JobDetails from "./pages/candidate/JobDetails";
+import Applications from "./pages/candidate/Applications";
+import Companies from "./pages/candidate/Companies";
+import CompanyDetails from "./pages/candidate/CompanyDetails";
+import CompanyFeed from "./pages/candidate/CompanyFeed";
 
-// Employer + University placeholders
+// Employer
 import EmployerDashboard from "./pages/employer/Dashboard";
-import UniversityDashboard from "./pages/university/Dashboard";
+import EmployerFeed from "./pages/employer/Feed";
+import EmployerJobs from "./pages/employer/Jobs";
+import TalentDiscovery from "./pages/employer/TalentDiscovery";
+import EmployerPipeline from "./pages/employer/Pipeline";
+import EmployerAnalytics from "./pages/employer/Analytics";
 
-// Routes that render WITHOUT the sidebar (full-screen layouts)
-const NO_SIDEBAR_ROUTES = ["/", "/login", "/register", "/forgot-password", "/verify-email"];
+// University
+import UniversityDashboard from "./pages/university/Dashboard";
+import EmployabilityTracker from "./pages/university/EmployabilityTracker";
+import StudentInsights from "./pages/university/StudentInsights";
+import CurriculumInsights from "./pages/university/CurriculumInsights";
+import IndustryTrends from "./pages/university/IndustryTrends";
+import UniversityReports from "./pages/university/Reports";
+
+// Routes that render WITHOUT the app navbar (full-screen layouts)
+const NO_NAV_ROUTES = ["/", "/login", "/register", "/forgot-password", "/verify-email"];
 
 export default function App() {
   const location = useLocation();
-  const isPublic = NO_SIDEBAR_ROUTES.includes(location.pathname);
+  const isPublic = NO_NAV_ROUTES.includes(location.pathname);
 
   const [lightMode, setLightMode] = useState(() => {
     return localStorage.getItem("theme") === "light";
@@ -61,10 +79,10 @@ export default function App() {
           <Route path="/verify-email" element={<VerifyEmail />} />
         </Routes>
       ) : (
-        <div className="flex">
-          <Sidebar lightMode={lightMode} setLightMode={setLightMode} />
+        <div className="flex min-h-screen flex-col">
+          <AppNavbar lightMode={lightMode} setLightMode={setLightMode} />
 
-          <main className="ml-64 min-h-screen w-full p-8">
+          <main id="main-content" className="neo-page mx-auto w-full max-w-[1600px] flex-1 p-4 sm:p-6 lg:p-8">
             <Routes>
               {/* Candidate routes */}
               <Route
@@ -137,6 +155,66 @@ export default function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/jobs"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="candidate">
+                      <JobSearch />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/jobs/:id"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="candidate">
+                      <JobDetails />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/applications"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="candidate">
+                      <Applications />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/feed"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="candidate">
+                      <CompanyFeed />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/companies"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="candidate">
+                      <Companies />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/companies/:id"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="candidate">
+                      <CompanyDetails />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
 
               {/* Employer routes */}
               <Route
@@ -149,6 +227,56 @@ export default function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/employer/feed"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="employer">
+                      <EmployerFeed />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/employer/jobs"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="employer">
+                      <EmployerJobs />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/employer/talent"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="employer">
+                      <TalentDiscovery />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/employer/pipeline"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="employer">
+                      <EmployerPipeline />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/employer/analytics"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="employer">
+                      <EmployerAnalytics />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
 
               {/* University routes */}
               <Route
@@ -157,6 +285,56 @@ export default function App() {
                   <ProtectedRoute>
                     <RoleRoute allowedRole="university">
                       <UniversityDashboard />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/university/tracker"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="university">
+                      <EmployabilityTracker />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/university/students"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="university">
+                      <StudentInsights />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/university/curriculum"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="university">
+                      <CurriculumInsights />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/university/trends"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="university">
+                      <IndustryTrends />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/university/reports"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="university">
+                      <UniversityReports />
                     </RoleRoute>
                   </ProtectedRoute>
                 }

@@ -6,8 +6,14 @@ import {
   GraduationCap,
   BookOpen,
   Target,
+  BriefcaseBusiness,
+  Handshake,
+  ArrowRight,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import { universityInsights } from "../../data/universityData.js";
+import PageHeader from "../../components/ui/PageHeader.jsx";
+import KpiCard from "../../components/ui/KpiCard.jsx";
 
 const priorityColors = { high: "neo-danger", medium: "neo-blue", low: "neo-soft" };
 const trackBarColors = {
@@ -23,27 +29,20 @@ export default function UniversityDashboard() {
 
   return (
     <div>
-      <div className="mb-8">
-        <p className="text-sm font-semibold text-amber-300">University Portal</p>
-        <h1 className="neo-title text-4xl font-bold">Cohort Readiness Dashboard</h1>
-        <p className="neo-text mt-2">{data.institutionName}</p>
-      </div>
+      <PageHeader
+        eyebrow="University Portal"
+        title="Cohort Readiness Dashboard"
+        description={data.institutionName}
+      />
 
-      {/* ─── Top Stats ─── */}
       <div className="mb-8 grid grid-cols-1 gap-5 md:grid-cols-4">
         {[
-          { label: "Total Students", value: data.totalStudents, icon: Users },
-          { label: "Avg. Readiness", value: `${data.averageReadinessScore}%`, icon: TrendingUp },
-          { label: "Industry Ready", value: `${data.readinessPercentage}%`, icon: Target },
-          { label: "Need Support", value: data.studentsNeedingSupport, icon: AlertTriangle },
-        ].map(({ label, value, icon: Icon }) => (
-          <div key={label} className="neo-card rounded-2xl p-6">
-            <div className="mb-3 flex items-center justify-between">
-              <p className="neo-muted text-sm font-medium">{label}</p>
-              <Icon size={18} className="text-amber-300" />
-            </div>
-            <h3 className="neo-title text-4xl font-bold">{value}</h3>
-          </div>
+          { label: "Total Students", value: data.totalStudents, icon: Users, to: "/university/students" },
+          { label: "Avg. Readiness", value: `${data.averageReadinessScore}%`, icon: TrendingUp, to: "/university/tracker" },
+          { label: "Internship Ready", value: data.internshipReady, icon: BriefcaseBusiness },
+          { label: "Employer Partners", value: data.employerPartnerships, icon: Handshake },
+        ].map((kpi) => (
+          <KpiCard key={kpi.label} {...kpi} />
         ))}
       </div>
 
@@ -57,6 +56,36 @@ export default function UniversityDashboard() {
             <h2 className="neo-title text-xl font-bold">AI Cohort Summary</h2>
             <p className="neo-text mt-2 leading-7">{data.summary}</p>
           </div>
+        </div>
+      </div>
+
+      {/* ─── Employability Overview ─── */}
+      <div className="neo-card mb-8 rounded-2xl p-6">
+        <div className="mb-5 flex items-center justify-between">
+          <div>
+            <h2 className="neo-title text-xl font-bold">Overall Employability Overview</h2>
+            <p className="neo-muted text-sm">A quick health check across readiness, internship preparation, portfolios, and support needs.</p>
+          </div>
+          <Link to="/university/tracker" className="neo-secondary flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold">
+            View Tracker <ArrowRight size={16} />
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+          {data.employabilityOverview.map((item) => (
+            <div key={item.label} className="neo-soft rounded-2xl p-4">
+              <div className="mb-3 flex items-center justify-between">
+                <p className="neo-title font-semibold">{item.label}</p>
+                <span className="text-lg font-bold text-amber-300">{item.value}%</span>
+              </div>
+              <div className="neo-progress-track mb-3 h-2 rounded-full">
+                <div
+                  className={`h-2 rounded-full bg-gradient-to-r ${trackBarColors[item.color] || trackBarColors.amber}`}
+                  style={{ width: `${item.value}%` }}
+                />
+              </div>
+              <p className="neo-muted text-xs">{item.detail}</p>
+            </div>
+          ))}
         </div>
       </div>
 

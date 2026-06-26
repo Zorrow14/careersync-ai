@@ -6,8 +6,10 @@ import {
   GraduationCap,
   Briefcase,
   Building2,
+  Zap,
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth.js";
+import { demoUsers, roleHome } from "../../lib/demoUsers.js";
 
 const roles = [
   {
@@ -30,12 +32,6 @@ const roles = [
   },
 ];
 
-const roleHome = {
-  candidate: "/dashboard",
-  employer: "/employer",
-  university: "/university",
-};
-
 export default function Register() {
   const navigate = useNavigate();
   const { demoLogin } = useAuth();
@@ -45,6 +41,12 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("candidate");
   const [loading, setLoading] = useState(false);
+
+  function enterDemo(roleKey) {
+    const u = demoUsers[roleKey];
+    demoLogin(u.role, u.name, u.email);
+    navigate(u.home);
+  }
 
   function handleRegister(e) {
     e.preventDefault();
@@ -58,18 +60,43 @@ export default function Register() {
   }
 
   return (
-    <div className="neo-bg flex min-h-screen items-center justify-center px-4 py-12">
+    <div className="neo-bg neo-page flex min-h-screen items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <Link to="/" className="mb-10 flex items-center justify-center gap-3">
           <div className="rounded-xl bg-amber-500 p-2 text-slate-950">
             <BriefcaseBusiness size={22} />
           </div>
-          <span className="neo-title text-xl font-bold">CareerSync AI</span>
+          <span className="neo-nav-logo text-xl">
+            Career<span className="neo-nav-logo-accent">Sync</span>
+          </span>
         </Link>
 
         <div className="neo-card rounded-2xl p-8">
           <h1 className="neo-title mb-1 text-2xl font-bold">Create account</h1>
           <p className="neo-muted mb-6 text-sm">Choose your role to get started.</p>
+
+          {/* ─── One-click demo entry (judge bypass) ─── */}
+          <div className="mb-6">
+            <div className="mb-3 flex items-center gap-2">
+              <Zap size={15} className="text-amber-300" />
+              <p className="neo-text text-sm font-semibold">Instant demo — skip the form</p>
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              {roles.map(({ id, label, icon: Icon }) => (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => enterDemo(id)}
+                  className="neo-secondary flex cursor-pointer flex-col items-center gap-2 rounded-xl px-2 py-4 text-center text-xs font-semibold transition hover:bg-amber-500/10 hover:text-amber-300"
+                >
+                  <Icon size={20} />
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="neo-divider neo-muted mb-6 text-xs">or register manually</div>
 
           {/* Role selector */}
           <div className="mb-6 grid grid-cols-3 gap-3">
@@ -78,9 +105,9 @@ export default function Register() {
                 key={id}
                 type="button"
                 onClick={() => setRole(id)}
-                className={`flex flex-col items-center gap-2 rounded-xl border p-4 text-center text-xs transition ${
+                className={`neo-interactive flex flex-col items-center gap-2 rounded-xl border p-4 text-center text-xs transition ${
                   role === id
-                    ? "border-amber-500 bg-amber-500/10 text-amber-300"
+                    ? "border-amber-500/40 bg-amber-500/10 text-amber-300"
                     : "neo-secondary border-transparent"
                 }`}
               >
@@ -93,8 +120,9 @@ export default function Register() {
 
           <form onSubmit={handleRegister} className="space-y-4">
             <div>
-              <label className="neo-text mb-1 block text-sm font-medium">Full name</label>
+              <label htmlFor="register-name" className="neo-label">Full name</label>
               <input
+                id="register-name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -104,9 +132,11 @@ export default function Register() {
             </div>
 
             <div>
-              <label className="neo-text mb-1 block text-sm font-medium">Email</label>
+              <label htmlFor="register-email" className="neo-label">Email</label>
               <input
+                id="register-email"
                 type="email"
+                autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
@@ -115,9 +145,11 @@ export default function Register() {
             </div>
 
             <div>
-              <label className="neo-text mb-1 block text-sm font-medium">Password</label>
+              <label htmlFor="register-password" className="neo-label">Password</label>
               <input
+                id="register-password"
                 type="password"
+                autoComplete="new-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Min. 6 characters"
@@ -137,7 +169,7 @@ export default function Register() {
 
           <p className="neo-muted mt-6 text-center text-sm">
             Already have an account?{" "}
-            <Link to="/login" className="font-semibold text-amber-400 hover:text-amber-300">
+            <Link to="/login" className="neo-link text-sm">
               Sign in
             </Link>
           </p>

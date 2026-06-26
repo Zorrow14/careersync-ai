@@ -3,7 +3,7 @@
  *
  * Stores the session entirely in localStorage — no Firebase, no backend calls.
  * The public API (user, role, loading, logout) is identical to the original so
- * that every other file (ProtectedRoute, RoleRoute, Sidebar, useAuth) keeps
+ * that every other file (ProtectedRoute, RoleRoute, AppNavbar, useAuth) keeps
  * working without changes beyond removing Firebase-specific checks.
  *
  * demoLogin(role, name) — call this from Login / Register to create a session.

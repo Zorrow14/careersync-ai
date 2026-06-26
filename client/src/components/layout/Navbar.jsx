@@ -1,56 +1,89 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { BriefcaseBusiness, Moon, Sun } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import NavShell, { NavLogo, ThemeToggle } from "./NavShell.jsx";
+
+const anchorLinks = [
+  { href: "#audiences", label: "Platform" },
+  { href: "#workflow", label: "Workflow" },
+  { href: "#features", label: "Features" },
+  { href: "#demo", label: "Demo" },
+];
 
 export default function Navbar({ lightMode, setLightMode }) {
-  return (
-    <nav className="mx-auto flex max-w-7xl items-center justify-between px-8 py-6">
-      <Link to="/" className="flex items-center gap-3">
-        <div className="rounded-xl bg-amber-500 p-2 text-slate-950">
-          <BriefcaseBusiness size={22} />
-        </div>
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-        <div>
-          <h1 className="neo-title text-xl font-bold">CareerSync AI</h1>
-          <p className="neo-muted text-xs">Career OS for Students & Graduates</p>
-        </div>
-      </Link>
-
-      <div className="hidden items-center gap-8 text-sm font-medium md:flex">
-        <a href="#features" className="neo-text hover:text-amber-400">
-          Features
-        </a>
-        <a href="#workflow" className="neo-text hover:text-amber-400">
-          Workflow
-        </a>
-        <a href="#demo" className="neo-text hover:text-amber-400">
-          Demo
-        </a>
+  const mobilePanel = mobileOpen ? (
+    <div className="neo-nav-mobile-panel px-4 py-4 md:hidden">
+      <div className="grid gap-1">
+        {anchorLinks.map((item) => (
+          <a
+            key={item.href}
+            href={item.href}
+            onClick={() => setMobileOpen(false)}
+            className="neo-text block rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-white/5"
+          >
+            {item.label}
+          </a>
+        ))}
       </div>
-
-      <div className="flex items-center gap-2">
-        {/* Icon-only theme toggle */}
-        <button
-          onClick={() => setLightMode(!lightMode)}
-          title={lightMode ? "Switch to Dark" : "Switch to Light"}
-          className="neo-secondary rounded-xl p-2 text-sm"
-        >
-          {lightMode ? <Moon size={17} /> : <Sun size={17} />}
-        </button>
-
+      <div className="mt-4 flex flex-col gap-2 border-t border-white/10 pt-4">
         <Link
           to="/login"
-          className="neo-secondary rounded-xl px-4 py-2 text-sm font-semibold"
+          onClick={() => setMobileOpen(false)}
+          className="neo-secondary rounded-lg px-4 py-2.5 text-center text-sm font-semibold"
         >
           Sign In
         </Link>
-
         <Link
           to="/register"
-          className="neo-primary rounded-xl px-4 py-2 text-sm font-semibold"
+          onClick={() => setMobileOpen(false)}
+          className="neo-primary rounded-lg px-4 py-2.5 text-center text-sm font-semibold"
         >
           Get Started
         </Link>
       </div>
-    </nav>
+    </div>
+  ) : null;
+
+  return (
+    <NavShell mobilePanel={mobilePanel}>
+      <div className="flex h-14 items-center gap-4 px-4 sm:px-5">
+        <Link to="/" className="shrink-0 cursor-pointer">
+          <NavLogo subtitle="Career OS for Students & Graduates" />
+        </Link>
+
+        <div className="hidden flex-1 items-center justify-center gap-1 md:flex">
+          {anchorLinks.map((item) => (
+            <a key={item.href} href={item.href} className="neo-nav-link">
+              {item.label}
+            </a>
+          ))}
+        </div>
+
+        <div className="ml-auto flex items-center gap-2">
+          <ThemeToggle lightMode={lightMode} setLightMode={setLightMode} />
+
+          <Link to="/login" className="neo-nav-link hidden sm:inline-block">
+            Sign In
+          </Link>
+
+          <Link to="/register" className="neo-primary hidden rounded-lg px-4 py-2 text-sm font-semibold sm:inline-block">
+            Get Started
+          </Link>
+
+          <div className="neo-nav-mobile-toggle-wrap">
+            <button
+              type="button"
+              onClick={() => setMobileOpen((v) => !v)}
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              className="neo-nav-icon-btn"
+            >
+              {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
+        </div>
+      </div>
+    </NavShell>
   );
 }

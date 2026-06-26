@@ -1,9 +1,109 @@
+import { getCompanyFeedByName } from "./companyFeedData.js";
+
+/* ─── Company Profile ─── */
+export const companyProfile = {
+  name: "TechNova Solutions",
+  tagline: "Building the next generation of digital products",
+  industry: "Software & Technology",
+  size: "150–500 employees",
+  location: "Kuala Lumpur, Malaysia",
+  founded: 2018,
+  website: "https://technova.my",
+};
+
+/* ─── Company Feed (TechNova — employer portal view) ─── */
+export const companyFeed = getCompanyFeedByName("TechNova Solutions");
+
+/* ─── Candidate Pipeline ─── */
+export const pipelineStages = ["Applied", "Screening", "Interview", "Offer", "Hired", "Rejected"];
+
+export const pipelineCandidates = [
+  { id: "p1", name: "Sarah Tan", role: "Frontend Developer Intern", stage: "Interview", fitScore: 82, appliedDate: "Jun 18, 2026", avatar: "ST", source: "CareerSync AI" },
+  { id: "p2", name: "Aina Rahman", role: "Full Stack Developer Intern", stage: "Offer", fitScore: 88, appliedDate: "Jun 15, 2026", avatar: "AR", source: "CareerSync AI" },
+  { id: "p3", name: "Jason Lim", role: "Junior Data Analyst", stage: "Screening", fitScore: 74, appliedDate: "Jun 20, 2026", avatar: "JL", source: "LinkedIn" },
+  { id: "p4", name: "Wei Ling Choo", role: "Frontend Developer Intern", stage: "Applied", fitScore: 65, appliedDate: "Jun 22, 2026", avatar: "WC", source: "JobStreet" },
+  { id: "p5", name: "Rahul Menon", role: "Full Stack Developer Intern", stage: "Interview", fitScore: 79, appliedDate: "Jun 17, 2026", avatar: "RM", source: "CareerSync AI" },
+  { id: "p6", name: "Nurul Izzah", role: "Junior Data Analyst", stage: "Rejected", fitScore: 42, appliedDate: "Jun 14, 2026", avatar: "NI", source: "University Referral" },
+  { id: "p7", name: "Daniel Wong", role: "Frontend Developer Intern", stage: "Screening", fitScore: 71, appliedDate: "Jun 21, 2026", avatar: "DW", source: "CareerSync AI" },
+  { id: "p8", name: "Priya Sharma", role: "Full Stack Developer Intern", stage: "Hired", fitScore: 91, appliedDate: "Jun 10, 2026", avatar: "PS", source: "CareerSync AI" },
+  { id: "p9", name: "Ahmad Faiz", role: "Junior Data Analyst", stage: "Applied", fitScore: 58, appliedDate: "Jun 23, 2026", avatar: "AF", source: "LinkedIn" },
+  { id: "p10", name: "Mei Xin Lee", role: "Frontend Developer Intern", stage: "Interview", fitScore: 76, appliedDate: "Jun 19, 2026", avatar: "ML", source: "University Referral" },
+];
+
+/* ─── Talent Discovery Pool ─── */
+export const talentPool = [
+  { id: "t1", name: "Sarah Tan", degree: "BSc Computer Science", university: "Universiti Malaya", skills: ["React.js", "JavaScript", "Node.js", "Tailwind CSS", "Git"], fitScore: 82, targetRole: "Frontend Developer", experience: "1 internship", avatar: "ST" },
+  { id: "t2", name: "Jason Lim", degree: "BSc Data Science", university: "UTM", skills: ["Python", "SQL", "Pandas", "Tableau", "R"], fitScore: 74, targetRole: "Data Analyst", experience: "1 internship", avatar: "JL" },
+  { id: "t3", name: "Aina Rahman", degree: "BEng Software Engineering", university: "UPM", skills: ["TypeScript", "React.js", "Node.js", "Docker", "MongoDB"], fitScore: 88, targetRole: "Full Stack Developer", experience: "1 internship", avatar: "AR" },
+  { id: "t4", name: "Wei Ling Choo", degree: "BSc IT", university: "INTI International", skills: ["React.js", "JavaScript", "CSS", "Firebase"], fitScore: 65, targetRole: "Frontend Developer", experience: "No internship", avatar: "WC" },
+  { id: "t5", name: "Rahul Menon", degree: "BEng Computer Engineering", university: "Universiti Malaya", skills: ["Java", "Spring Boot", "React.js", "PostgreSQL", "Docker"], fitScore: 79, targetRole: "Full Stack Developer", experience: "2 internships", avatar: "RM" },
+  { id: "t6", name: "Priya Sharma", degree: "BSc Software Engineering", university: "APU", skills: ["TypeScript", "Next.js", "Node.js", "MongoDB", "AWS", "Docker"], fitScore: 91, targetRole: "Full Stack Developer", experience: "2 internships", avatar: "PS" },
+  { id: "t7", name: "Daniel Wong", degree: "BSc Computer Science", university: "Sunway University", skills: ["React.js", "JavaScript", "Node.js", "Git", "Figma"], fitScore: 71, targetRole: "Frontend Developer", experience: "1 internship", avatar: "DW" },
+  { id: "t8", name: "Mei Xin Lee", degree: "BSc Computer Science", university: "USM", skills: ["React.js", "TypeScript", "Tailwind CSS", "Firebase", "Git"], fitScore: 76, targetRole: "Frontend Developer", experience: "1 internship", avatar: "ML" },
+];
+
+/* ─── Analytics ─── */
+export const hiringAnalytics = {
+  totalApplications: 47,
+  totalHired: 3,
+  avgTimeToHire: "18 days",
+  offerAcceptRate: "75%",
+
+  applicationsByMonth: [
+    { month: "Jan", count: 5 },
+    { month: "Feb", count: 8 },
+    { month: "Mar", count: 12 },
+    { month: "Apr", count: 6 },
+    { month: "May", count: 9 },
+    { month: "Jun", count: 7 },
+  ],
+
+  topDemandedSkills: [
+    { skill: "React.js", demand: 92 },
+    { skill: "JavaScript", demand: 88 },
+    { skill: "TypeScript", demand: 78 },
+    { skill: "Node.js", demand: 75 },
+    { skill: "Docker", demand: 65 },
+    { skill: "Python", demand: 60 },
+    { skill: "SQL", demand: 58 },
+    { skill: "Git", demand: 55 },
+  ],
+
+  sourceBreakdown: [
+    { source: "CareerSync AI", count: 22, percentage: 47 },
+    { source: "LinkedIn", count: 11, percentage: 23 },
+    { source: "JobStreet", count: 7, percentage: 15 },
+    { source: "University Referral", count: 5, percentage: 11 },
+    { source: "Direct Apply", count: 2, percentage: 4 },
+  ],
+
+  stageConversion: [
+    { stage: "Applied → Screening", rate: 68 },
+    { stage: "Screening → Interview", rate: 52 },
+    { stage: "Interview → Offer", rate: 35 },
+    { stage: "Offer → Hired", rate: 75 },
+  ],
+
+  rolePerformance: [
+    { role: "Frontend Developer Intern", applications: 18, hired: 1, avgFitScore: 74 },
+    { role: "Full Stack Developer Intern", applications: 15, hired: 1, avgFitScore: 80 },
+    { role: "Junior Data Analyst", applications: 14, hired: 1, avgFitScore: 62 },
+  ],
+};
+
+/* ─── Job Listings (existing, enhanced) ─── */
 export const employerJobs = [
   {
     id: "job1",
     title: "Frontend Developer Intern",
     company: "TechNova Solutions",
     location: "Kuala Lumpur",
+    type: "Internship",
+    status: "Active",
+    postedDate: "Jun 10, 2026",
+    deadline: "Jul 10, 2026",
+    applications: 18,
+    description: "We are looking for a Frontend Developer Intern with experience in React.js, JavaScript, HTML, CSS, Git, REST API integration, and basic Node.js.",
     requiredSkills: ["React.js", "JavaScript", "HTML", "CSS", "Git"],
     preferredSkills: ["TypeScript", "Docker", "CI/CD"],
     candidates: [
@@ -17,6 +117,12 @@ export const employerJobs = [
     title: "Junior Data Analyst",
     company: "InsightWorks Analytics",
     location: "Penang",
+    type: "Full-time",
+    status: "Active",
+    postedDate: "Jun 5, 2026",
+    deadline: "Jul 5, 2026",
+    applications: 14,
+    description: "Seeking a Junior Data Analyst to work with Python, SQL, and Tableau to build dashboards and support data-driven decision making.",
     requiredSkills: ["Python", "SQL", "Tableau", "Statistics"],
     preferredSkills: ["Power BI", "BigQuery", "A/B Testing"],
     candidates: [
@@ -30,6 +136,12 @@ export const employerJobs = [
     title: "Full Stack Developer Intern",
     company: "StackBridge Solutions",
     location: "Cyberjaya",
+    type: "Internship",
+    status: "Closed",
+    postedDate: "May 20, 2026",
+    deadline: "Jun 20, 2026",
+    applications: 15,
+    description: "Looking for a Full Stack Developer Intern who can work across React, Node.js, and MongoDB with deployment experience.",
     requiredSkills: ["JavaScript", "Node.js", "React.js", "MongoDB"],
     preferredSkills: ["Docker", "TypeScript", "PostgreSQL"],
     candidates: [

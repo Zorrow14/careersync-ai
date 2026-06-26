@@ -1,4 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   ArrowRight,
   Brain,
@@ -9,27 +10,92 @@ import {
   FileSearch,
   CheckCircle2,
   Play,
+  GraduationCap,
+  Briefcase,
+  Building2,
+  TrendingUp,
+  Users,
+  Globe,
+  Sparkles,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import Navbar from "../../components/layout/Navbar";
 import { useAuth } from "../../hooks/useAuth.js";
+import { demoUsers } from "../../lib/demoUsers.js";
+
+const audiences = [
+  {
+    key: "candidate",
+    icon: GraduationCap,
+    title: "For Candidates",
+    desc: "Understand your job fit, close skill gaps, follow a roadmap, and practice interviews.",
+    points: ["AI job match & skill gaps", "Personalized roadmaps", "Mock interviews & coach"],
+  },
+  {
+    key: "employer",
+    icon: Briefcase,
+    title: "For Employers",
+    desc: "Discover ranked talent, review explainable fit reports, and track your hiring pipeline.",
+    points: ["AI-ranked candidates", "Fit reports & insights", "Pipeline & analytics"],
+  },
+  {
+    key: "university",
+    icon: Building2,
+    title: "For Universities",
+    desc: "Track cohort employability, spot curriculum gaps, and align courses with market demand.",
+    points: ["Employability tracker", "Curriculum insights", "Industry trend reports"],
+  },
+];
+
+const impactStats = [
+  { icon: Target, value: "82%", label: "Avg. match clarity before applying" },
+  { icon: Users, value: "156", label: "Students tracked across cohorts" },
+  { icon: TrendingUp, value: "+13%", label: "Readiness lift over a semester" },
+  { icon: Briefcase, value: "24", label: "Employer partners in the network" },
+];
+
+const sdgs = [
+  {
+    code: "SDG 4",
+    title: "Quality Education",
+    desc: "Universities pinpoint curriculum gaps and align teaching with real industry demand.",
+  },
+  {
+    code: "SDG 8",
+    title: "Decent Work & Economic Growth",
+    desc: "Candidates reach better-matched roles while employers reduce mismatched hiring.",
+  },
+];
 
 export default function Landing({ lightMode, setLightMode }) {
   const navigate = useNavigate();
   const { demoLogin } = useAuth();
+  const [searchParams] = useSearchParams();
 
-  function handleTryDemo() {
-    demoLogin("candidate", "Sarah Tan", "sarah.tan@example.com");
-    navigate("/dashboard");
+  // `?demo=<role>` deep link — lets a video/deck link drop judges straight in.
+  useEffect(() => {
+    const role = searchParams.get("demo");
+    if (role && demoUsers[role]) {
+      const u = demoUsers[role];
+      demoLogin(u.role, u.name, u.email);
+      navigate(u.home);
+    }
+  }, [searchParams, demoLogin, navigate]);
+
+  function enterDemo(roleKey) {
+    const u = demoUsers[roleKey];
+    demoLogin(u.role, u.name, u.email);
+    navigate(u.home);
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="neo-page min-h-screen">
       <Navbar lightMode={lightMode} setLightMode={setLightMode} />
 
+      {/* ─── Hero ─── */}
       <section
         id="demo"
-        className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-8 py-20 lg:grid-cols-2"
+        className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-2"
       >
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -37,48 +103,39 @@ export default function Landing({ lightMode, setLightMode }) {
           transition={{ duration: 0.7 }}
         >
           <p className="mb-4 inline-flex rounded-full border border-amber-400/25 bg-amber-500/10 px-4 py-2 text-sm font-semibold text-amber-300">
-            AI Career OS for Students & Graduates
+            AI Career OS for Candidates, Employers & Universities
           </p>
 
-          <h2 className="neo-title text-5xl font-bold leading-tight md:text-6xl">
-            Stop applying <span className="neo-gradient-text">blindly.</span>
+          <h2 className="neo-title text-4xl font-bold leading-tight sm:text-5xl md:text-6xl">
+            Turn career guesswork into a <span className="neo-gradient-text">clear plan.</span>
           </h2>
 
-          <p className="neo-text mt-6 max-w-xl text-lg leading-8">
-            CareerSync AI analyzes your resume, portfolio, skills, and job
-            descriptions to generate match scores, skill gaps, and personalized
-            career roadmaps.
+          <p className="neo-text mt-6 max-w-xl text-base leading-8 sm:text-lg">
+            CareerSync AI turns resumes and portfolios into explainable match scores,
+            skill gaps, and roadmaps — helping students get hired, employers hire better,
+            and universities close the readiness gap.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">
             <button
-              onClick={handleTryDemo}
-              className="neo-primary flex items-center gap-2 rounded-xl px-6 py-3 font-semibold"
+              onClick={() => enterDemo("candidate")}
+              className="neo-primary flex cursor-pointer items-center gap-2 rounded-xl px-6 py-3 font-semibold"
             >
               <Play size={18} />
-              Try Demo
+              Try Live Demo
             </button>
 
-            <Link
-              to="/register"
-              className="neo-secondary flex items-center gap-2 rounded-xl px-6 py-3 font-semibold"
+            <a
+              href="#audiences"
+              className="neo-secondary flex cursor-pointer items-center gap-2 rounded-xl px-6 py-3 font-semibold"
             >
-              Get Started Free <ArrowRight size={18} />
-            </Link>
+              Explore the platform <ArrowRight size={18} />
+            </a>
           </div>
 
-          <div className="mt-10 grid max-w-xl grid-cols-3 gap-4">
-            {[
-              ["82%", "Job Match"],
-              ["4", "Skill Gaps"],
-              ["8w", "Roadmap"],
-            ].map(([value, label]) => (
-              <div key={label} className="neo-card rounded-2xl p-4">
-                <h3 className="neo-title text-2xl font-bold">{value}</h3>
-                <p className="neo-muted mt-1 text-xs">{label}</p>
-              </div>
-            ))}
-          </div>
+          <p className="neo-muted mt-4 text-xs">
+            No sign-up required — pick a role below to enter instantly.
+          </p>
         </motion.div>
 
         <motion.div
@@ -92,10 +149,7 @@ export default function Landing({ lightMode, setLightMode }) {
               <p className="neo-muted text-sm font-medium">AI Match Score</p>
               <h3 className="neo-title mt-2 text-5xl font-bold">82%</h3>
             </div>
-
-            <div className="neo-good rounded-full px-4 py-2 text-sm font-semibold">
-              Strong Fit
-            </div>
+            <div className="neo-good rounded-full px-4 py-2 text-sm font-semibold">Strong Fit</div>
           </div>
 
           <div className="neo-soft rounded-2xl p-5">
@@ -103,7 +157,6 @@ export default function Landing({ lightMode, setLightMode }) {
               <div className="rounded-xl bg-amber-500/15 p-2 text-amber-300">
                 <FileSearch size={22} />
               </div>
-
               <div>
                 <h4 className="neo-title font-semibold">Frontend Developer Intern</h4>
                 <p className="neo-muted text-sm">TechNova Solutions</p>
@@ -123,7 +176,6 @@ export default function Landing({ lightMode, setLightMode }) {
                     <span className="neo-text font-medium">{skill}</span>
                     <span className="neo-muted">{percent}</span>
                   </div>
-
                   <div className="neo-progress-track h-3 rounded-full">
                     <div
                       className="h-3 rounded-full bg-gradient-to-r from-amber-500 to-blue-400"
@@ -140,7 +192,6 @@ export default function Landing({ lightMode, setLightMode }) {
               <p className="text-sm font-medium">Matched Skills</p>
               <h4 className="mt-2 text-2xl font-bold">7</h4>
             </div>
-
             <div className="neo-danger rounded-2xl p-4">
               <p className="text-sm font-medium">Missing Skills</p>
               <h4 className="mt-2 text-2xl font-bold">4</h4>
@@ -149,13 +200,76 @@ export default function Landing({ lightMode, setLightMode }) {
         </motion.div>
       </section>
 
-      <section id="workflow" className="mx-auto max-w-7xl px-8 pb-20">
+      {/* ─── Audience cards (one-click demo per role) ─── */}
+      <section id="audiences" className="mx-auto max-w-7xl px-6 pb-16 sm:px-8 sm:pb-20">
+        <div className="mb-8 text-center">
+          <p className="text-sm font-semibold text-amber-300">One platform, three views</p>
+          <h2 className="neo-title mt-2 text-3xl font-bold">Choose how you want to explore</h2>
+          <p className="neo-text mx-auto mt-3 max-w-2xl">
+            A single unified platform with tailored experiences for each audience. Click any role to enter the live demo instantly.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+          {audiences.map((a) => {
+            const Icon = a.icon;
+            return (
+              <motion.div
+                key={a.key}
+                whileHover={{ y: -6 }}
+                className="neo-card flex flex-col rounded-2xl p-6"
+              >
+                <div className="mb-4 inline-flex w-fit rounded-xl bg-amber-500/15 p-3 text-amber-300">
+                  <Icon size={24} />
+                </div>
+                <h3 className="neo-title text-xl font-bold">{a.title}</h3>
+                <p className="neo-text mt-2 text-sm leading-6">{a.desc}</p>
+
+                <ul className="mt-4 space-y-2">
+                  {a.points.map((p) => (
+                    <li key={p} className="neo-muted flex items-center gap-2 text-sm">
+                      <CheckCircle2 size={15} className="shrink-0 text-amber-300" /> {p}
+                    </li>
+                  ))}
+                </ul>
+
+                <button
+                  onClick={() => enterDemo(a.key)}
+                  className="neo-primary mt-6 flex cursor-pointer items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold"
+                >
+                  Enter as {demoUsers[a.key].label} <ArrowRight size={16} />
+                </button>
+              </motion.div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ─── Impact metrics ─── */}
+      <section className="mx-auto max-w-7xl px-6 pb-16 sm:px-8 sm:pb-20">
+        <div className="neo-card rounded-3xl p-8">
+          <div className="mb-8 text-center">
+            <p className="text-sm font-semibold text-amber-300">Why it matters</p>
+            <h2 className="neo-title mt-2 text-3xl font-bold">Built around real career impact</h2>
+          </div>
+          <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
+            {impactStats.map(({ icon: Icon, value, label }) => (
+              <div key={label} className="neo-soft rounded-2xl p-6 text-center">
+                <Icon size={22} className="mx-auto mb-3 text-amber-300" />
+                <h3 className="neo-title text-3xl font-bold">{value}</h3>
+                <p className="neo-muted mt-2 text-xs leading-5">{label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Workflow ─── */}
+      <section id="workflow" className="mx-auto max-w-7xl px-6 pb-16 sm:px-8 sm:pb-20">
         <div className="neo-card rounded-3xl p-8">
           <div className="mb-8 text-center">
             <p className="text-sm font-semibold text-amber-300">How It Works</p>
-            <h2 className="neo-title mt-2 text-3xl font-bold">
-              From Portfolio to Career Roadmap
-            </h2>
+            <h2 className="neo-title mt-2 text-3xl font-bold">From Portfolio to Career Roadmap</h2>
             <p className="neo-text mx-auto mt-3 max-w-2xl">
               CareerSync AI transforms student profiles into actionable career intelligence.
             </p>
@@ -183,9 +297,10 @@ export default function Landing({ lightMode, setLightMode }) {
         </div>
       </section>
 
+      {/* ─── Features ─── */}
       <section
         id="features"
-        className="mx-auto grid max-w-7xl grid-cols-1 gap-5 px-8 pb-20 md:grid-cols-4"
+        className="mx-auto grid max-w-7xl grid-cols-1 gap-5 px-6 pb-16 sm:px-8 sm:pb-20 md:grid-cols-4"
       >
         {[
           { icon: Brain, title: "AI Job Match", text: "Compare your resume and portfolio with employer job descriptions." },
@@ -195,11 +310,7 @@ export default function Landing({ lightMode, setLightMode }) {
         ].map((item) => {
           const Icon = item.icon;
           return (
-            <motion.div
-              key={item.title}
-              whileHover={{ y: -6 }}
-              className="neo-card rounded-2xl p-6 transition"
-            >
+            <motion.div key={item.title} whileHover={{ y: -6 }} className="neo-card rounded-2xl p-6 transition">
               <div className="mb-4 inline-flex rounded-xl bg-amber-500/15 p-3 text-amber-300">
                 <Icon size={24} />
               </div>
@@ -210,21 +321,63 @@ export default function Landing({ lightMode, setLightMode }) {
         })}
       </section>
 
-      <section className="mx-auto max-w-7xl px-8 pb-20">
-        <div className="neo-card rounded-3xl p-10 text-center">
-          <CheckCircle2 className="mx-auto mb-4 text-amber-300" size={36} />
-          <h2 className="neo-title text-3xl font-bold">Ready to test your career fit?</h2>
-          <p className="neo-text mx-auto mt-3 max-w-2xl">
-            Try the prototype and see how AI can help students make smarter career decisions.
-          </p>
+      {/* ─── SDG alignment ─── */}
+      <section className="mx-auto max-w-7xl px-6 pb-16 sm:px-8 sm:pb-20">
+        <div className="neo-card rounded-3xl p-8">
+          <div className="mb-8 flex flex-col items-center text-center">
+            <div className="mb-3 inline-flex rounded-xl bg-emerald-500/15 p-3 text-emerald-300">
+              <Globe size={24} />
+            </div>
+            <p className="text-sm font-semibold text-emerald-300">Sustainable Impact</p>
+            <h2 className="neo-title mt-2 text-3xl font-bold">Aligned with the UN SDGs</h2>
+            <p className="neo-text mx-auto mt-3 max-w-2xl">
+              CareerSync AI is designed to create measurable social impact across education and employment.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            {sdgs.map((s) => (
+              <div key={s.code} className="neo-soft rounded-2xl p-6">
+                <div className="flex items-center gap-3">
+                  <span className="rounded-lg bg-emerald-500/15 px-3 py-1 text-sm font-bold text-emerald-300">
+                    {s.code}
+                  </span>
+                  <h3 className="neo-title font-bold">{s.title}</h3>
+                </div>
+                <p className="neo-text mt-3 text-sm leading-7">{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          <button
-            onClick={handleTryDemo}
-            className="neo-primary mt-6 inline-flex items-center gap-2 rounded-xl px-6 py-3 font-semibold"
-          >
-            <Play size={18} />
-            Try Demo Now
-          </button>
+      {/* ─── Final CTA ─── */}
+      <section className="mx-auto max-w-7xl px-6 pb-20 sm:px-8">
+        <div className="neo-card rounded-3xl p-10 text-center">
+          <Sparkles className="mx-auto mb-4 text-amber-300" size={36} />
+          <h2 className="neo-title text-3xl font-bold">Ready to explore CareerSync AI?</h2>
+          <p className="neo-text mx-auto mt-3 max-w-2xl">
+            Jump straight into the live prototype and see how AI can make career decisions smarter for everyone.
+          </p>
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <button
+              onClick={() => enterDemo("candidate")}
+              className="neo-primary inline-flex cursor-pointer items-center gap-2 rounded-xl px-6 py-3 font-semibold"
+            >
+              <Play size={18} /> Try as Candidate
+            </button>
+            <button
+              onClick={() => enterDemo("employer")}
+              className="neo-secondary inline-flex cursor-pointer items-center gap-2 rounded-xl px-6 py-3 font-semibold"
+            >
+              <Briefcase size={18} /> Try as Employer
+            </button>
+            <button
+              onClick={() => enterDemo("university")}
+              className="neo-secondary inline-flex cursor-pointer items-center gap-2 rounded-xl px-6 py-3 font-semibold"
+            >
+              <Building2 size={18} /> Try as University
+            </button>
+          </div>
         </div>
       </section>
     </div>

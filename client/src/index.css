@@ -1,5 +1,92 @@
 @import "tailwindcss";
 
+/* ─── Design tokens (refined amber SaaS) ─── */
+:root {
+  --font-body: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-heading: "Space Grotesk", var(--font-body);
+  --neo-bg-deep: #050814;
+  --neo-bg-mid: #0a1020;
+  --neo-surface: rgba(15, 23, 42, 0.72);
+  --neo-surface-soft: rgba(30, 41, 59, 0.54);
+  --neo-border: rgba(148, 163, 184, 0.16);
+  --neo-border-subtle: rgba(148, 163, 184, 0.1);
+  --neo-text: #f8fafc;
+  --neo-text-secondary: #cbd5e1;
+  --neo-text-muted: #94a3b8;
+  --neo-accent: #f59e0b;
+  --neo-accent-bright: #fbbf24;
+  --neo-accent-deep: #b45309;
+  --neo-accent-glow: rgba(245, 158, 11, 0.18);
+  --neo-focus-ring: rgba(245, 158, 11, 0.4);
+  --neo-radius-lg: 1rem;
+  --neo-radius-xl: 1.25rem;
+  --neo-shadow-card: 0 20px 60px rgba(0, 0, 0, 0.36);
+  --neo-transition: 0.2s ease;
+  --neo-chart-bar-from: #b45309;
+  --neo-chart-bar-to: #fbbf24;
+  --neo-chart-bar-peak-from: #d97706;
+  --neo-chart-bar-peak-to: #fde68a;
+  --neo-chart-grid: rgba(148, 163, 184, 0.14);
+  --neo-chart-axis: #64748b;
+  --neo-chart-axis-line: rgba(148, 163, 184, 0.3);
+  --neo-chart-stat-bg: rgba(15, 23, 42, 0.42);
+  --neo-chart-tooltip-bg: rgba(15, 23, 42, 0.96);
+  --neo-chart-tooltip-border: rgba(148, 163, 184, 0.16);
+  --neo-chart-tooltip-text: #f8fafc;
+  --neo-chart-trend-up-bg: rgba(16, 185, 129, 0.12);
+  --neo-chart-trend-up-text: #6ee7b7;
+  --neo-chart-trend-down-bg: rgba(244, 63, 94, 0.12);
+  --neo-chart-trend-down-text: #fda4af;
+  --neo-chart-trend-flat-bg: rgba(148, 163, 184, 0.12);
+  --neo-chart-trend-flat-text: #94a3b8;
+  --chart-bar-from: var(--neo-chart-bar-from);
+  --chart-bar-to: var(--neo-chart-bar-to);
+  --chart-bar-peak-from: var(--neo-chart-bar-peak-from);
+  --chart-bar-peak-to: var(--neo-chart-bar-peak-to);
+  --chart-grid: var(--neo-chart-grid);
+  --chart-axis: var(--neo-chart-axis);
+  --chart-axis-line: var(--neo-chart-axis-line);
+  --chart-stat-bg: var(--neo-chart-stat-bg);
+  --chart-tooltip-bg: var(--neo-chart-tooltip-bg);
+  --chart-tooltip-border: var(--neo-chart-tooltip-border);
+  --chart-tooltip-text: var(--neo-chart-tooltip-text);
+  --chart-trend-up-bg: var(--neo-chart-trend-up-bg);
+  --chart-trend-up-text: var(--neo-chart-trend-up-text);
+  --chart-trend-down-bg: var(--neo-chart-trend-down-bg);
+  --chart-trend-down-text: var(--neo-chart-trend-down-text);
+  --chart-trend-flat-bg: var(--neo-chart-trend-flat-bg);
+  --chart-trend-flat-text: var(--neo-chart-trend-flat-text);
+}
+
+.light {
+  --neo-surface: rgba(255, 255, 255, 0.9);
+  --neo-surface-soft: rgba(248, 250, 252, 0.96);
+  --neo-border: rgba(15, 23, 42, 0.1);
+  --neo-border-subtle: rgba(15, 23, 42, 0.08);
+  --neo-text: #0f172a;
+  --neo-text-secondary: #475569;
+  --neo-text-muted: #64748b;
+  --neo-accent-glow: rgba(245, 158, 11, 0.16);
+  --neo-focus-ring: rgba(217, 119, 6, 0.32);
+  --neo-shadow-card: 0 18px 50px rgba(15, 23, 42, 0.08);
+  --neo-chart-bar-from: #b45309;
+  --neo-chart-bar-to: #f59e0b;
+  --neo-chart-bar-peak-from: #d97706;
+  --neo-chart-bar-peak-to: #fcd34d;
+  --neo-chart-grid: rgba(15, 23, 42, 0.08);
+  --neo-chart-axis-line: rgba(15, 23, 42, 0.12);
+  --neo-chart-stat-bg: rgba(241, 245, 249, 0.88);
+  --neo-chart-tooltip-bg: rgba(255, 255, 255, 0.98);
+  --neo-chart-tooltip-border: rgba(15, 23, 42, 0.1);
+  --neo-chart-tooltip-text: #0f172a;
+  --neo-chart-trend-up-bg: rgba(16, 185, 129, 0.1);
+  --neo-chart-trend-up-text: #059669;
+  --neo-chart-trend-down-bg: rgba(244, 63, 94, 0.1);
+  --neo-chart-trend-down-text: #e11d48;
+  --neo-chart-trend-flat-bg: rgba(100, 116, 139, 0.1);
+  --neo-chart-trend-flat-text: #475569;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -10,33 +97,376 @@ html {
 
 body {
   margin: 0;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #080b12;
-  color: #f8fafc;
+  font-family: var(--font-body);
+  background: var(--neo-bg-deep);
+  color: var(--neo-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.light body {
+  background: #f8fafc;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(245, 158, 11, 0.3);
+  color: var(--neo-text);
+}
+
+.light ::selection {
+  background: rgba(245, 158, 11, 0.22);
+  color: #0f172a;
+}
+
+a,
+button,
+[role="button"],
+label[for],
+select,
+summary {
+  cursor: pointer;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-body);
+}
+
+button,
+select {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+a:disabled,
+button:disabled {
+  cursor: not-allowed;
+}
+
+:focus-visible {
+  outline: 2px solid var(--neo-accent);
+  outline-offset: 2px;
+}
+
+.neo-input:focus-visible,
+.neo-nav-link:focus-visible {
+  outline: none;
+}
+
+.neo-input:focus {
+  outline: none;
+  border-color: rgba(245, 158, 11, 0.85);
+  box-shadow: 0 0 0 3px var(--neo-focus-ring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 .neo-bg {
   background:
-    radial-gradient(circle at top left, rgba(180, 83, 9, 0.22), transparent 34%),
-    radial-gradient(circle at top right, rgba(37, 99, 235, 0.16), transparent 35%),
-    linear-gradient(135deg, #070a11 0%, #0b0f17 45%, #111827 100%);
+    radial-gradient(circle at top left, rgba(245, 158, 11, 0.16), transparent 34%),
+    radial-gradient(circle at top right, rgba(59, 130, 246, 0.14), transparent 36%),
+    linear-gradient(135deg, var(--neo-bg-deep) 0%, var(--neo-bg-mid) 48%, #111827 100%);
 }
 
 .light .neo-bg {
   background:
-    radial-gradient(circle at top left, rgba(245, 158, 11, 0.16), transparent 32%),
-    radial-gradient(circle at top right, rgba(37, 99, 235, 0.12), transparent 35%),
+    radial-gradient(circle at top left, rgba(245, 158, 11, 0.12), transparent 32%),
+    radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent 35%),
     linear-gradient(135deg, #f8fafc 0%, #f1f5f9 55%, #e2e8f0 100%);
 }
 
 .neo-card {
-  background: rgba(15, 23, 42, 0.78);
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  box-shadow:
-    0 24px 70px rgba(0, 0, 0, 0.42),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  background: var(--neo-surface);
+  border: 1px solid var(--neo-border);
+  box-shadow: var(--neo-shadow-card), inset 0 1px 0 rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  transition:
+    border-color var(--neo-transition),
+    box-shadow var(--neo-transition),
+    transform var(--neo-transition);
+}
+
+.neo-interactive {
+  transition:
+    border-color var(--neo-transition),
+    box-shadow var(--neo-transition),
+    transform var(--neo-transition),
+    background var(--neo-transition);
+}
+
+.neo-interactive:hover {
+  transform: translateY(-2px);
+  border-color: rgba(245, 158, 11, 0.28);
+  box-shadow: var(--neo-shadow-card), 0 8px 28px var(--neo-accent-glow);
+}
+
+.light .neo-interactive:hover {
+  border-color: rgba(217, 119, 6, 0.25);
+}
+
+.neo-kpi-card {
+  background: var(--neo-surface);
+  border: 1px solid var(--neo-border);
+  box-shadow: var(--neo-shadow-card), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(18px);
+}
+
+.neo-kpi-value {
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--neo-text);
+}
+
+.neo-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--neo-accent-bright);
+}
+
+.light .neo-eyebrow {
+  color: var(--neo-accent-deep);
+}
+
+.neo-page-title {
+  font-family: var(--font-heading);
+  margin-top: 0.35rem;
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--neo-text);
+}
+
+.neo-page-desc {
+  margin-top: 0.5rem;
+  max-width: 42rem;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--neo-text-secondary);
+}
+
+.neo-label {
+  font-family: var(--font-body);
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--neo-text-secondary);
+}
+
+.neo-link {
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--neo-accent-bright);
+  text-decoration: none;
+  transition: color var(--neo-transition);
+}
+
+.neo-link:hover {
+  color: #fde68a;
+}
+
+.light .neo-link {
+  color: var(--neo-accent-deep);
+}
+
+.light .neo-link:hover {
+  color: #b45309;
+}
+
+.neo-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.neo-divider::before,
+.neo-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--neo-border-subtle);
+}
+
+.neo-dropdown {
+  position: relative;
+  min-width: 0;
+}
+
+.neo-dropdown-trigger {
+  font-family: var(--font-body);
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-radius: 1rem;
+  border: 1px solid var(--neo-border);
+  background: var(--neo-surface-soft);
+  padding: 0.9rem 1rem;
+  color: var(--neo-text);
+  font-size: 0.9375rem;
+  line-height: 1.3;
+  text-align: left;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  transition:
+    border-color var(--neo-transition),
+    background var(--neo-transition),
+    box-shadow var(--neo-transition),
+    transform var(--neo-transition);
+}
+
+.neo-dropdown-trigger:hover {
+  border-color: rgba(245, 158, 11, 0.28);
+  transform: translateY(-1px);
+}
+
+.neo-dropdown-trigger-open {
+  border-color: rgba(245, 158, 11, 0.55);
+  box-shadow: 0 0 0 3px var(--neo-focus-ring);
+}
+
+.light .neo-dropdown-trigger {
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.light .neo-dropdown-trigger:hover {
+  background: #ffffff;
+}
+
+.neo-dropdown-menu {
+  position: fixed;
+  z-index: 1000;
+  max-height: 18rem;
+  overflow: auto;
+  border-radius: 1rem;
+  border: 1px solid var(--neo-border);
+  background: rgba(8, 11, 18, 0.96);
+  padding: 0.4rem;
+  box-shadow: var(--neo-shadow-card);
+  backdrop-filter: blur(18px);
+}
+
+.light .neo-dropdown-menu {
+  background: rgba(255, 255, 255, 0.98);
+}
+
+.neo-dropdown-option {
+  font-family: var(--font-body);
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-radius: 0.85rem;
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 0.8rem 0.9rem;
+  color: var(--neo-text-secondary);
+  text-align: left;
+  transition:
+    background var(--neo-transition),
+    color var(--neo-transition),
+    border-color var(--neo-transition);
+}
+
+.neo-dropdown-option:hover {
+  border-color: rgba(245, 158, 11, 0.18);
+  background: rgba(245, 158, 11, 0.08);
+  color: var(--neo-text);
+}
+
+.neo-dropdown-option-active {
+  border-color: rgba(245, 158, 11, 0.28);
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--neo-accent-bright);
+}
+
+.light .neo-dropdown-option {
+  color: var(--neo-text-secondary);
+}
+
+.light .neo-dropdown-option:hover {
+  background: rgba(245, 158, 11, 0.06);
+}
+
+.light .neo-dropdown-option-active {
+  color: var(--neo-accent-deep);
+}
+
+.neo-empty-state {
+  border-style: dashed;
+  border-color: var(--neo-border);
+}
+
+.neo-empty-icon {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.light .neo-empty-icon {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(217, 119, 6, 0.2);
+}
+
+.neo-page {
+  animation: neo-fade-in 0.35s ease;
+}
+
+@keyframes neo-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .neo-page {
+    animation: none;
+  }
 }
 
 .light .neo-card {
@@ -46,7 +476,7 @@ body {
 }
 
 .neo-soft {
-  background: rgba(30, 41, 59, 0.62);
+  background: var(--neo-surface-soft);
   border: 1px solid rgba(148, 163, 184, 0.14);
 }
 
@@ -56,6 +486,7 @@ body {
 }
 
 .neo-title {
+  font-family: var(--font-heading);
   color: #f8fafc;
 }
 
@@ -64,6 +495,7 @@ body {
 }
 
 .neo-text {
+  font-family: var(--font-body);
   color: #cbd5e1;
 }
 
@@ -72,6 +504,7 @@ body {
 }
 
 .neo-muted {
+  font-family: var(--font-body);
   color: #94a3b8;
 }
 
@@ -84,33 +517,41 @@ body {
 }
 
 .neo-gradient-text {
+  font-family: var(--font-heading);
   background: linear-gradient(90deg, #f59e0b, #fbbf24, #60a5fa);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .neo-primary {
-  background: linear-gradient(135deg, #d97706, #f59e0b);
+  font-family: var(--font-body);
+  background: linear-gradient(135deg, var(--neo-accent-deep), var(--neo-accent));
   color: #111827;
   font-weight: 700;
-  box-shadow: 0 18px 35px rgba(245, 158, 11, 0.22);
-  transition: 0.2s ease;
+  box-shadow: 0 18px 35px var(--neo-accent-glow);
+  transition: transform var(--neo-transition), box-shadow var(--neo-transition), opacity var(--neo-transition);
 }
 
-.neo-primary:hover {
+.neo-primary:hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow: 0 22px 45px rgba(245, 158, 11, 0.28);
 }
 
+.neo-primary:disabled {
+  opacity: 0.55;
+}
+
 .neo-secondary {
+  font-family: var(--font-body);
   background: rgba(15, 23, 42, 0.58);
   color: #e2e8f0;
   border: 1px solid rgba(148, 163, 184, 0.22);
-  transition: 0.2s ease;
+  transition: background var(--neo-transition), border-color var(--neo-transition), color var(--neo-transition);
 }
 
-.neo-secondary:hover {
+.neo-secondary:hover:not(:disabled) {
   background: rgba(30, 41, 59, 0.86);
+  border-color: rgba(245, 158, 11, 0.25);
 }
 
 .light .neo-secondary {
@@ -124,6 +565,7 @@ body {
 }
 
 .neo-input {
+  font-family: var(--font-body);
   background: rgba(2, 6, 23, 0.5);
   border: 1px solid rgba(148, 163, 184, 0.22);
   color: #f8fafc;
@@ -154,6 +596,7 @@ body {
 }
 
 .neo-badge-match {
+  font-family: var(--font-body);
   border: 1px solid rgba(52, 211, 153, 0.3);
   background: rgba(16, 185, 129, 0.12);
   color: #6ee7b7;
@@ -166,6 +609,7 @@ body {
 }
 
 .neo-badge-missing {
+  font-family: var(--font-body);
   border: 1px solid rgba(251, 113, 133, 0.3);
   background: rgba(244, 63, 94, 0.12);
   color: #fda4af;
@@ -178,6 +622,7 @@ body {
 }
 
 .neo-good {
+  font-family: var(--font-body);
   background: rgba(16, 185, 129, 0.12);
   color: #6ee7b7;
 }
@@ -188,6 +633,7 @@ body {
 }
 
 .neo-danger {
+  font-family: var(--font-body);
   background: rgba(244, 63, 94, 0.12);
   color: #fda4af;
 }
@@ -198,6 +644,7 @@ body {
 }
 
 .neo-blue {
+  font-family: var(--font-body);
   background: rgba(96, 165, 250, 0.12);
   color: #93c5fd;
 }
@@ -205,4 +652,440 @@ body {
 .light .neo-blue {
   background: #eff6ff;
   color: #1d4ed8;
+}
+
+/* ─── Floating portfolio-style navbar ─── */
+.neo-nav-shell {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding: 0.85rem 1rem 0;
+  pointer-events: none;
+}
+
+.neo-nav-shell > .neo-nav-wrap {
+  pointer-events: auto;
+}
+
+.neo-nav-wrap {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 80rem;
+}
+
+.neo-nav {
+  background: rgba(11, 15, 25, 0.78);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 1rem;
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.light .neo-nav {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08);
+}
+
+.neo-nav-link {
+  font-family: var(--font-body);
+  position: relative;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #94a3b8;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+}
+
+.neo-nav-link:hover {
+  color: #f8fafc;
+}
+
+.light .neo-nav-link {
+  color: #64748b;
+}
+
+.light .neo-nav-link:hover {
+  color: #0f172a;
+}
+
+.neo-nav-link-active {
+  color: #fbbf24 !important;
+}
+
+.neo-nav-link-active::after {
+  content: "";
+  position: absolute;
+  left: 0.7rem;
+  right: 0.7rem;
+  bottom: 0.15rem;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #d97706, #fbbf24);
+}
+
+.neo-nav-logo {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #f8fafc;
+}
+
+.light .neo-nav-logo {
+  color: #0f172a;
+}
+
+.neo-nav-logo-accent {
+  color: #f59e0b;
+}
+
+.neo-nav-mobile-toggle-wrap {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .neo-nav-mobile-toggle-wrap {
+    display: none !important;
+  }
+}
+
+.neo-nav-icon-btn {
+  font-family: var(--font-body);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(15, 23, 42, 0.5);
+  color: #e2e8f0;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+}
+
+.neo-nav-icon-btn:hover {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(245, 158, 11, 0.35);
+  color: #fbbf24;
+}
+
+.light .neo-nav-icon-btn {
+  background: rgba(248, 250, 252, 0.95);
+  border-color: rgba(15, 23, 42, 0.1);
+  color: #334155;
+}
+
+.light .neo-nav-icon-btn:hover {
+  background: #ffffff;
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #d97706;
+}
+
+.neo-nav-dropdown {
+  pointer-events: auto;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 0.85rem;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(18px);
+}
+
+.light .neo-nav-dropdown {
+  background: rgba(255, 255, 255, 0.98);
+  border-color: rgba(15, 23, 42, 0.1);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.1);
+}
+
+.neo-nav-spacer {
+  height: 5.25rem;
+}
+
+.neo-nav-mobile-panel {
+  border-top: 1px solid rgba(148, 163, 184, 0.14);
+  background: rgba(8, 11, 18, 0.55);
+}
+
+.light .neo-nav-mobile-panel {
+  border-top-color: rgba(15, 23, 42, 0.08);
+  background: rgba(248, 250, 252, 0.65);
+}
+
+/* ─── Analytics charts ─── */
+.neo-chart-card {
+  background: rgba(15, 23, 42, 0.35);
+  border: 1px solid var(--neo-border-subtle);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.light .neo-chart-card {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: var(--neo-border-subtle);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.neo-chart-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  background: var(--chart-stat-bg);
+  padding: 0.5rem 0.75rem;
+}
+
+.light .neo-chart-stat {
+  border-color: rgba(15, 23, 42, 0.06);
+}
+
+.neo-chart-svg {
+  display: block;
+  overflow: visible;
+}
+
+.neo-chart-grid {
+  stroke: var(--chart-grid);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+.neo-chart-axis-line {
+  stroke: var(--chart-axis-line);
+  stroke-width: 1.5;
+}
+
+.neo-chart-axis,
+.neo-chart-label {
+  color: var(--chart-axis);
+}
+
+.neo-chart-label-peak {
+  color: var(--neo-accent-bright);
+  font-weight: 700;
+}
+
+.light .neo-chart-label-peak {
+  color: var(--neo-accent-deep);
+}
+
+.neo-chart-value {
+  color: var(--neo-text);
+}
+
+.neo-chart-bar-group:focus-visible {
+  outline: 2px solid var(--neo-accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.neo-chart-bar-active {
+  transform-origin: center bottom;
+}
+
+.neo-chart-trend-up {
+  background: var(--chart-trend-up-bg);
+  color: var(--chart-trend-up-text);
+}
+
+.neo-chart-trend-down {
+  background: var(--chart-trend-down-bg);
+  color: var(--chart-trend-down-text);
+}
+
+.neo-chart-trend-flat {
+  background: var(--chart-trend-flat-bg);
+  color: var(--chart-trend-flat-text);
+}
+
+.neo-chart-tooltip {
+  border-radius: 0.75rem;
+  background: var(--chart-tooltip-bg);
+  border: 1px solid var(--chart-tooltip-border);
+  color: var(--chart-tooltip-text);
+  backdrop-filter: blur(12px);
+}
+
+.neo-chart-tooltip-value {
+  color: var(--neo-accent-bright);
+}
+
+.light .neo-chart-tooltip-value {
+  color: var(--neo-accent-deep);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .neo-chart-bar {
+    transition: none !important;
+  }
+}
+
+/* ─── Hiring pipeline (employer) ─── */
+.neo-pipeline-funnel-stage {
+  border: 1px solid var(--neo-border-subtle);
+  background: rgba(15, 23, 42, 0.4);
+}
+
+.light .neo-pipeline-funnel-stage {
+  background: rgba(248, 250, 252, 0.9);
+}
+
+.neo-pipeline-funnel-bar {
+  background: linear-gradient(90deg, var(--neo-accent-deep), var(--neo-accent-bright));
+}
+
+.neo-pipeline-board {
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+}
+
+.neo-pipeline-column {
+  scroll-snap-align: start;
+  border: 1px solid var(--neo-border-subtle);
+  background: rgba(8, 11, 18, 0.55);
+  backdrop-filter: blur(12px);
+}
+
+.light .neo-pipeline-column {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.neo-pipeline-count {
+  font-family: var(--font-body);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--neo-text);
+}
+
+.light .neo-pipeline-count {
+  background: rgba(15, 23, 42, 0.06);
+}
+
+.neo-pipeline-card {
+  font-family: var(--font-body);
+  border: 1px solid transparent;
+  background: rgba(30, 41, 59, 0.55);
+}
+
+.neo-pipeline-card:hover {
+  border-color: rgba(245, 158, 11, 0.2);
+  background: rgba(30, 41, 59, 0.75);
+}
+
+.neo-pipeline-card-active {
+  border-color: rgba(245, 158, 11, 0.45);
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.15);
+  background: rgba(245, 158, 11, 0.06);
+}
+
+.light .neo-pipeline-card {
+  background: rgba(241, 245, 249, 0.95);
+}
+
+.light .neo-pipeline-card:hover {
+  background: #ffffff;
+}
+
+.neo-pipeline-chip {
+  font-family: var(--font-body);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(244, 63, 94, 0.2);
+  background: rgba(244, 63, 94, 0.06);
+  padding: 0.35rem 0.65rem;
+  transition: background 0.2s ease;
+}
+
+.neo-pipeline-chip:hover {
+  background: rgba(244, 63, 94, 0.12);
+}
+
+.neo-pipeline-stage-pill {
+  font-family: var(--font-body);
+  display: inline-block;
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.neo-pipeline-applied {
+  color: #cbd5e1;
+  border-color: rgba(100, 116, 139, 0.35);
+  background: rgba(100, 116, 139, 0.1);
+}
+
+.neo-pipeline-screening {
+  color: #93c5fd;
+  border-color: rgba(59, 130, 246, 0.35);
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.neo-pipeline-interview {
+  color: #c4b5fd;
+  border-color: rgba(139, 92, 246, 0.35);
+  background: rgba(139, 92, 246, 0.1);
+}
+
+.neo-pipeline-offer {
+  color: #fcd34d;
+  border-color: rgba(245, 158, 11, 0.4);
+  background: rgba(245, 158, 11, 0.12);
+}
+
+.neo-pipeline-hired {
+  color: #6ee7b7;
+  border-color: rgba(16, 185, 129, 0.35);
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.neo-pipeline-rejected {
+  color: #fda4af;
+  border-color: rgba(244, 63, 94, 0.35);
+  background: rgba(244, 63, 94, 0.1);
+}
+
+.neo-pipeline-column.neo-pipeline-applied {
+  border-top: 3px solid rgba(100, 116, 139, 0.6);
+}
+
+.neo-pipeline-column.neo-pipeline-screening {
+  border-top: 3px solid rgba(59, 130, 246, 0.6);
+}
+
+.neo-pipeline-column.neo-pipeline-interview {
+  border-top: 3px solid rgba(139, 92, 246, 0.6);
+}
+
+.neo-pipeline-column.neo-pipeline-offer {
+  border-top: 3px solid rgba(245, 158, 11, 0.7);
+}
+
+.neo-pipeline-column.neo-pipeline-hired {
+  border-top: 3px solid rgba(16, 185, 129, 0.65);
+}
+
+.neo-pipeline-toast {
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.1);
+  color: #a7f3d0;
+  animation: neo-fade-in 0.25s ease;
+}
+
+.light .neo-pipeline-toast {
+  color: #047857;
+  background: #ecfdf5;
+  border-color: #bbf7d0;
+}
+
+.neo-pipeline-row:focus-visible {
+  outline: 2px solid var(--neo-accent);
+  outline-offset: -2px;
 }

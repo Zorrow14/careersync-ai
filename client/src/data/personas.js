@@ -1,34 +1,14 @@
 /**
- * Demo personas — switching persona instantly updates all dashboard data.
- * Each persona has a profile, analysis, roadmap, skill gap, interview set,
- * employer fit, and university insight data keyed by persona ID.
+ * Single demo candidate used across the prototype.
  */
 
-export const personas = [
-  {
-    id: "sarah",
-    name: "Sarah Tan",
-    degree: "BSc Computer Science",
-    institution: "Universiti Malaya",
-    targetRole: "Frontend Developer",
-    avatar: "ST",
-  },
-  {
-    id: "jason",
-    name: "Jason Lim",
-    degree: "BSc Data Science",
-    institution: "Universiti Teknologi Malaysia",
-    targetRole: "Data Analyst",
-    avatar: "JL",
-  },
-  {
-    id: "aina",
-    name: "Aina Rahman",
-    degree: "BEng Software Engineering",
-    institution: "Universiti Putra Malaysia",
-    targetRole: "Full Stack Developer",
-    avatar: "AR",
-  },
-];
+export const DEMO_PERSONA_ID = "sarah";
 
-export const DEFAULT_PERSONA = "sarah";
+export const demoPersona = {
+  id: DEMO_PERSONA_ID,
+  name: "Sarah Tan",
+  degree: "BSc Computer Science",
+  institution: "Universiti Malaya",
+  targetRole: "Frontend Developer",
+  avatar: "ST",
+};
