@@ -14,6 +14,7 @@ import PageHeader from "../../components/ui/PageHeader.jsx";
 import EmptyState from "../../components/ui/EmptyState.jsx";
 import PipelineFunnel, { stageIcons, stageAccent } from "../../components/pipeline/PipelineFunnel.jsx";
 import PipelineStageStepper from "../../components/pipeline/PipelineStageStepper.jsx";
+import FitReportPanel from "../../components/employer/FitReportPanel.jsx";
 
 const activeStages = pipelineStages.filter((s) => s !== "Rejected");
 
@@ -24,9 +25,9 @@ function fitScoreClass(score) {
 }
 
 function fitBarClass(score) {
-  if (score >= 80) return "from-emerald-500 to-emerald-300";
-  if (score >= 60) return "from-amber-500 to-amber-300";
-  return "from-rose-500 to-rose-300";
+  if (score >= 80) return "neo-progress-fill-success";
+  if (score >= 60) return "neo-progress-fill";
+  return "neo-progress-fill-danger";
 }
 
 export default function Pipeline() {
@@ -103,7 +104,7 @@ export default function Pipeline() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_320px]">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_360px]">
         <div className="min-w-0">
           {view === "board" ? (
             <>
@@ -249,7 +250,7 @@ export default function Pipeline() {
                 </div>
                 <div className="neo-progress-track h-2 overflow-hidden rounded-full">
                   <div
-                    className={`h-full rounded-full bg-gradient-to-r ${fitBarClass(selected.fitScore)}`}
+                    className={`h-full rounded-full ${fitBarClass(selected.fitScore)}`}
                     style={{ width: `${selected.fitScore}%` }}
                   />
                 </div>
@@ -298,6 +299,17 @@ export default function Pipeline() {
                     })}
                 </div>
               </div>
+
+              <div className="border-t border-white/10 pt-5">
+                <FitReportPanel
+                  compact
+                  candidate={{
+                    name: selected.name,
+                    fitScore: selected.fitScore,
+                    role: selected.role,
+                  }}
+                />
+              </div>
             </div>
           ) : (
             <EmptyState
@@ -335,7 +347,7 @@ function CandidateCard({ candidate, selected, onSelect }) {
       </div>
       <div className="neo-progress-track mb-2 h-1 overflow-hidden rounded-full">
         <div
-          className={`h-full rounded-full bg-gradient-to-r ${fitBarClass(candidate.fitScore)}`}
+          className={`h-full rounded-full ${fitBarClass(candidate.fitScore)}`}
           style={{ width: `${candidate.fitScore}%` }}
         />
       </div>

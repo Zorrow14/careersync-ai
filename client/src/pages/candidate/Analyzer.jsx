@@ -36,7 +36,7 @@ export default function Analyzer() {
             Comparing your portfolio against the job description using AI analysis engine.
           </p>
           <div className="neo-progress-track mt-8 h-2 w-64 overflow-hidden rounded-full">
-            <div className="h-full animate-pulse rounded-full bg-gradient-to-r from-amber-500 to-blue-400" />
+            <div className="neo-progress-fill-alt h-full animate-pulse rounded-full" style={{ width: "65%" }} />
           </div>
         </div>
       ) : (

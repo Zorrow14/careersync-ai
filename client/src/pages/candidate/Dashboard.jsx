@@ -20,8 +20,10 @@ import { roadmaps } from "../../data/roadmapData.js";
 import { jobs, getJobMatch } from "../../data/jobsData.js";
 import { applications, savedJobs } from "../../data/applicationsData.js";
 import { getEmployabilityScore } from "../../data/employabilityScore.js";
+import { getWorkTrait } from "../../data/workTraits.js";
 import PageHeader from "../../components/ui/PageHeader.jsx";
 import KpiCard from "../../components/ui/KpiCard.jsx";
+import ProgressBar from "../../components/ui/ProgressBar.jsx";
 
 const dimensionIcons = { Target, FolderGit2, Mic, TrendingUp };
 
@@ -42,6 +44,7 @@ export default function Dashboard() {
 
   const employability = getEmployabilityScore(personaId);
   const careerReadiness = employability.total;
+  const workTrait = getWorkTrait(personaId);
 
   const widgets = [
     { label: "Applications", value: apps.length, icon: Send, to: "/applications" },
@@ -65,7 +68,7 @@ export default function Dashboard() {
 
       {/* ─── Career Health Score ─── */}
       <div className="neo-card mb-6 rounded-2xl p-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500 text-xl font-bold text-slate-950">
               {persona.avatar}
@@ -78,30 +81,32 @@ export default function Dashboard() {
               </p>
             </div>
           </div>
-          <div className="text-right">
+          <div className="text-left sm:text-right">
             <p className="neo-muted text-xs font-medium">Employability Score</p>
-            <p className="neo-gradient-text text-5xl font-bold">{careerReadiness}%</p>
+            <p className="neo-gradient-text text-4xl font-bold sm:text-5xl">{careerReadiness}%</p>
+            {employability.boost > 0 && (
+              <p className="mt-1 text-xs font-semibold text-emerald-300">
+                +{employability.boost}% from AI practice
+              </p>
+            )}
           </div>
         </div>
 
         <div className="mt-5">
-          <div className="neo-progress-track h-3 overflow-hidden rounded-full">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-amber-500 to-blue-400 transition-all duration-700"
-              style={{ width: `${careerReadiness}%` }}
-            />
-          </div>
+          <ProgressBar value={careerReadiness} size="lg" fillClassName="neo-progress-fill-alt" />
         </div>
       </div>
 
       {/* ─── Explainable Employability Score ─── */}
       <div className="neo-card mb-6 rounded-2xl p-6">
-        <div className="mb-5 flex items-center justify-between">
+        <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="neo-title text-xl font-bold">What's behind your score</h2>
-            <p className="neo-muted text-sm">A transparent breakdown — never a black box.</p>
+            <p className="neo-muted text-sm">
+              Same explainable model employers see in fit reports and universities see in cohort insights.
+            </p>
           </div>
-          <Sparkles size={20} className="text-amber-300" />
+          <Sparkles size={20} className="hidden text-amber-300 sm:block" />
         </div>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -117,17 +122,27 @@ export default function Dashboard() {
                   </div>
                   <span className="text-sm font-bold text-amber-300">{d.value}%</span>
                 </div>
-                <div className="neo-progress-track mb-2 h-2 rounded-full">
-                  <div
-                    className="h-2 rounded-full bg-gradient-to-r from-blue-500 to-amber-300"
-                    style={{ width: `${d.value}%` }}
-                  />
-                </div>
+                <ProgressBar value={d.value} size="md" fillClassName="neo-progress-fill-alt" className="mb-2" />
                 <p className="neo-muted text-xs leading-5">{d.why}</p>
               </div>
             );
           })}
         </div>
+      </div>
+
+      {/* ─── Work trait snapshot ─── */}
+      <div className="neo-card mb-6 rounded-2xl p-6">
+        <p className="neo-muted mb-2 text-xs font-semibold uppercase tracking-wider">
+          Career Personality Snapshot · Simulated
+        </p>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="neo-good rounded-full px-3 py-1 text-sm font-semibold">{workTrait.primary}</span>
+          <span className="neo-blue rounded-full px-3 py-1 text-sm font-semibold">{workTrait.secondary}</span>
+          {workTrait.traits.filter((t) => t !== workTrait.primary && t !== workTrait.secondary).map((t) => (
+            <span key={t} className="neo-soft rounded-full px-3 py-1 text-xs font-medium">{t}</span>
+          ))}
+        </div>
+        <p className="neo-text mt-3 text-sm leading-6">{workTrait.description}</p>
       </div>
 
       {/* ─── Job Widgets ─── */}

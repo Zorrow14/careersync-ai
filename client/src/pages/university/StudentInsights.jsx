@@ -47,8 +47,8 @@ export default function StudentInsights() {
                   <p className="neo-text text-sm font-medium">{skill.skill}</p>
                   <p className="neo-muted text-xs">{skill.students} students · {skill.averageProgress}% avg</p>
                 </div>
-                <div className="neo-progress-track h-3 rounded-full">
-                  <div className="h-3 rounded-full bg-gradient-to-r from-blue-500 to-amber-300" style={{ width: `${skill.averageProgress}%` }} />
+                <div className="neo-progress-track h-3 overflow-hidden rounded-full">
+                  <div className="neo-progress-fill-alt h-full rounded-full" style={{ width: `${skill.averageProgress}%` }} />
                 </div>
               </div>
             ))}
@@ -111,8 +111,8 @@ function Metric({ label, value }) {
         <span className="neo-muted text-[11px]">{label}</span>
         <span className="text-[11px] font-semibold text-amber-300">{value}%</span>
       </div>
-      <div className="neo-progress-track h-1.5 rounded-full">
-        <div className="h-1.5 rounded-full bg-amber-400" style={{ width: `${value}%` }} />
+      <div className="neo-progress-track h-1.5 overflow-hidden rounded-full">
+        <div className="neo-progress-fill h-full rounded-full" style={{ width: `${value}%` }} />
       </div>
     </div>
   );

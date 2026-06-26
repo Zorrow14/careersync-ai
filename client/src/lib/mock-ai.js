@@ -11,7 +11,7 @@ import { resumeAnalyses } from "../data/resumeAnalysis.js";
 import { skillGaps } from "../data/skillGap.js";
 import { roadmaps } from "../data/roadmapData.js";
 import { interviewSets } from "../data/interviewQuestions.js";
-import { fitReports } from "../data/employerData.js";
+import { fitReports, buildGenericFitReport, resolvePersonaId } from "../data/employerData.js";
 import { universityInsights } from "../data/universityData.js";
 
 function delay(ms = 1200) {
@@ -75,9 +75,24 @@ export async function evaluateAnswer(personaId) {
   return set.sampleFeedback;
 }
 
-export async function generateFitReport(personaId) {
-  await delay(1000);
-  return fitReports[personaId] ?? fitReports.sarah;
+/**
+ * @param {{ personaId?: string, name: string, fitScore: number, role: string }} candidate
+ */
+export async function generateFitReport(candidate) {
+  await delay(1400);
+  const personaId =
+    candidate.personaId ?? resolvePersonaId(candidate.name) ?? null;
+  if (personaId && fitReports[personaId]) {
+    return { ...fitReports[personaId], personaId };
+  }
+  return {
+    ...buildGenericFitReport({
+      name: candidate.name,
+      fitScore: candidate.fitScore,
+      role: candidate.role,
+    }),
+    personaId: null,
+  };
 }
 
 export async function generateUniversityInsights() {

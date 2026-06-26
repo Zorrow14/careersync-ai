@@ -133,10 +133,7 @@ export default function JobDetails() {
             <p className="neo-muted text-sm">Your Match Score</p>
             <p className={`text-6xl font-bold ${matchColor(match.score)}`}>{match.score}%</p>
             <div className="neo-progress-track mt-4 h-3 overflow-hidden rounded-full">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-amber-500 to-blue-400"
-                style={{ width: `${match.score}%` }}
-              />
+              <div className="neo-progress-fill-alt h-full rounded-full" style={{ width: `${match.score}%` }} />
             </div>
             <Link to="/jobs" className="neo-primary mt-5 block rounded-xl py-3 text-sm font-semibold">
               Apply Now

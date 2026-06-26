@@ -15,8 +15,11 @@ import {
   ExternalLink,
   Code2,
   Lightbulb,
+  Compass,
 } from "lucide-react";
 import { usePersona } from "../../context/PersonaContext.jsx";
+import { getWorkTrait } from "../../data/workTraits.js";
+import ProgressBar from "../../components/ui/ProgressBar.jsx";
 
 const priorityColors = {
   high: "neo-danger",
@@ -26,6 +29,7 @@ const priorityColors = {
 
 export default function ProfileSetup() {
   const { persona, profile } = usePersona();
+  const workTrait = getWorkTrait(persona.id);
 
   const completionSuggestions = [
     !profile.portfolioLink && "Add a portfolio link",
@@ -70,22 +74,26 @@ export default function ProfileSetup() {
       </motion.div>
 
       {/* ─── AI Career Summary + Completion ─── */}
-      <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <Section icon={Sparkles} title="AI Career Summary">
+      <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <Section icon={Sparkles} title="AI Career Summary" className="lg:col-span-2 mb-0">
           <p className="neo-text text-sm leading-7">{profile.aiSummary}</p>
         </Section>
 
+        <Section icon={Compass} title="Work Style Snapshot" className="mb-0">
+          <p className="neo-muted mb-2 text-xs">Simulated trait profile (not clinical typing)</p>
+          <p className="neo-title text-lg font-bold">{workTrait.primary}</p>
+          <p className="neo-muted text-sm">with {workTrait.secondary} tendencies</p>
+          <p className="neo-text mt-3 text-sm leading-6">{workTrait.description}</p>
+        </Section>
+      </div>
+
+      <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Section icon={CheckCircle2} title="Portfolio Completion">
           <div className="mb-3 flex items-center justify-between">
             <span className="neo-muted text-xs font-medium">Completeness</span>
             <span className="text-sm font-bold text-amber-300">{profile.completion}%</span>
           </div>
-          <div className="neo-progress-track h-3 overflow-hidden rounded-full">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-300 transition-all duration-700"
-              style={{ width: `${profile.completion}%` }}
-            />
-          </div>
+          <ProgressBar value={profile.completion} size="lg" />
           {completionSuggestions.length > 0 && (
             <div className="mt-4 space-y-2">
               <p className="neo-muted text-xs font-semibold uppercase">Suggestions</p>
@@ -271,13 +279,13 @@ export default function ProfileSetup() {
   );
 }
 
-function Section({ icon: Icon, title, children }) {
+function Section({ icon: Icon, title, children, className = "" }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="neo-card mb-6 rounded-2xl p-6"
+      className={`neo-card mb-6 rounded-2xl p-6 ${className}`}
     >
       <div className="mb-4 flex items-center gap-3">
         <div className="rounded-xl bg-amber-500/15 p-2 text-amber-300">

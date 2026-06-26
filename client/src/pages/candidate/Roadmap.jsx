@@ -1,9 +1,18 @@
+import { useEffect } from "react";
 import { usePersona } from "../../context/PersonaContext.jsx";
 import { roadmaps } from "../../data/roadmapData.js";
+import { recordScoreBoost, getScoreBoost } from "../../lib/scoreProgress.js";
+import { TrendingUp } from "lucide-react";
 
 export default function Roadmap() {
   const { personaId } = usePersona();
   const roadmap = roadmaps[personaId];
+
+  useEffect(() => {
+    recordScoreBoost(personaId, "roadmap", 4);
+  }, [personaId]);
+
+  const boost = getScoreBoost(personaId);
 
   return (
     <div>
@@ -13,6 +22,12 @@ export default function Roadmap() {
         <p className="neo-text mt-2">
           AI-generated {roadmap.duration} improvement plan tailored to your skill gaps.
         </p>
+        {boost > 0 && (
+          <p className="neo-good mt-3 inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium">
+            <TrendingUp size={16} />
+            Following this roadmap adds +{boost}% to your employability score
+          </p>
+        )}
       </div>
 
       <div className="neo-card rounded-2xl p-8">

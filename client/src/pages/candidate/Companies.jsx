@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Search,
@@ -13,6 +13,8 @@ import {
 import { companies, industries, getCompanyJobs } from "../../data/companiesData.js";
 import PageHeader from "../../components/ui/PageHeader.jsx";
 import EmptyState from "../../components/ui/EmptyState.jsx";
+import { usePagination } from "../../hooks/usePagination.js";
+import Pagination from "../../components/ui/Pagination.jsx";
 
 export default function Companies() {
   const [query, setQuery] = useState("");
@@ -35,6 +37,13 @@ export default function Companies() {
   }, [query, industry, hiringOnly]);
 
   const featured = companies.filter((c) => c.featured).slice(0, 3);
+
+  const { page, totalPages, paged, goToPage, showingFrom, showingTo, totalItems } =
+    usePagination(filtered, 9);
+
+  useEffect(() => {
+    goToPage(1);
+  }, [query, industry, hiringOnly]);
 
   return (
     <div>
@@ -143,8 +152,9 @@ export default function Companies() {
           }
         />
       ) : (
+        <>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((c) => {
+          {paged.map((c) => {
             const openRoles = getCompanyJobs(c.name).length;
             return (
               <Link
@@ -191,6 +201,17 @@ export default function Companies() {
             );
           })}
         </div>
+        <div className="neo-card mt-6 rounded-2xl p-4">
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPageChange={goToPage}
+            showingFrom={showingFrom}
+            showingTo={showingTo}
+            totalItems={totalItems}
+          />
+        </div>
+        </>
       )}
     </div>
   );

@@ -7,6 +7,8 @@
  * so the score is always explainable, never a black box.
  */
 
+import { getScoreBoost } from "../lib/scoreProgress.js";
+
 export const scoreDimensions = [
   { key: "skills", label: "Skills Match", weight: 0.3, icon: "Target" },
   { key: "portfolio", label: "Portfolio Strength", weight: 0.25, icon: "FolderGit2" },
@@ -45,12 +47,16 @@ const DEFAULT = {
 /** Weighted overall score (0–100) plus the per-dimension breakdown. */
 export function getEmployabilityScore(personaId) {
   const dims = employabilityScores[personaId] || DEFAULT;
+  const boost = getScoreBoost(personaId);
   const total = scoreDimensions.reduce(
     (sum, d) => sum + (dims[d.key]?.value || 0) * d.weight,
     0
   );
+  const boostedTotal = Math.min(99, Math.round(total) + boost);
   return {
-    total: Math.round(total),
+    total: boostedTotal,
+    baseTotal: Math.round(total),
+    boost,
     dimensions: scoreDimensions.map((d) => ({
       ...d,
       value: dims[d.key]?.value || 0,

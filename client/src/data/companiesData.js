@@ -6,6 +6,7 @@
  */
 
 import { jobs } from "./jobsData.js";
+import { generateExtraCompanies } from "./mockDataExpand.js";
 
 export const industries = [
   "All",
@@ -19,7 +20,7 @@ export const industries = [
   "Healthtech",
 ];
 
-export const companies = [
+const baseCompanies = [
   {
     id: "c1",
     name: "TechNova Solutions",
@@ -249,6 +250,8 @@ export const companies = [
     benefits: ["Certification budget", "Medical coverage", "Hybrid work", "Performance bonus"],
   },
 ];
+
+export const companies = [...baseCompanies, ...generateExtraCompanies(13, 10)];
 
 /** Jobs posted by a given company (matched by company name). */
 export function getCompanyJobs(companyName) {

@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { Calendar, FileText, StickyNote, Search } from "lucide-react";
 import { usePersona } from "../../context/PersonaContext.jsx";
 import { applications, applicationStages } from "../../data/applicationsData.js";
+import { usePagination } from "../../hooks/usePagination.js";
+import Pagination from "../../components/ui/Pagination.jsx";
 
 const statusColors = {
   Applied: "neo-soft",
@@ -25,11 +27,14 @@ export default function Applications() {
 
   const filtered = filter === "All" ? apps : apps.filter((a) => a.status === filter);
 
+  const { page, totalPages, paged, goToPage, showingFrom, showingTo, totalItems } =
+    usePagination(filtered, 6);
+
   return (
     <div>
       <div className="mb-8">
         <p className="text-sm font-semibold text-amber-300">Application Tracker</p>
-        <h1 className="neo-title text-4xl font-bold">My Applications</h1>
+        <h1 className="neo-title text-3xl font-bold sm:text-4xl">My Applications</h1>
         <p className="neo-text mt-2">Track every application from submission to offer.</p>
       </div>
 
@@ -62,7 +67,7 @@ export default function Applications() {
 
       {/* application list */}
       <div className="space-y-4">
-        {filtered.map((app) => (
+        {paged.map((app) => (
           <div key={app.id} className="neo-card rounded-2xl p-6">
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-start gap-4">
@@ -121,6 +126,19 @@ export default function Applications() {
             <Link to="/jobs" className="neo-primary mt-4 rounded-xl px-5 py-2.5 text-sm font-semibold">
               Browse Jobs
             </Link>
+          </div>
+        )}
+
+        {filtered.length > 0 && (
+          <div className="neo-card rounded-2xl p-4">
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              onPageChange={goToPage}
+              showingFrom={showingFrom}
+              showingTo={showingTo}
+              totalItems={totalItems}
+            />
           </div>
         )}
       </div>

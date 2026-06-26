@@ -2,10 +2,10 @@ import { AlertTriangle, BriefcaseBusiness, GraduationCap, Target } from "lucide-
 import { universityInsights } from "../../data/universityData.js";
 
 const barColors = {
-  amber: "from-amber-500 to-amber-300",
-  blue: "from-blue-500 to-blue-300",
-  emerald: "from-emerald-500 to-emerald-300",
-  rose: "from-rose-500 to-rose-300",
+  amber: "neo-progress-fill",
+  blue: "neo-progress-fill-stone",
+  emerald: "neo-progress-fill-emerald",
+  rose: "neo-progress-fill-rose",
 };
 
 const severityColors = {
@@ -34,9 +34,9 @@ export default function EmployabilityTracker() {
             </div>
             <h3 className="neo-title text-4xl font-bold">{band.count}</h3>
             <p className="neo-muted mt-1 text-xs">Readiness score {band.range}</p>
-            <div className="neo-progress-track mt-4 h-2 rounded-full">
+            <div className="neo-progress-track mt-4 h-2 overflow-hidden rounded-full">
               <div
-                className={`h-2 rounded-full bg-gradient-to-r ${barColors[band.color]}`}
+                className={`h-full rounded-full ${barColors[band.color]}`}
                 style={{ width: `${(band.count / universityInsights.totalStudents) * 100}%` }}
               />
             </div>
@@ -57,8 +57,8 @@ export default function EmployabilityTracker() {
                   <p className="neo-text text-sm font-medium">{stage.stage}</p>
                   <p className="neo-muted text-xs">{stage.count} students · {stage.rate}%</p>
                 </div>
-                <div className="neo-progress-track h-3 rounded-full">
-                  <div className="h-3 rounded-full bg-gradient-to-r from-amber-500 to-amber-300" style={{ width: `${stage.rate}%` }} />
+                <div className="neo-progress-track h-3 overflow-hidden rounded-full">
+                  <div className="neo-progress-fill h-full rounded-full" style={{ width: `${stage.rate}%` }} />
                 </div>
               </div>
             ))}

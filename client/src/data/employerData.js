@@ -1,4 +1,5 @@
 import { getCompanyFeedByName } from "./companyFeedData.js";
+import { generateExtraPipelineCandidates } from "./mockDataExpand.js";
 
 /* ─── Company Profile ─── */
 export const companyProfile = {
@@ -28,6 +29,7 @@ export const pipelineCandidates = [
   { id: "p8", name: "Priya Sharma", role: "Full Stack Developer Intern", stage: "Hired", fitScore: 91, appliedDate: "Jun 10, 2026", avatar: "PS", source: "CareerSync AI" },
   { id: "p9", name: "Ahmad Faiz", role: "Junior Data Analyst", stage: "Applied", fitScore: 58, appliedDate: "Jun 23, 2026", avatar: "AF", source: "LinkedIn" },
   { id: "p10", name: "Mei Xin Lee", role: "Frontend Developer Intern", stage: "Interview", fitScore: 76, appliedDate: "Jun 19, 2026", avatar: "ML", source: "University Referral" },
+  ...generateExtraPipelineCandidates(11, 35),
 ];
 
 /* ─── Talent Discovery Pool ─── */
@@ -151,6 +153,55 @@ export const employerJobs = [
     ],
   },
 ];
+
+/** Maps demo pipeline/talent names to candidate persona IDs for shared employability data. */
+export const candidatePersonaMap = {
+  "Sarah Tan": "sarah",
+  "Jason Lim": "jason",
+  "Aina Rahman": "aina",
+};
+
+export function resolvePersonaId(name) {
+  return candidatePersonaMap[name] ?? null;
+}
+
+export function buildGenericFitReport({ name, fitScore, role }) {
+  const hiringRecommendation =
+    fitScore >= 80 ? "recommend" : fitScore >= 60 ? "consider" : "decline";
+  const growthPotential =
+    fitScore >= 85
+      ? "Very High — Strong portfolio and skill alignment for the role"
+      : fitScore >= 70
+        ? "High — Solid foundation with addressable gaps"
+        : fitScore >= 55
+          ? "Moderate — May need mentoring before full role readiness"
+          : "Low — Significant skill or experience gaps for this role";
+
+  return {
+    fitScore,
+    summary: `${name} scores ${fitScore}% against the ${role} requirements. CareerSync AI weighed portfolio evidence, skill coverage, and growth signals to produce this explainable fit assessment.`,
+    matchedRequirements: ["Core role skills partially aligned", "Academic background relevant", "Portfolio or project evidence on file"],
+    missingRequirements:
+      fitScore >= 75
+        ? ["Advanced tooling or deployment workflow", "Production-scale project evidence"]
+        : ["Several preferred technical skills", "Stronger portfolio depth", "Interview readiness signals"],
+    strengths: [
+      `${fitScore}% overall alignment with role requirements`,
+      "Profile data available for structured screening",
+    ],
+    risks:
+      fitScore >= 70
+        ? ["Some preferred skills not yet demonstrated in projects"]
+        : ["Below target fit threshold for competitive shortlisting", "Limited evidence on advanced requirements"],
+    growthPotential,
+    hiringRecommendation,
+    interviewSuggestions: [
+      "Walk through a recent project and their specific contributions",
+      "Probe depth on the top missing technical requirements",
+      "Assess learning velocity and communication clarity",
+    ],
+  };
+}
 
 export const fitReports = {
   sarah: {

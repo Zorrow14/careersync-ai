@@ -1,4 +1,4 @@
-import { Download, FileSpreadsheet, FileText, RefreshCcw } from "lucide-react";
+import { Download, FileSpreadsheet, FileText, RefreshCcw, TrendingUp, Globe, Users } from "lucide-react";
 import { universityInsights } from "../../data/universityData.js";
 
 const reportIcons = {
@@ -14,13 +14,62 @@ const statusColors = {
 
 export default function Reports() {
   const reports = universityInsights.reports;
+  const outcomes = universityInsights.outcomeMetrics;
+  const sdgMetrics = universityInsights.sdgMetrics;
 
   return (
     <div>
       <div className="mb-8">
         <p className="text-sm font-semibold text-amber-300">University Portal</p>
-        <h1 className="neo-title text-4xl font-bold">Reports</h1>
-        <p className="neo-text mt-2">Downloadable summaries and analytics exports for university stakeholders.</p>
+        <h1 className="neo-title text-3xl font-bold sm:text-4xl">Reports & Outcomes</h1>
+        <p className="neo-text mt-2">
+          Lifelong outcome tracking, graduate employment metrics, and SDG-aligned impact reports.
+        </p>
+      </div>
+
+      {/* Lifelong outcome loop */}
+      <div className="neo-card mb-8 rounded-2xl p-6">
+        <div className="mb-5 flex items-center gap-3">
+          <TrendingUp size={22} className="text-amber-300" />
+          <h2 className="neo-title text-xl font-bold">Lifelong Outcome Loop</h2>
+        </div>
+        <p className="neo-muted mb-5 text-sm">
+          {outcomes.lifelongTracking} — universities keep visibility after students graduate.
+        </p>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          {[
+            { label: "Employed (6 mo.)", value: `${outcomes.employedWithin6MonthsRate}%`, detail: `${outcomes.employedWithin6Months} graduates` },
+            { label: "Intern → Full-time", value: `${outcomes.internshipConversionRate}%`, detail: `${outcomes.internshipToFullTime} conversions` },
+            { label: "Postgrad study", value: "12%", detail: `${outcomes.postgraduateStudy} students` },
+            { label: "Actively seeking", value: "22%", detail: `${outcomes.activelySeeking} students` },
+          ].map((item) => (
+            <div key={item.label} className="neo-soft rounded-xl p-4">
+              <p className="neo-muted text-xs">{item.label}</p>
+              <p className="neo-title mt-1 text-2xl font-bold">{item.value}</p>
+              <p className="neo-muted mt-1 text-[11px]">{item.detail}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* SDG impact metrics */}
+      <div className="neo-card mb-8 rounded-2xl p-6">
+        <div className="mb-5 flex items-center gap-3">
+          <Globe size={22} className="text-emerald-300" />
+          <h2 className="neo-title text-xl font-bold">SDG Impact Metrics</h2>
+        </div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {sdgMetrics.map((m) => (
+            <div key={`${m.code}-${m.metric}`} className="neo-soft rounded-xl p-4">
+              <span className="rounded-lg bg-emerald-500/15 px-2 py-0.5 text-xs font-bold text-emerald-300">
+                {m.code}
+              </span>
+              <p className="neo-title mt-2 font-semibold">{m.metric}</p>
+              <p className="neo-gradient-text mt-1 text-2xl font-bold">{m.value}</p>
+              <p className="neo-muted mt-2 text-xs leading-5">{m.detail}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="mb-8 grid grid-cols-1 gap-5 md:grid-cols-3">
@@ -33,8 +82,13 @@ export default function Reports() {
           <h3 className="neo-title mt-3 text-4xl font-bold">PDF / CSV / XLSX</h3>
         </div>
         <div className="neo-card rounded-2xl p-6">
-          <p className="neo-muted text-sm font-medium">Latest Period</p>
-          <h3 className="neo-title mt-3 text-4xl font-bold">June 2026</h3>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="neo-muted text-sm font-medium">Alumni Tracked</p>
+              <h3 className="neo-title mt-3 text-4xl font-bold">156</h3>
+            </div>
+            <Users size={28} className="text-amber-300" />
+          </div>
         </div>
       </div>
 
@@ -88,8 +142,9 @@ export default function Reports() {
                 onClick={() => {
                   if (ready) alert(`${report.title} download started. This is a mock prototype action.`);
                 }}
-                className={`flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition ${ready ? "neo-primary" : "neo-secondary cursor-not-allowed opacity-60"
-                  }`}
+                className={`flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition ${
+                  ready ? "neo-primary" : "neo-secondary cursor-not-allowed opacity-60"
+                }`}
               >
                 {ready ? <Download size={17} /> : <RefreshCcw size={17} />}
                 {ready ? "Download Report" : "Generating Report"}

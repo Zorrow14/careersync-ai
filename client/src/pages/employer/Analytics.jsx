@@ -44,11 +44,8 @@ export default function Analytics() {
                   <span className="neo-text font-medium">{s.skill}</span>
                   <span className="neo-muted">{s.demand}%</span>
                 </div>
-                <div className="neo-progress-track h-2.5 rounded-full">
-                  <div
-                    className="h-2.5 rounded-full bg-gradient-to-r from-amber-500 to-blue-400"
-                    style={{ width: `${s.demand}%` }}
-                  />
+                <div className="neo-progress-track h-2.5 overflow-hidden rounded-full">
+                  <div className="neo-progress-fill-alt h-full rounded-full" style={{ width: `${s.demand}%` }} />
                 </div>
               </div>
             ))}
@@ -66,11 +63,8 @@ export default function Analytics() {
                   <p className="neo-muted text-xs">{s.count} applications</p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="neo-progress-track h-2 w-24 rounded-full">
-                    <div
-                      className="h-2 rounded-full bg-gradient-to-r from-amber-500 to-blue-400"
-                      style={{ width: `${s.percentage}%` }}
-                    />
+                  <div className="neo-progress-track h-2 w-24 overflow-hidden rounded-full">
+                    <div className="neo-progress-fill-alt h-full rounded-full" style={{ width: `${s.percentage}%` }} />
                   </div>
                   <span className="text-sm font-bold text-amber-300">{s.percentage}%</span>
                 </div>
@@ -89,11 +83,8 @@ export default function Analytics() {
                   <span className="neo-text font-medium">{s.stage}</span>
                   <span className="font-bold text-amber-300">{s.rate}%</span>
                 </div>
-                <div className="neo-progress-track h-3 rounded-full">
-                  <div
-                    className="h-3 rounded-full bg-gradient-to-r from-amber-500 to-emerald-400"
-                    style={{ width: `${s.rate}%` }}
-                  />
+                <div className="neo-progress-track h-3 overflow-hidden rounded-full">
+                  <div className="neo-progress-fill-emerald h-full rounded-full" style={{ width: `${s.rate}%` }} />
                 </div>
               </div>
             ))}

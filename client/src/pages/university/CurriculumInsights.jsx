@@ -64,8 +64,11 @@ export default function CurriculumInsights() {
                   </p>
                 </div>
                 <div className="neo-progress-track relative h-3 overflow-hidden rounded-full">
-                  <div className="h-3 rounded-full bg-blue-500/70" style={{ width: `${gap.currentCoverage}%` }} />
-                  <div className="absolute left-0 top-0 h-3 rounded-full bg-amber-400/40" style={{ width: `${gap.recommendedCoverage}%` }} />
+                  <div className="neo-progress-fill-stone h-full rounded-full" style={{ width: `${gap.currentCoverage}%` }} />
+                  <div
+                    className="absolute left-0 top-0 h-full rounded-full bg-amber-400/40"
+                    style={{ width: `${gap.recommendedCoverage}%` }}
+                  />
                 </div>
               </div>
             ))}

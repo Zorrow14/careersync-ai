@@ -5,15 +5,19 @@ import {
   GraduationCap,
   Briefcase,
   Star,
+  X,
+  Sparkles,
 } from "lucide-react";
 import { talentPool } from "../../data/employerData.js";
 import DropdownSelect from "../../components/ui/DropdownSelect.jsx";
+import FitReportPanel from "../../components/employer/FitReportPanel.jsx";
 
 export default function TalentDiscovery() {
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("All");
   const [sortBy, setSortBy] = useState("fitScore");
   const [minScore, setMinScore] = useState(0);
+  const [reportCandidate, setReportCandidate] = useState(null);
   const roleOptions = [
     { value: "All", label: "All roles", description: "Show every candidate" },
     { value: "Frontend Developer", label: "Frontend Developer", description: "React and UI focused" },
@@ -50,7 +54,7 @@ export default function TalentDiscovery() {
         <p className="text-sm font-semibold text-amber-300">Talent Discovery</p>
         <h1 className="neo-title text-4xl font-bold">Find Candidates</h1>
         <p className="neo-text mt-2">
-          Search, filter, and discover top talent with AI match scores.
+          Search, filter, and discover top talent with explainable AI fit reports.
         </p>
       </div>
 
@@ -143,8 +147,21 @@ export default function TalentDiscovery() {
             </div>
 
             <div className="mt-4 flex gap-2">
-              <button className="neo-primary flex-1 rounded-xl py-2 text-xs font-semibold">View Profile</button>
-              <button className="neo-secondary flex items-center justify-center gap-1 rounded-xl px-3 py-2 text-xs font-semibold">
+              <button
+                type="button"
+                onClick={() =>
+                  setReportCandidate({
+                    name: c.name,
+                    fitScore: c.fitScore,
+                    role: c.targetRole,
+                  })
+                }
+                className="neo-primary flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl py-2 text-xs font-semibold"
+              >
+                <Sparkles size={13} />
+                Fit Report
+              </button>
+              <button type="button" className="neo-secondary flex cursor-pointer items-center justify-center gap-1 rounded-xl px-3 py-2 text-xs font-semibold">
                 <Star size={13} /> Shortlist
               </button>
             </div>
@@ -156,6 +173,40 @@ export default function TalentDiscovery() {
         <div className="neo-card flex flex-col items-center justify-center rounded-2xl p-16 text-center">
           <Search size={36} className="neo-muted" />
           <p className="neo-muted mt-4 text-sm">No candidates match your filters. Try broadening your search.</p>
+        </div>
+      )}
+
+      {reportCandidate && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="fit-report-title"
+          onClick={() => setReportCandidate(null)}
+        >
+          <div
+            className="neo-card max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-6 flex items-start justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold text-amber-300">Explainable Fit Report</p>
+                <h2 id="fit-report-title" className="neo-title text-xl font-bold">
+                  {reportCandidate.name}
+                </h2>
+                <p className="neo-muted text-sm">{reportCandidate.role}</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setReportCandidate(null)}
+                className="neo-muted cursor-pointer rounded-lg p-2 hover:bg-white/5 hover:text-amber-300"
+                aria-label="Close fit report"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <FitReportPanel candidate={reportCandidate} />
+          </div>
         </div>
       )}
     </div>

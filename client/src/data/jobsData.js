@@ -4,7 +4,9 @@
  * keyed by personaId, with a sensible default.
  */
 
-export const jobs = [
+import { generateExtraJobs } from "./mockDataExpand.js";
+
+const baseJobs = [
   {
     id: "j1",
     title: "Frontend Developer Intern",
@@ -511,6 +513,8 @@ export const jobs = [
   },
 ];
 
-export function getJobMatch(job) {
-  return job.match.sarah || job.match.default;
+export const jobs = [...baseJobs, ...generateExtraJobs(19, 42)];
+
+export function getJobMatch(job, personaId = "sarah") {
+  return job.match[personaId] || job.match.default;
 }

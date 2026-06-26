@@ -30,8 +30,8 @@ export default function IndustryTrends() {
                     {role.growth}
                   </span>
                 </div>
-                <div className="neo-progress-track h-3 rounded-full">
-                  <div className="h-3 rounded-full bg-gradient-to-r from-amber-500 to-amber-300" style={{ width: `${role.demand}%` }} />
+                <div className="neo-progress-track h-3 overflow-hidden rounded-full">
+                  <div className="neo-progress-fill h-full rounded-full" style={{ width: `${role.demand}%` }} />
                 </div>
               </div>
             ))}
@@ -51,8 +51,8 @@ export default function IndustryTrends() {
                   <span className="text-xs font-semibold text-amber-300">{tech.salaryLift}</span>
                 </div>
                 <p className="neo-muted mb-2 text-xs">Demand index</p>
-                <div className="neo-progress-track h-2 rounded-full">
-                  <div className="h-2 rounded-full bg-blue-400" style={{ width: `${tech.demand}%` }} />
+                <div className="neo-progress-track h-2 overflow-hidden rounded-full">
+                  <div className="neo-progress-fill-stone h-full rounded-full" style={{ width: `${tech.demand}%` }} />
                 </div>
               </div>
             ))}

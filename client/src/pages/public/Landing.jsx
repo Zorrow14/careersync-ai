@@ -92,6 +92,18 @@ export default function Landing({ lightMode, setLightMode }) {
     <div className="neo-page min-h-screen">
       <Navbar lightMode={lightMode} setLightMode={setLightMode} />
 
+      {/* ─── Problem statement ─── */}
+      <section className="mx-auto max-w-4xl px-6 pt-10 text-center sm:px-8">
+        <p className="text-sm font-semibold text-rose-300">The problem</p>
+        <h2 className="neo-title mt-3 text-2xl font-bold leading-snug sm:text-3xl">
+          Students apply blind. Employers screen by keywords. Universities lose visibility after graduation.
+        </h2>
+        <p className="neo-text mx-auto mt-4 max-w-2xl text-sm leading-7 sm:text-base">
+          CareerSync AI connects all three sides with one explainable employability score — so every decision
+          is based on evidence, not guesswork.
+        </p>
+      </section>
+
       {/* ─── Hero ─── */}
       <section
         id="demo"
@@ -176,11 +188,8 @@ export default function Landing({ lightMode, setLightMode }) {
                     <span className="neo-text font-medium">{skill}</span>
                     <span className="neo-muted">{percent}</span>
                   </div>
-                  <div className="neo-progress-track h-3 rounded-full">
-                    <div
-                      className="h-3 rounded-full bg-gradient-to-r from-amber-500 to-blue-400"
-                      style={{ width: percent }}
-                    />
+                  <div className="neo-progress-track h-3 overflow-hidden rounded-full">
+                    <div className="neo-progress-fill-alt h-full rounded-full" style={{ width: percent }} />
                   </div>
                 </div>
               ))}
@@ -264,6 +273,72 @@ export default function Landing({ lightMode, setLightMode }) {
         </div>
       </section>
 
+      {/* ─── Career OS module map ─── */}
+      <section id="modules" className="mx-auto max-w-7xl px-6 pb-16 sm:px-8 sm:pb-20">
+        <div className="mb-8 text-center">
+          <p className="text-sm font-semibold text-amber-300">Career OS · Starter Kit alignment</p>
+          <h2 className="neo-title mt-2 text-3xl font-bold">Our challenge module track</h2>
+          <p className="neo-text mx-auto mt-3 max-w-2xl text-sm">
+            One signature innovation — Explainable Employability OS — mapped to official hackathon modules.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+          {[
+            {
+              audience: "Candidates",
+              modules: ["Career Path Navigator", "AI Career Coach", "Mock Interview Practice", "JD Analyzer"],
+              color: "text-amber-300",
+            },
+            {
+              audience: "Employers",
+              modules: ["Smart Talent Matching", "Explainable Fit Report", "Hiring Pipeline", "Talent Analytics"],
+              color: "text-purple-300",
+            },
+            {
+              audience: "Universities",
+              modules: ["Adaptive Readiness Profile", "Future-State Curriculum Engine", "Cohort Insights", "Lifelong Outcome Loop"],
+              color: "text-blue-300",
+            },
+          ].map((col) => (
+            <div key={col.audience} className="neo-card rounded-2xl p-6">
+              <p className={`mb-3 text-xs font-bold uppercase tracking-wider ${col.color}`}>{col.audience}</p>
+              <ul className="space-y-2">
+                {col.modules.map((m) => (
+                  <li key={m} className="neo-text flex items-center gap-2 text-sm">
+                    <CheckCircle2 size={14} className="shrink-0 text-emerald-300" /> {m}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── Core loop ─── */}
+      <section className="mx-auto max-w-7xl px-6 pb-16 sm:px-8">
+        <div className="neo-card rounded-3xl p-8">
+          <div className="mb-6 text-center">
+            <p className="text-sm font-semibold text-amber-300">Three-sided core loop</p>
+            <h2 className="neo-title mt-2 text-2xl font-bold">One score, three views</h2>
+          </div>
+          <div className="flex flex-col items-center justify-center gap-3 text-center text-sm font-medium sm:flex-row sm:flex-wrap sm:gap-2">
+            {[
+              "Discover jobs",
+              "Analyze fit",
+              "Close skill gaps",
+              "Apply",
+              "Employer fit report",
+              "University cohort gap",
+            ].map((step, i, arr) => (
+              <span key={step} className="flex items-center gap-2">
+                <span className="neo-soft rounded-full px-4 py-2">{step}</span>
+                {i < arr.length - 1 && <ArrowRight size={14} className="neo-muted hidden sm:block" />}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ─── Workflow ─── */}
       <section id="workflow" className="mx-auto max-w-7xl px-6 pb-16 sm:px-8 sm:pb-20">
         <div className="neo-card rounded-3xl p-8">
@@ -319,6 +394,31 @@ export default function Landing({ lightMode, setLightMode }) {
             </motion.div>
           );
         })}
+      </section>
+
+      {/* ─── Career programs (monetisation placeholder) ─── */}
+      <section className="mx-auto max-w-7xl px-6 pb-16 sm:px-8">
+        <div className="neo-card rounded-2xl border border-dashed border-amber-500/25 p-8">
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-300">
+                Sponsored · Demo placement
+              </p>
+              <h2 className="neo-title mt-2 text-2xl font-bold">Career Programs & Bootcamps</h2>
+              <p className="neo-text mt-2 max-w-xl text-sm leading-6">
+                Reserved neutral space for university career fairs, bootcamp partners, and employer branding —
+                monetisation-ready without distracting from the core product demo.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {["AWS Educate", "Google Career Certificates", "Talentbank Partners"].map((p) => (
+                <span key={p} className="neo-secondary rounded-xl px-4 py-2 text-xs font-semibold">
+                  {p}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* ─── SDG alignment ─── */}

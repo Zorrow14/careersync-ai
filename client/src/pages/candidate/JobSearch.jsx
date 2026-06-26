@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Search,
@@ -13,7 +13,10 @@ import {
 } from "lucide-react";
 import { usePersona } from "../../context/PersonaContext.jsx";
 import { jobs, getJobMatch } from "../../data/jobsData.js";
+import { companies } from "../../data/companiesData.js";
 import { savedJobs as savedJobsData } from "../../data/applicationsData.js";
+import { usePagination } from "../../hooks/usePagination.js";
+import Pagination from "../../components/ui/Pagination.jsx";
 
 const workModes = ["All", "Remote", "Hybrid", "On-site"];
 const types = ["All", "Internship", "Full-time"];
@@ -69,11 +72,20 @@ export default function JobSearch() {
     })
     .sort((a, b) => b.match.score - a.match.score);
 
+  const { page, totalPages, paged, goToPage, showingFrom, showingTo, totalItems } =
+    usePagination(filtered, 8);
+
+  useEffect(() => {
+    goToPage(1);
+  }, [search, workMode, type, minMatch, personaId]);
+
+  const featuredEmployer = companies.find((c) => c.featured) || companies[0];
+
   return (
     <div>
       <div className="mb-8">
         <p className="text-sm font-semibold text-amber-300">Job Search</p>
-        <h1 className="neo-title text-4xl font-bold">Find Your Next Role</h1>
+        <h1 className="neo-title text-3xl font-bold sm:text-4xl">Find Your Next Role</h1>
         <p className="neo-text mt-2">
           AI-matched opportunities ranked by how well they fit your profile.
         </p>
@@ -129,9 +141,35 @@ export default function JobSearch() {
         )}
       </div>
 
+      {/* featured employer (sponsored placeholder) */}
+      {featuredEmployer && (
+        <div className="neo-card mb-6 rounded-2xl border border-amber-500/20 p-5">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-4">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-500 text-sm font-bold text-slate-950">
+                {featuredEmployer.logo}
+              </span>
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-300">
+                  Sponsored · Featured Employer
+                </p>
+                <h2 className="neo-title text-lg font-bold">{featuredEmployer.name}</h2>
+                <p className="neo-muted text-sm">{featuredEmployer.tagline}</p>
+              </div>
+            </div>
+            <Link
+              to={`/companies/${featuredEmployer.id}`}
+              className="neo-primary shrink-0 rounded-xl px-5 py-2.5 text-center text-sm font-semibold"
+            >
+              View Company
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* job cards */}
       <div className="space-y-4">
-        {filtered.map(({ job, match }) => (
+        {paged.map(({ job, match }) => (
           <div key={job.id} className="neo-card rounded-2xl p-6">
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-start gap-4">
@@ -166,20 +204,20 @@ export default function JobSearch() {
               ))}
             </div>
 
-            <div className="mt-5 flex items-center gap-3">
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <button
                 onClick={() => setApplyJob(job)}
                 disabled={applied.has(job.id)}
-                className="neo-primary rounded-xl px-5 py-2.5 text-sm font-semibold disabled:opacity-50"
+                className="neo-primary w-full rounded-xl px-5 py-2.5 text-sm font-semibold disabled:opacity-50 sm:w-auto"
               >
                 {applied.has(job.id) ? "Applied" : "Apply Now"}
               </button>
-              <Link to={`/jobs/${job.id}`} className="neo-secondary rounded-xl px-5 py-2.5 text-sm font-semibold">
+              <Link to={`/jobs/${job.id}`} className="neo-secondary w-full rounded-xl px-5 py-2.5 text-center text-sm font-semibold sm:w-auto">
                 View Details
               </Link>
               <button
                 onClick={() => toggleSave(job.id)}
-                className="neo-secondary ml-auto flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold"
+                className="neo-secondary flex w-full items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold sm:ml-auto sm:w-auto"
               >
                 {saved.has(job.id) ? <BookmarkCheck size={16} className="text-amber-300" /> : <Bookmark size={16} />}
                 {saved.has(job.id) ? "Saved" : "Save"}
@@ -192,6 +230,19 @@ export default function JobSearch() {
           <div className="neo-card flex flex-col items-center justify-center rounded-2xl p-16 text-center">
             <Search size={36} className="neo-muted" />
             <p className="neo-muted mt-4 text-sm">No jobs match your filters. Try broadening your search.</p>
+          </div>
+        )}
+
+        {filtered.length > 0 && (
+          <div className="neo-card rounded-2xl p-4">
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              onPageChange={goToPage}
+              showingFrom={showingFrom}
+              showingTo={showingTo}
+              totalItems={totalItems}
+            />
           </div>
         )}
       </div>

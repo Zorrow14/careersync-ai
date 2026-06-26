@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, ChevronDown, LogOut } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth.js";
+import PersonaSwitcher from "../ui/PersonaSwitcher.jsx";
 import NavShell, { NavLogo, ThemeToggle } from "./NavShell.jsx";
 import {
   candidateMainLinks,
@@ -100,6 +101,12 @@ export default function AppNavbar({ lightMode, setLightMode }) {
         {showAiDropdown && (
           <>
             <p className="neo-muted mb-1 mt-3 px-3 text-[11px] font-semibold uppercase tracking-wider">
+              Demo Profile
+            </p>
+            <div className="px-3 pb-2">
+              <PersonaSwitcher compact />
+            </div>
+            <p className="neo-muted mb-1 mt-2 px-3 text-[11px] font-semibold uppercase tracking-wider">
               AI Tools
             </p>
             {candidateAiLinks.map((item) => (
@@ -205,6 +212,11 @@ export default function AppNavbar({ lightMode, setLightMode }) {
 
           {/* Right actions */}
           <div className="ml-auto flex items-center gap-2">
+            {showAiDropdown && (
+              <div className="hidden lg:block">
+                <PersonaSwitcher />
+              </div>
+            )}
             <ThemeToggle lightMode={lightMode} setLightMode={setLightMode} className="hidden sm:inline-flex" />
 
             <div className="relative z-50 hidden sm:block" ref={userRef}>

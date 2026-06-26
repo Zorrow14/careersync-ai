@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { Mic, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Mic, CheckCircle2, AlertCircle, Loader2, TrendingUp } from "lucide-react";
 import { usePersona } from "../../context/PersonaContext.jsx";
 import { interviewSets, readinessDimensions } from "../../data/interviewQuestions.js";
+import { recordScoreBoost, getScoreBoost } from "../../lib/scoreProgress.js";
 
 export default function MockInterview() {
   const { personaId } = usePersona();
@@ -12,6 +13,7 @@ export default function MockInterview() {
   const [answer, setAnswer] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [evaluating, setEvaluating] = useState(false);
+  const [scoreBoost, setScoreBoost] = useState(() => getScoreBoost(personaId));
 
   const question = interview.questions[currentQ];
 
@@ -22,6 +24,8 @@ export default function MockInterview() {
     setTimeout(() => {
       setEvaluating(false);
       setSubmitted(true);
+      const boost = recordScoreBoost(personaId, "mockInterview", 5);
+      setScoreBoost(boost);
     }, 1200);
   }
 
@@ -37,10 +41,16 @@ export default function MockInterview() {
     <div>
       <div className="mb-8">
         <p className="text-sm font-semibold text-amber-300">AI Mock Interview</p>
-        <h1 className="neo-title text-4xl font-bold">Practice Interview</h1>
+        <h1 className="neo-title text-3xl font-bold sm:text-4xl">Practice Interview</h1>
         <p className="neo-text mt-2">
           Role-based questions and AI feedback for {interview.targetRole}.
         </p>
+        {scoreBoost > 0 && (
+          <p className="neo-good mt-3 inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium">
+            <TrendingUp size={16} />
+            Employability score boosted +{scoreBoost}% from completed AI practice
+          </p>
+        )}
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -156,11 +166,8 @@ export default function MockInterview() {
                       <span className="neo-text">{label}</span>
                       <span className="neo-muted">{score}%</span>
                     </div>
-                    <div className="neo-progress-track h-2 rounded-full">
-                      <div
-                        className="h-2 rounded-full bg-gradient-to-r from-amber-500 to-blue-400"
-                        style={{ width: `${score}%` }}
-                      />
+                    <div className="neo-progress-track h-2 overflow-hidden rounded-full">
+                      <div className="neo-progress-fill-alt h-full rounded-full" style={{ width: `${score}%` }} />
                     </div>
                   </div>
                 ))}

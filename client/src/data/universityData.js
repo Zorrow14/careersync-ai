@@ -173,6 +173,23 @@ export const universityInsights = {
     ],
   },
 
+  outcomeMetrics: {
+    employedWithin6Months: 72,
+    employedWithin6MonthsRate: 46,
+    internshipToFullTime: 31,
+    internshipConversionRate: 20,
+    activelySeeking: 35,
+    postgraduateStudy: 18,
+    avgSalaryProgression: "+12% YoY",
+    lifelongTracking: "156 alumni tracked post-graduation",
+  },
+
+  sdgMetrics: [
+    { code: "SDG 4", metric: "Curriculum-market alignment score", value: "74%", detail: "Programs mapped to employer skill demand" },
+    { code: "SDG 8", metric: "Graduate employment within 6 months", value: "46%", detail: "Up from 38% baseline in 2024" },
+    { code: "SDG 8", metric: "Internship placement rate", value: "63%", detail: "91 students internship-ready this semester" },
+  ],
+
   reports: [
     {
       title: "Monthly Employability Summary",
