@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, ChevronDown, LogOut } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth.js";
+import { usePersona } from "../../context/PersonaContext.jsx";
 import PersonaSwitcher from "../ui/PersonaSwitcher.jsx";
 import NavShell, { NavLogo, ThemeToggle } from "./NavShell.jsx";
 import {
@@ -39,6 +40,7 @@ export default function AppNavbar({ lightMode, setLightMode }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, role, logout } = useAuth();
+  const { persona } = usePersona();
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [aiOpen, setAiOpen] = useState(false);
@@ -63,8 +65,14 @@ export default function AppNavbar({ lightMode, setLightMode }) {
 
   const showAiDropdown = role === "candidate";
   const aiActive = isAiToolsActive(location.pathname);
-  const displayName = user?.displayName || "Demo User";
-  const initial = displayName.charAt(0).toUpperCase();
+  const displayName =
+    role === "candidate" ? persona.name : user?.displayName || "Demo User";
+  const displaySubtitle =
+    role === "candidate" ? persona.targetRole : user?.email || null;
+  const initial =
+    role === "candidate"
+      ? persona.avatar
+      : displayName.charAt(0).toUpperCase();
 
   useEffect(() => {
     setMobileOpen(false);
@@ -229,15 +237,30 @@ export default function AppNavbar({ lightMode, setLightMode }) {
                 aria-expanded={userOpen}
                 className="neo-nav-icon-btn !w-auto cursor-pointer gap-2 rounded-full px-1.5 py-1.5 pr-3"
               >
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-500 text-xs font-bold text-slate-950">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-500 text-[10px] font-bold text-slate-950">
                   {initial}
                 </span>
-                <span className="neo-text max-w-[100px] truncate text-xs font-medium">{displayName}</span>
+                <span className="hidden min-w-0 text-left sm:block">
+                  <span className="neo-text block max-w-[100px] truncate text-xs font-medium leading-tight">
+                    {displayName}
+                  </span>
+                  {displaySubtitle && (
+                    <span className="neo-muted block max-w-[100px] truncate text-[10px] leading-tight">
+                      {displaySubtitle}
+                    </span>
+                  )}
+                </span>
               </button>
 
               {userOpen && (
                 <div className="neo-nav-dropdown absolute right-0 top-full z-50 mt-2 min-w-[180px] p-2">
-                  <p className="neo-muted mb-2 px-3 py-1 text-xs">{displayName}</p>
+                  <p className="neo-muted mb-0.5 px-3 py-1 text-xs font-semibold text-amber-300">
+                    {displayName}
+                  </p>
+                  {displaySubtitle && (
+                    <p className="neo-muted mb-2 px-3 pb-1 text-[11px]">{displaySubtitle}</p>
+                  )}
+                  {!displaySubtitle && <div className="mb-2" />}
                   <button
                     type="button"
                     onClick={handleLogout}
