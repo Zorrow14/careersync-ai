@@ -87,25 +87,29 @@ export default function ProfileSetup() {
         </Section>
       </div>
 
-      <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <Section icon={CheckCircle2} title="Portfolio Completion">
-          <div className="mb-3 flex items-center justify-between">
-            <span className="neo-muted text-xs font-medium">Completeness</span>
-            <span className="text-sm font-bold text-amber-300">{profile.completion}%</span>
+      <Section icon={CheckCircle2} title="Portfolio Completion" className="mb-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-[1fr_auto] md:items-end">
+          <div>
+            <div className="mb-3 flex items-center justify-between gap-4">
+              <span className="neo-muted text-xs font-medium">Completeness</span>
+              <span className="text-2xl font-bold tabular-nums text-amber-300">{profile.completion}%</span>
+            </div>
+            <ProgressBar value={profile.completion} size="lg" />
           </div>
-          <ProgressBar value={profile.completion} size="lg" />
           {completionSuggestions.length > 0 && (
-            <div className="mt-4 space-y-2">
-              <p className="neo-muted text-xs font-semibold uppercase">Suggestions</p>
-              {completionSuggestions.map((s) => (
-                <p key={s} className="neo-text flex items-center gap-2 text-sm">
-                  <Lightbulb size={14} className="text-amber-300" /> {s}
-                </p>
-              ))}
+            <div className="md:min-w-[14rem] md:border-l md:border-white/10 md:pl-6">
+              <p className="neo-muted text-xs font-semibold uppercase tracking-wide">Suggestions</p>
+              <div className="mt-3 space-y-2">
+                {completionSuggestions.map((s) => (
+                  <p key={s} className="neo-text flex items-center gap-2 text-sm">
+                    <Lightbulb size={14} className="shrink-0 text-amber-300" /> {s}
+                  </p>
+                ))}
+              </div>
             </div>
           )}
-        </Section>
-      </div>
+        </div>
+      </Section>
 
       {/* ─── AI Suggestions ─── */}
       <Section icon={Lightbulb} title="AI Recommendations">
