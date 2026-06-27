@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Search,
   SlidersHorizontal,
@@ -7,6 +8,7 @@ import {
   Star,
   X,
   Sparkles,
+  User,
 } from "lucide-react";
 import { talentPool, resolvePersonaId } from "../../data/employerData.js";
 import DropdownSelect from "../../components/ui/DropdownSelect.jsx";
@@ -125,7 +127,12 @@ export default function TalentDiscovery() {
                   {c.avatar}
                 </span>
                 <div>
-                  <p className="neo-title font-semibold">{c.name}</p>
+                  <Link
+                    to={`/employer/candidates/${c.id}`}
+                    className="neo-title font-semibold transition hover:text-amber-300"
+                  >
+                    {c.name}
+                  </Link>
                   <p className="neo-muted text-xs">{c.targetRole}</p>
                 </div>
               </div>
@@ -155,7 +162,14 @@ export default function TalentDiscovery() {
               )}
             </div>
 
-            <div className="mt-4 flex gap-2">
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Link
+                to={`/employer/candidates/${c.id}`}
+                className="neo-secondary flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl py-2 text-xs font-semibold"
+              >
+                <User size={13} />
+                View Profile
+              </Link>
               <button
                 type="button"
                 onClick={() =>

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   LayoutGrid,
   List,
@@ -8,8 +9,9 @@ import {
   MapPin,
   CheckCircle2,
   XCircle,
+  User,
 } from "lucide-react";
-import { pipelineCandidates, pipelineStages } from "../../data/employerData.js";
+import { pipelineCandidates, pipelineStages, resolvePersonaId } from "../../data/employerData.js";
 import PageHeader from "../../components/ui/PageHeader.jsx";
 import EmptyState from "../../components/ui/EmptyState.jsx";
 import PipelineFunnel, { stageIcons, stageAccent } from "../../components/pipeline/PipelineFunnel.jsx";
@@ -300,6 +302,14 @@ export default function Pipeline() {
                 </div>
               </div>
 
+              <Link
+                to={`/employer/candidates/${selected.id}`}
+                className="neo-secondary flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold"
+              >
+                <User size={15} />
+                View full profile
+              </Link>
+
               <div className="border-t border-white/10 pt-5">
                 <FitReportPanel
                   compact
@@ -307,6 +317,7 @@ export default function Pipeline() {
                     name: selected.name,
                     fitScore: selected.fitScore,
                     role: selected.role,
+                    personaId: resolvePersonaId(selected.name),
                   }}
                 />
               </div>

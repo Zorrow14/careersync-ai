@@ -37,6 +37,7 @@ import EmployerFeed from "./pages/employer/Feed";
 import EmployerJobs from "./pages/employer/Jobs";
 import TalentDiscovery from "./pages/employer/TalentDiscovery";
 import EmployerPipeline from "./pages/employer/Pipeline";
+import EmployerCandidateProfile from "./pages/employer/CandidateProfile";
 import EmployerAnalytics from "./pages/employer/Analytics";
 
 // University
@@ -277,6 +278,16 @@ export default function App() {
                   <ProtectedRoute>
                     <RoleRoute allowedRole="employer">
                       <EmployerPipeline />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/employer/candidates/:candidateId"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="employer">
+                      <EmployerCandidateProfile />
                     </RoleRoute>
                   </ProtectedRoute>
                 }
