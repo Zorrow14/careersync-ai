@@ -341,6 +341,10 @@ export function generateExtraTalentPool(startId, count) {
     "Emily Chua", "Farhan Ali", "Yuki Tanaka", "Nurul Izzah", "Ahmad Faiz",
     "Chen Wei", "Arif Hakim", "Sophia Lee", "Vikram Singh", "Amira Hassan",
     "James Ooi", "Zara Ibrahim", "Kevin Ng", "Fatimah Zulkifli", "Marcus Teo",
+    "Nadia Halim", "Omar Razak", "Qistina Yusof", "Raymond Goh", "Salmah Idris",
+    "Taufik Azman", "Umar Hakimi", "Vanessa Chong", "Wan Azri", "Xin Yi Lim",
+    "Yasmin Noor", "Zulfaqar Ali", "Alicia Tan", "Bryan Koh", "Chloe Ng",
+    "Darren Lee", "Elena Wong", "Firdaus Hamid", "Grace Lim", "Hui Min Teo",
   ];
   const universities = [
     "UTM", "Universiti Malaya", "UPM", "MMU", "APU", "Taylor's University",
@@ -365,7 +369,7 @@ export function generateExtraTalentPool(startId, count) {
 
   return Array.from({ length: count }, (_, i) => {
     const seed = startId + i;
-    const name = names[i % names.length] + (i >= names.length ? ` ${Math.floor(i / names.length) + 1}` : "");
+    const name = names[i % names.length];
     const parts = name.trim().split(" ");
     const avatar = (parts[0][0] + (parts[1]?.[0] || "")).toUpperCase();
     const skills = skillSets[i % skillSets.length];

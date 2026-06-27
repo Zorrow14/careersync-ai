@@ -71,15 +71,26 @@ export default function TalentDiscovery() {
 
       {/* ─── Search & Filters ─── */}
       <div className="neo-card mb-6 rounded-2xl p-6">
-        <div className="flex flex-wrap gap-4">
-          <div className="relative flex-1">
-            <Search size={16} className="neo-muted absolute left-4 top-1/2 -translate-y-1/2" />
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by name, skill, or university..."
-              className="neo-input w-full rounded-xl py-3 pl-10 pr-4 text-sm"
-            />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="neo-dropdown min-w-0">
+            <label htmlFor="talent-search" className="neo-label">
+              Search
+            </label>
+            <div className="relative">
+              <Search
+                size={16}
+                className="neo-muted pointer-events-none absolute left-4 top-1/2 -translate-y-1/2"
+                aria-hidden="true"
+              />
+              <input
+                id="talent-search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Name, skill, or university..."
+                className="neo-input w-full rounded-xl py-[0.9rem] pl-10 pr-4 text-sm"
+              />
+            </div>
+            <p className="neo-muted mt-2 text-xs leading-5">Search by name, skill, or university</p>
           </div>
           <DropdownSelect
             label="Role"
@@ -87,7 +98,6 @@ export default function TalentDiscovery() {
             options={roleOptions}
             onChange={setRoleFilter}
             helperText="Narrow results by target role"
-            className="min-w-[240px] flex-1"
           />
           <DropdownSelect
             label="Sort by"
@@ -95,7 +105,6 @@ export default function TalentDiscovery() {
             options={sortOptions}
             onChange={setSortBy}
             helperText="Reorder candidate cards"
-            className="min-w-[220px] flex-1"
           />
         </div>
 
@@ -120,7 +129,7 @@ export default function TalentDiscovery() {
       {/* ─── Talent Grid ─── */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {filtered.map((c) => (
-          <div key={c.id} className="neo-card rounded-2xl p-6">
+          <div key={c.id} className="neo-card flex flex-col rounded-2xl p-6">
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-500 text-sm font-bold text-slate-950">
@@ -162,14 +171,7 @@ export default function TalentDiscovery() {
               )}
             </div>
 
-            <div className="mt-4 flex flex-wrap gap-2">
-              <Link
-                to={`/employer/candidates/${c.id}`}
-                className="neo-secondary flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl py-2 text-xs font-semibold"
-              >
-                <User size={13} />
-                View Profile
-              </Link>
+            <div className="neo-talent-card-actions">
               <button
                 type="button"
                 onClick={() =>
@@ -180,14 +182,27 @@ export default function TalentDiscovery() {
                     personaId: resolvePersonaId(c.name),
                   })
                 }
-                className="neo-primary flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl py-2 text-xs font-semibold"
+                className="neo-talent-card-actions__btn neo-primary cursor-pointer"
               >
-                <Sparkles size={13} />
+                <Sparkles size={14} className="shrink-0" />
                 Fit Report
               </button>
-              <button type="button" className="neo-secondary flex cursor-pointer items-center justify-center gap-1 rounded-xl px-3 py-2 text-xs font-semibold">
-                <Star size={13} /> Shortlist
-              </button>
+              <div className="neo-talent-card-actions__row">
+                <Link
+                  to={`/employer/candidates/${c.id}`}
+                  className="neo-talent-card-actions__btn neo-secondary cursor-pointer"
+                >
+                  <User size={14} className="shrink-0" />
+                  View Profile
+                </Link>
+                <button
+                  type="button"
+                  className="neo-talent-card-actions__btn neo-secondary cursor-pointer"
+                >
+                  <Star size={14} className="shrink-0" />
+                  Shortlist
+                </button>
+              </div>
             </div>
           </div>
         ))}
