@@ -515,6 +515,123 @@ const baseJobs = [
 
 export const jobs = [...baseJobs, ...generateExtraJobs(19, 32)];
 
+const BASE_JOB_RESPONSIBILITIES = {
+  "Frontend Developer Intern": [
+    "Implement UI components from Figma designs using React.js",
+    "Fix frontend bugs reported by QA and users",
+    "Write unit tests for critical UI flows",
+    "Participate in code reviews and sprint ceremonies",
+  ],
+  "Junior Data Analyst": [
+    "Write SQL queries to extract and transform business data",
+    "Build and maintain dashboards in Tableau or Power BI",
+    "Prepare weekly reports for department stakeholders",
+    "Document data definitions and analysis methodology",
+  ],
+  "Full Stack Developer Intern": [
+    "Develop React features integrated with Node.js REST APIs",
+    "Write database migrations and seed scripts",
+    "Add integration tests for new endpoints and UI flows",
+    "Deploy features to staging with mentor oversight",
+  ],
+  "UI Engineer": [
+    "Maintain and extend the shared component library",
+    "Ensure designs meet accessibility standards (WCAG 2.1)",
+    "Collaborate with designers on design-token updates",
+    "Profile and improve frontend performance bottlenecks",
+  ],
+  "Machine Learning Engineer Intern": [
+    "Preprocess datasets and engineer features for model training",
+    "Train and evaluate models using scikit-learn or PyTorch",
+    "Document experiments, metrics, and model versioning",
+    "Assist with deploying models to staging environments",
+  ],
+  "Backend Developer Intern": [
+    "Build and document REST API endpoints",
+    "Optimize database queries and indexes",
+    "Implement authentication and authorization middleware",
+    "Monitor logs and resolve production issues with the team",
+  ],
+  "React Developer": [
+    "Build merchant-facing React dashboards and payment flows",
+    "Integrate frontend with secure REST APIs",
+    "Improve accessibility and performance on critical pages",
+    "Collaborate with backend and design on feature specs",
+  ],
+  "Data Engineer Intern": [
+    "Build ETL pipelines to ingest and transform client data",
+    "Write SQL and Python scripts for data quality checks",
+    "Maintain Airflow DAGs and pipeline documentation",
+    "Support data warehouse schema updates with the team",
+  ],
+  "Frontend Engineer": [
+    "Develop high-traffic e-commerce UI with React.js",
+    "Optimize page load and Core Web Vitals metrics",
+    "Implement responsive layouts across devices",
+    "Work with analytics on conversion-focused experiments",
+  ],
+  "Full Stack Engineer": [
+    "Ship patient-facing features across React and Node.js stacks",
+    "Design database schemas with privacy and reliability in mind",
+    "Write tests for API and UI layers",
+    "Participate in on-call rotation with senior support",
+  ],
+  "Mobile App Developer Intern": [
+    "Implement screens and navigation in React Native",
+    "Integrate mobile apps with backend REST APIs",
+    "Test builds on iOS and Android emulators/devices",
+    "Address crash reports and performance issues",
+  ],
+  "Cloud Engineer Intern": [
+    "Maintain CI/CD pipelines and deployment scripts",
+    "Containerize services with Docker and compose files",
+    "Set up monitoring alerts and dashboards",
+    "Document infrastructure changes and runbooks",
+  ],
+  "Business Intelligence Analyst": [
+    "Own executive BI dashboards and recurring reports",
+    "Translate business questions into SQL and visual stories",
+    "Partner with stakeholders on KPI definitions",
+    "Recommend process improvements from data trends",
+  ],
+  "Junior Backend Engineer": [
+    "Implement and maintain payment and merchant APIs",
+    "Write PostgreSQL queries and migration scripts",
+    "Add automated tests for critical financial endpoints",
+    "Review security and error-handling patterns with seniors",
+  ],
+  "Product Designer (UI/UX)": [
+    "Design end-to-end flows in Figma for web and mobile",
+    "Contribute patterns to the shared design system",
+    "Run lightweight usability reviews with engineering",
+    "Deliver developer-ready specs and interaction notes",
+  ],
+  "Software Engineer (New Grad)": [
+    "Rotate across backend services and internal tooling",
+    "Fix bugs and ship small features with mentor guidance",
+    "Learn cloud and deployment practices on the job",
+    "Document technical decisions in team wikis",
+  ],
+  "Analytics Intern": [
+    "Support growth and merchandising teams with SQL analyses",
+    "Build spreadsheet and dashboard views for campaign performance",
+    "Assist with A/B test tracking and readouts",
+    "Present findings in weekly team syncs",
+  ],
+};
+
+export function getJobResponsibilities(job) {
+  return (
+    job.responsibilities ||
+    BASE_JOB_RESPONSIBILITIES[job.title] || [
+      "Collaborate with cross-functional teams on deliverables",
+      "Contribute to documentation, reviews, and team rituals",
+      "Learn from senior teammates through pairing and mentorship",
+      "Ship incremental improvements aligned with sprint goals",
+    ]
+  );
+}
+
 export function getJobMatch(job, personaId = "sarah") {
   return job.match[personaId] || job.match.default;
 }

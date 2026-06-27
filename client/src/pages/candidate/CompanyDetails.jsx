@@ -146,9 +146,12 @@ export default function CompanyDetails() {
                       to={`/jobs/${job.id}`}
                       className="neo-soft flex items-center justify-between rounded-xl p-4 transition hover:bg-white/5"
                     >
-                      <div>
+                      <div className="min-w-0 flex-1">
                         <p className="neo-title font-semibold">{job.title}</p>
                         <p className="neo-muted text-xs">{job.location} · {job.type} · {job.salary}</p>
+                        {job.description && (
+                          <p className="neo-text mt-1 line-clamp-2 text-xs leading-5">{job.description}</p>
+                        )}
                       </div>
                       <span className={`text-sm font-bold ${matchColor(m.score)}`}>{m.score}%</span>
                     </Link>

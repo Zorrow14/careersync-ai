@@ -214,6 +214,10 @@ export default function JobSearch() {
               ))}
             </div>
 
+            {job.description && (
+              <p className="neo-text mt-4 line-clamp-2 text-sm leading-6">{job.description}</p>
+            )}
+
             <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <button
                 onClick={() => setApplyJob(job)}

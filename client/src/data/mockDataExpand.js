@@ -51,6 +51,205 @@ function pseudoMatch(seed, skills) {
   };
 }
 
+const ROLE_DESCRIPTIONS = {
+  "Frontend Developer Intern":
+    "You'll work with designers and senior engineers to build responsive, accessible web interfaces. Day to day you'll implement UI components, fix bugs from QA, and participate in code reviews while learning modern frontend practices.",
+  "Junior Data Analyst":
+    "Support business teams with SQL queries, dashboard updates, and ad-hoc analyses that inform decisions. You'll clean datasets, document findings, and present insights to stakeholders in clear, visual formats.",
+  "Full Stack Developer Intern":
+    "Ship features across React frontends and Node.js APIs in a small agile squad. You'll touch databases, write integration tests, and collaborate with product managers on user stories from backlog to deployment.",
+  "Backend Engineer Intern":
+    "Help design and implement RESTful services, database schemas, and background jobs. You'll pair with mentors on performance tuning, logging, and writing maintainable server-side code.",
+  "UI Engineer":
+    "Own UI quality across the product — component libraries, design tokens, and pixel-perfect implementation. You'll bridge Figma designs and production code while advocating for accessibility and consistency.",
+  "DevOps Intern":
+    "Assist with CI/CD pipelines, containerized deployments, and cloud infrastructure monitoring. You'll automate repetitive tasks, document runbooks, and learn how production systems stay reliable at scale.",
+  "Product Analyst Intern":
+    "Track product metrics, run funnel analyses, and synthesize user feedback for the product team. You'll build reports, support A/B test readouts, and help prioritize features backed by data.",
+  "QA Engineer Intern":
+    "Design test cases, execute manual and automated checks, and file clear bug reports for engineering. You'll learn regression testing workflows and how quality gates fit into the release cycle.",
+  "Mobile Developer Intern":
+    "Build and refine mobile app features using React Native alongside iOS/Android best practices. You'll work on navigation flows, API integration, and performance profiling on real devices.",
+  "Cloud Support Associate":
+    "Monitor cloud workloads, triage incidents, and support internal teams with infrastructure requests. You'll gain hands-on experience with deployment tooling, security baselines, and cost-aware operations.",
+};
+
+const REQUIREMENT_TEMPLATES = {
+  "Frontend Developer Intern": [
+    "Solid HTML, CSS, and JavaScript fundamentals",
+    "Exposure to React.js or a similar component framework",
+    "Comfortable using Git in a team setting",
+    "Attention to detail and willingness to learn from code review",
+  ],
+  "Junior Data Analyst": [
+    "Proficiency in SQL for querying and aggregating data",
+    "Experience with spreadsheets or a BI tool (Tableau / Power BI)",
+    "Basic statistics and data storytelling skills",
+    "Clear written communication for non-technical audiences",
+  ],
+  "Full Stack Developer Intern": [
+    "JavaScript/TypeScript on the frontend and Node.js on the backend",
+    "Understanding of REST APIs and relational or document databases",
+    "Familiarity with Git and collaborative development workflows",
+    "Bonus: Docker or basic deployment experience",
+  ],
+  "Backend Engineer Intern": [
+    "Server-side programming in Node.js, Java, or similar",
+    "Database design and query optimization basics",
+    "Understanding of REST API conventions and error handling",
+    "Interest in testing, logging, and observability",
+  ],
+  "UI Engineer": [
+    "Strong React.js and modern CSS (Flexbox, Grid, responsive design)",
+    "Experience implementing designs from Figma or similar tools",
+    "Accessibility awareness (WCAG basics)",
+    "Bonus: Storybook or design-system experience",
+  ],
+  "DevOps Intern": [
+    "Linux command line and scripting (Bash or Python)",
+    "Exposure to Docker, CI/CD, or cloud platforms (AWS/GCP)",
+    "Curiosity about monitoring, alerts, and incident response",
+    "Documentation habits and teamwork in on-call rotations",
+  ],
+  "Product Analyst Intern": [
+    "SQL and spreadsheet proficiency for exploratory analysis",
+    "Basic understanding of product metrics and funnels",
+    "Ability to summarize findings for product and engineering partners",
+    "Bonus: Python or a visualization library",
+  ],
+  "QA Engineer Intern": [
+    "Methodical test-case design and bug reporting",
+    "Familiarity with web or mobile application testing",
+    "Basic understanding of automated testing concepts",
+    "Strong communication when collaborating with developers",
+  ],
+  "Mobile Developer Intern": [
+    "JavaScript fundamentals and interest in React Native",
+    "Understanding of mobile UI patterns and API consumption",
+    "Git version control and debugging on emulators/devices",
+    "Portfolio or coursework demonstrating shipped UI work",
+  ],
+  "Cloud Support Associate": [
+    "Networking and Linux fundamentals",
+    "Scripting ability (Python or Bash) for small automations",
+    "Interest in cloud services, security, and reliability",
+    "Customer-focused mindset when supporting internal teams",
+  ],
+};
+
+function buildJobDescription(title, company, industry, location, workMode, type, skills, seed) {
+  const roleIntro =
+    ROLE_DESCRIPTIONS[title] ||
+    `Contribute to ${industry.toLowerCase()} products as part of a cross-functional team. You'll collaborate with engineers, designers, and stakeholders to deliver features that reach real users across Malaysia.`;
+
+  const arrangement =
+    workMode === "Remote"
+      ? "This is a fully remote role with async-friendly standups and documented workflows."
+      : workMode === "Hybrid"
+        ? `Based in ${location} with a hybrid schedule — typically 2–3 days in office per week.`
+        : `On-site in ${location} with close collaboration alongside mentors and squad leads.`;
+
+  const level =
+    type === "Internship"
+      ? "Ideal for students or fresh graduates who want structured mentorship and a path to conversion."
+      : "Suitable for early-career professionals ready to take ownership of meaningful deliverables.";
+
+  const stackNote = skills.length
+    ? `You'll regularly work with ${skills.slice(0, 3).join(", ")}${skills.length > 3 ? `, and related tools` : ""}.`
+    : "";
+
+  const variants = [
+    `${company.name} is expanding its ${industry.toLowerCase()} team and hiring a ${title.toLowerCase()}. ${roleIntro}`,
+    `${roleIntro} ${company.name} builds products in the ${industry.toLowerCase()} space and values learners who ship with quality.`,
+  ];
+
+  return [variants[seed % variants.length], arrangement, level, stackNote].filter(Boolean).join(" ");
+}
+
+const ROLE_RESPONSIBILITIES = {
+  "Frontend Developer Intern": [
+    "Implement UI components from Figma designs using React.js",
+    "Fix frontend bugs reported by QA and users",
+    "Write unit tests for critical UI flows",
+    "Participate in code reviews and sprint ceremonies",
+  ],
+  "Junior Data Analyst": [
+    "Write SQL queries to extract and transform business data",
+    "Build and maintain dashboards in Tableau or Power BI",
+    "Prepare weekly reports for department stakeholders",
+    "Document data definitions and analysis methodology",
+  ],
+  "Full Stack Developer Intern": [
+    "Develop React features integrated with Node.js REST APIs",
+    "Write database migrations and seed scripts",
+    "Add integration tests for new endpoints and UI flows",
+    "Deploy features to staging with mentor oversight",
+  ],
+  "Backend Engineer Intern": [
+    "Build and document REST API endpoints",
+    "Optimize database queries and indexes",
+    "Implement authentication and authorization middleware",
+    "Monitor logs and resolve production issues with the team",
+  ],
+  "UI Engineer": [
+    "Maintain and extend the shared component library",
+    "Ensure designs meet accessibility standards (WCAG 2.1)",
+    "Collaborate with designers on design-token updates",
+    "Profile and improve frontend performance bottlenecks",
+  ],
+  "DevOps Intern": [
+    "Maintain CI/CD pipelines and deployment scripts",
+    "Containerize services with Docker and compose files",
+    "Set up monitoring alerts and dashboards",
+    "Document infrastructure changes and runbooks",
+  ],
+  "Product Analyst Intern": [
+    "Track KPIs and product funnel metrics weekly",
+    "Run cohort and retention analyses for product reviews",
+    "Support A/B test setup and readout documentation",
+    "Synthesize user feedback into actionable insights",
+  ],
+  "QA Engineer Intern": [
+    "Create and execute manual test plans for new releases",
+    "Log reproducible bug reports with screenshots and steps",
+    "Automate regression tests for core user journeys",
+    "Verify fixes and sign off on release candidates",
+  ],
+  "Mobile Developer Intern": [
+    "Implement screens and navigation in React Native",
+    "Integrate mobile apps with backend REST APIs",
+    "Test builds on iOS and Android emulators/devices",
+    "Address crash reports and performance issues",
+  ],
+  "Cloud Support Associate": [
+    "Monitor cloud resource health and uptime dashboards",
+    "Respond to infrastructure tickets from internal teams",
+    "Assist with security patching and access reviews",
+    "Contribute to cost-optimization and capacity planning",
+  ],
+};
+
+function buildJobResponsibilities(title) {
+  return (
+    ROLE_RESPONSIBILITIES[title] || [
+      "Collaborate with cross-functional teams on product deliverables",
+      "Contribute to code reviews, documentation, and team rituals",
+      "Learn from senior engineers through pairing and mentorship",
+      "Ship incremental improvements aligned with sprint goals",
+    ]
+  );
+}
+
+function buildJobRequirements(title, skills) {
+  const base = REQUIREMENT_TEMPLATES[title] || [
+    `Working knowledge of ${skills[0] || "relevant technologies"}`,
+    `Familiarity with ${skills[1] || "modern development tools"}`,
+    "Strong problem-solving and communication skills",
+    "Eagerness to learn in a collaborative team environment",
+  ];
+  return base;
+}
+
 export function generateExtraJobs(startId, count) {
   const skillsPool = [
     ["React.js", "JavaScript", "CSS", "Git"],
@@ -68,21 +267,31 @@ export function generateExtraJobs(startId, count) {
     const salary =
       TYPES[i % 2] === "Internship" ? "RM 2,000 – 3,200" : "RM 3,500 – 5,500";
 
+    const location = LOCATIONS[i % LOCATIONS.length];
+    const workMode = WORK_MODES[i % WORK_MODES.length];
+    const type = TYPES[i % TYPES.length];
+
     return {
       id: `j${seed}`,
       title,
       company: co.name,
       logo: co.logo,
-      location: LOCATIONS[i % LOCATIONS.length],
-      workMode: WORK_MODES[i % WORK_MODES.length],
-      type: TYPES[i % TYPES.length],
+      location,
+      workMode,
+      type,
       industry: co.industry,
       experience: i % 2 === 0 ? "0–1 years" : "0–2 years",
       salary,
       postedDate: `${1 + (i % 14)} days ago`,
-      description: `${co.name} is hiring for a ${title.toLowerCase()} role. Join a growing team building modern digital products across Malaysia.`,
-      requirements: skills.map((s) => `Experience with ${s}`),
-      benefits: ["Hybrid work", "Mentorship", "Medical coverage", "Learning budget"],
+      description: buildJobDescription(title, co, co.industry, location, workMode, type, skills, seed),
+      responsibilities: buildJobResponsibilities(title),
+      requirements: buildJobRequirements(title, skills),
+      benefits:
+        workMode === "Remote"
+          ? ["Fully remote", "Flexible hours", "Mentorship", "Learning budget"]
+          : type === "Internship"
+            ? ["Hybrid work", "Mentorship", "Medical coverage", "Conversion opportunity"]
+            : ["Hybrid work", "Medical coverage", "Annual bonus", "Learning budget"],
       skills,
       match: pseudoMatch(seed, skills),
       generated: true,

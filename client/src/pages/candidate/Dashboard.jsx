@@ -195,6 +195,9 @@ export default function Dashboard() {
                   <div>
                     <p className="neo-title font-semibold">{job.title}</p>
                     <p className="neo-muted text-sm">{job.company} · {job.location}</p>
+                    {job.description && (
+                      <p className="neo-text mt-1 line-clamp-2 text-xs leading-5">{job.description}</p>
+                    )}
                   </div>
                 </div>
                 <span className="rounded-full bg-amber-500/15 px-4 py-1 text-sm font-semibold text-amber-300">

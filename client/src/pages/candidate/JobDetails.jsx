@@ -10,9 +10,11 @@ import {
   XCircle,
   Sparkles,
   Gift,
+  FileText,
+  ListChecks,
 } from "lucide-react";
 import { usePersona } from "../../context/PersonaContext.jsx";
-import { jobs, getJobMatch } from "../../data/jobsData.js";
+import { jobs, getJobMatch, getJobResponsibilities } from "../../data/jobsData.js";
 import { companies } from "../../data/companiesData.js";
 
 function matchColor(score) {
@@ -39,6 +41,7 @@ export default function JobDetails() {
   }
 
   const match = getJobMatch(job, personaId);
+  const responsibilities = getJobResponsibilities(job);
   const similar = jobs.filter((j) => j.id !== job.id && j.industry === job.industry).slice(0, 3);
   const company = companies.find((c) => c.name === job.company);
 
@@ -77,8 +80,23 @@ export default function JobDetails() {
           </div>
 
           <div className="neo-card rounded-2xl p-6">
-            <h2 className="neo-title mb-3 text-xl font-bold">About the Role</h2>
+            <h2 className="neo-title mb-3 flex items-center gap-2 text-xl font-bold">
+              <FileText size={20} className="text-amber-300" /> Job Description
+            </h2>
             <p className="neo-text text-sm leading-7">{job.description}</p>
+          </div>
+
+          <div className="neo-card rounded-2xl p-6">
+            <h2 className="neo-title mb-3 flex items-center gap-2 text-xl font-bold">
+              <ListChecks size={20} className="text-amber-300" /> Key Responsibilities
+            </h2>
+            <ul className="neo-text space-y-2 text-sm">
+              {responsibilities.map((item) => (
+                <li key={item} className="flex items-start gap-2">
+                  <CheckCircle2 size={15} className="mt-0.5 shrink-0 text-amber-300" /> {item}
+                </li>
+              ))}
+            </ul>
           </div>
 
           <div className="neo-card rounded-2xl p-6">
