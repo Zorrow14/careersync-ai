@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import {
   GraduationCap,
@@ -16,10 +17,14 @@ import {
   Code2,
   Lightbulb,
   Compass,
+  Upload,
+  Loader2,
+  Pencil,
 } from "lucide-react";
 import { usePersona } from "../../context/PersonaContext.jsx";
 import { getWorkTrait } from "../../data/workTraits.js";
 import ProgressBar from "../../components/ui/ProgressBar.jsx";
+import EditProfileModal from "../../components/candidate/EditProfileModal.jsx";
 
 const priorityColors = {
   high: "neo-danger",
@@ -27,9 +32,82 @@ const priorityColors = {
   low: "neo-soft",
 };
 
+const RESUME_STORAGE_KEY = "careersync_resume_upload";
+
+function readResumeUploads() {
+  try {
+    return JSON.parse(localStorage.getItem(RESUME_STORAGE_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function ResumeUploadButton({ personaId, hasResume, onUploaded, className = "" }) {
+  const inputRef = useRef(null);
+  const [uploading, setUploading] = useState(false);
+
+  function handleFileChange(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    window.setTimeout(() => {
+      const all = readResumeUploads();
+      all[personaId] = {
+        fileName: file.name,
+        uploadedAt: new Date().toISOString(),
+      };
+      localStorage.setItem(RESUME_STORAGE_KEY, JSON.stringify(all));
+      onUploaded(all[personaId]);
+      setUploading(false);
+      e.target.value = "";
+    }, 1100);
+  }
+
+  return (
+    <>
+      <input
+        ref={inputRef}
+        type="file"
+        accept=".pdf,.doc,.docx,.txt,application/pdf,application/msword"
+        className="sr-only"
+        onChange={handleFileChange}
+      />
+      <button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        disabled={uploading}
+        className={`neo-primary flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold disabled:opacity-70 sm:w-auto ${className}`}
+      >
+        {uploading ? (
+          <Loader2 size={16} className="animate-spin" aria-hidden="true" />
+        ) : (
+          <Upload size={16} aria-hidden="true" />
+        )}
+        {uploading ? "Uploading…" : hasResume ? "Replace Resume" : "Upload Resume"}
+      </button>
+    </>
+  );
+}
+
 export default function ProfileSetup() {
-  const { persona, profile } = usePersona();
+  const { persona, profile, personaId, updateProfile } = usePersona();
   const workTrait = getWorkTrait(persona.id);
+  const [uploadMeta, setUploadMeta] = useState(() => readResumeUploads()[personaId] ?? null);
+  const [editOpen, setEditOpen] = useState(false);
+  const [savedToast, setSavedToast] = useState(false);
+
+  useEffect(() => {
+    setUploadMeta(readResumeUploads()[personaId] ?? null);
+  }, [personaId]);
+
+  useEffect(() => {
+    if (!savedToast) return undefined;
+    const t = window.setTimeout(() => setSavedToast(false), 2800);
+    return () => window.clearTimeout(t);
+  }, [savedToast]);
+
+  const hasResume = Boolean(profile.resumeText || uploadMeta);
 
   const completionSuggestions = [
     !profile.portfolioLink && "Add a portfolio link",
@@ -47,31 +125,66 @@ export default function ProfileSetup() {
         </p>
       </div>
 
+      {savedToast && (
+        <div className="neo-good mb-6 flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-medium" role="status">
+          <CheckCircle2 size={16} />
+          Profile updated successfully.
+        </div>
+      )}
+
       {/* ─── Profile Header ─── */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         className="neo-card mb-6 rounded-2xl p-6"
       >
-        <div className="flex flex-col gap-5 md:flex-row md:items-center">
-          <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-amber-500 text-2xl font-bold text-slate-950">
-            {profile.avatar}
-          </div>
-          <div className="flex-1">
-            <h2 className="neo-title text-2xl font-bold">{profile.name}</h2>
-            <p className="text-amber-300">{profile.tagline}</p>
-            <p className="neo-text mt-2 text-sm leading-6">{profile.about}</p>
-            <div className="mt-3 flex flex-wrap gap-4 text-xs">
-              <span className="neo-muted flex items-center gap-1">
-                <MapPin size={13} /> {profile.location}
-              </span>
-              <span className="neo-muted flex items-center gap-1">
-                <Languages size={13} /> {profile.languages.join(", ")}
-              </span>
+        <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
+            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-amber-500 text-2xl font-bold text-slate-950">
+              {profile.avatar}
             </div>
+            <div className="flex-1">
+              <h2 className="neo-title text-2xl font-bold">{profile.name}</h2>
+              <p className="text-amber-300">{profile.tagline}</p>
+              <p className="neo-text mt-2 text-sm leading-6">{profile.about}</p>
+              <div className="mt-3 flex flex-wrap gap-4 text-xs">
+                <span className="neo-muted flex items-center gap-1">
+                  <MapPin size={13} /> {profile.location}
+                </span>
+                <span className="neo-muted flex items-center gap-1">
+                  <Languages size={13} /> {profile.languages.join(", ")}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="flex w-full shrink-0 flex-col gap-2 sm:w-auto sm:flex-row">
+            <button
+              type="button"
+              onClick={() => setEditOpen(true)}
+              className="neo-secondary flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold sm:w-auto"
+            >
+              <Pencil size={16} aria-hidden="true" />
+              Edit Profile
+            </button>
+            <ResumeUploadButton
+              personaId={personaId}
+              hasResume={hasResume}
+              onUploaded={setUploadMeta}
+              className="shrink-0"
+            />
           </div>
         </div>
       </motion.div>
+
+      <EditProfileModal
+        open={editOpen}
+        profile={profile}
+        onClose={() => setEditOpen(false)}
+        onSave={(patch) => {
+          updateProfile(patch);
+          setSavedToast(true);
+        }}
+      />
 
       {/* ─── AI Career Summary + Completion ─── */}
       <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -134,11 +247,11 @@ export default function ProfileSetup() {
       <Section icon={Settings2} title="Career Preferences">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {[
-            ["Target Role", profile.preferences.role],
-            ["Industry", profile.preferences.industry],
-            ["Work Mode", profile.preferences.workMode],
-            ["Location", profile.preferences.location],
-            ["Salary Range", profile.preferences.salaryRange],
+            ["Target Role", profile.preferences?.role],
+            ["Industry", profile.preferences?.industry],
+            ["Work Mode", profile.preferences?.workMode],
+            ["Location", profile.preferences?.location],
+            ["Salary Range", profile.preferences?.salaryRange],
           ].map(([label, value]) => (
             <div key={label} className="neo-soft rounded-xl p-4">
               <p className="neo-muted text-xs">{label}</p>
@@ -251,17 +364,46 @@ export default function ProfileSetup() {
 
       {/* ─── Resume ─── */}
       <Section icon={FileText} title="Resume">
+        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="neo-muted text-sm">PDF, DOC, DOCX, or TXT · demo upload updates your living profile</p>
+          <ResumeUploadButton
+            personaId={personaId}
+            hasResume={hasResume}
+            onUploaded={setUploadMeta}
+          />
+        </div>
+
+        <div className="neo-soft mb-4 flex flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 px-4 py-8 text-center sm:py-10">
+          <div className="rounded-2xl bg-amber-500/15 p-3 text-amber-300">
+            <Upload size={28} aria-hidden="true" />
+          </div>
+          <p className="neo-title mt-3 text-sm font-semibold">
+            {hasResume ? "Resume on file" : "No resume uploaded yet"}
+          </p>
+          <p className="neo-muted mt-1 max-w-sm text-xs leading-5">
+            {uploadMeta?.fileName
+              ? `Latest upload: ${uploadMeta.fileName}`
+              : hasResume
+                ? "Using portfolio profile data as your parsed resume"
+                : "Upload a resume to power AI job match and employability scoring"}
+          </p>
+        </div>
+
         {profile.resumeText ? (
           <div className="neo-soft rounded-xl p-4">
-            <div className="mb-2 flex items-center gap-1 text-sm text-emerald-400">
-              <CheckCircle2 size={14} /> Resume uploaded & parsed (mock)
+            <div className="mb-2 flex flex-wrap items-center gap-2 text-sm text-emerald-400">
+              <CheckCircle2 size={14} />
+              Resume uploaded & parsed (mock)
+              {uploadMeta?.fileName && (
+                <span className="neo-muted text-xs">· {uploadMeta.fileName}</span>
+              )}
             </div>
             <p className="neo-muted whitespace-pre-wrap text-xs leading-relaxed">
               {profile.resumeText}
             </p>
           </div>
         ) : (
-          <p className="neo-muted text-sm">No resume text available for this persona.</p>
+          <p className="neo-muted text-sm">Upload a resume to see parsed content here.</p>
         )}
       </Section>
 

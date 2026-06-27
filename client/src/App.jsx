@@ -2,6 +2,7 @@ import { Routes, Route, useLocation, useNavigate, useSearchParams } from "react-
 import { useEffect, useState } from "react";
 
 import AppNavbar from "./components/layout/AppNavbar";
+import MobileBottomNav from "./components/layout/MobileBottomNav";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import RoleRoute from "./routes/RoleRoute";
 import { useAuth } from "./hooks/useAuth.js";
@@ -97,7 +98,10 @@ export default function App() {
         <div className="flex min-h-screen flex-col">
           <AppNavbar lightMode={lightMode} setLightMode={setLightMode} />
 
-          <main id="main-content" className="neo-page mx-auto w-full max-w-[1600px] flex-1 p-4 sm:p-6 lg:p-8">
+          <main
+            id="main-content"
+            className="neo-page neo-page-app mx-auto w-full max-w-[1600px] flex-1 p-4 sm:p-6 lg:p-8"
+          >
             <Routes>
               {/* Candidate routes */}
               <Route
@@ -366,6 +370,7 @@ export default function App() {
               />
             </Routes>
           </main>
+          <MobileBottomNav />
         </div>
       )}
     </div>

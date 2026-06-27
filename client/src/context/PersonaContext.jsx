@@ -1,6 +1,7 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 import { personas, DEFAULT_PERSONA } from "../data/personas.js";
 import { userProfiles } from "../data/userProfile.js";
+import { getMergedProfile, saveProfileEdits } from "../lib/profileEdits.js";
 
 const PersonaContext = createContext(null);
 const STORAGE_KEY = "careersync_persona";
@@ -13,6 +14,7 @@ export function PersonaProvider({ children }) {
       return DEFAULT_PERSONA;
     }
   });
+  const [profileVersion, setProfileVersion] = useState(0);
 
   function switchPersona(id) {
     setPersonaId(id);
@@ -23,11 +25,21 @@ export function PersonaProvider({ children }) {
     }
   }
 
+  function updateProfile(patch) {
+    saveProfileEdits(personaId, patch);
+    setProfileVersion((v) => v + 1);
+  }
+
   const persona = personas.find((p) => p.id === personaId) || personas[0];
-  const profile = userProfiles[personaId] || userProfiles[DEFAULT_PERSONA];
+  const profile = useMemo(() => {
+    const base = userProfiles[personaId] || userProfiles[DEFAULT_PERSONA];
+    return getMergedProfile(personaId, base);
+  }, [personaId, profileVersion]);
 
   return (
-    <PersonaContext.Provider value={{ personaId, persona, profile, personas, switchPersona }}>
+    <PersonaContext.Provider
+      value={{ personaId, persona, profile, personas, switchPersona, updateProfile }}
+    >
       {children}
     </PersonaContext.Provider>
   );

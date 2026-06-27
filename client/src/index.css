@@ -887,6 +887,23 @@ button:disabled {
   box-shadow: 0 16px 40px rgba(15, 23, 42, 0.1);
 }
 
+.neo-nav-dropdown--animate {
+  transform-origin: top right;
+  animation: neo-dropdown-down 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes neo-dropdown-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 
 /* --- Persona switcher (navbar) --- */
 .neo-persona-switcher {
@@ -996,6 +1013,267 @@ button:disabled {
 
 .neo-nav-spacer {
   height: 5.25rem;
+}
+
+@media (max-width: 767px) {
+  html {
+    overflow-x: hidden;
+  }
+
+  .neo-nav-shell {
+    padding: 0.5rem 0.65rem 0;
+  }
+
+  .neo-nav-spacer {
+    height: 4.25rem;
+  }
+
+  .neo-page-app {
+    padding-bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .neo-page-app .neo-title.text-4xl {
+    font-size: 1.75rem;
+    line-height: 1.2;
+  }
+}
+
+/* ─── Mobile bottom tab bar (authenticated app) ─── */
+@media (max-width: 767px) {
+  .neo-mobile-bottom-nav {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 50;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    gap: 0.15rem;
+    padding: 0.35rem 0.4rem calc(0.4rem + env(safe-area-inset-bottom, 0px));
+    background: rgba(11, 15, 25, 0.94);
+    border-top: 1px solid rgba(148, 163, 184, 0.16);
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .light .neo-mobile-bottom-nav {
+    background: rgba(255, 255, 255, 0.96);
+    border-top-color: rgba(15, 23, 42, 0.08);
+    box-shadow: 0 -8px 28px rgba(15, 23, 42, 0.08);
+  }
+}
+
+@media (min-width: 768px) {
+  .neo-mobile-bottom-nav,
+  .neo-mobile-nav-sheet {
+    display: none !important;
+  }
+}
+
+.neo-mobile-bottom-nav__item {
+  font-family: var(--font-body);
+  flex: 1;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  padding: 0.35rem 0.2rem;
+  border: none;
+  border-radius: 0.65rem;
+  background: transparent;
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: #94a3b8;
+  text-decoration: none;
+  transition:
+    color var(--neo-transition),
+    background var(--neo-transition);
+  cursor: pointer;
+}
+
+.neo-mobile-bottom-nav__item span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.neo-mobile-bottom-nav__item-active {
+  color: #d4bc94;
+  background: rgba(184, 149, 106, 0.12);
+}
+
+.light .neo-mobile-bottom-nav__item {
+  color: #64748b;
+}
+
+.light .neo-mobile-bottom-nav__item-active {
+  color: #9c8266;
+  background: rgba(184, 149, 106, 0.14);
+}
+
+.neo-mobile-nav-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.neo-mobile-nav-sheet--open {
+  pointer-events: auto;
+}
+
+.neo-mobile-nav-sheet__backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+  opacity: 0;
+}
+
+.neo-mobile-nav-sheet--open .neo-mobile-nav-sheet__backdrop {
+  animation: neo-sheet-backdrop-in 0.25s ease forwards;
+}
+
+.neo-mobile-nav-sheet__panel {
+  position: relative;
+  z-index: 1;
+  max-height: min(92dvh, 100%);
+  border-radius: 1rem 1rem 0 0;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-bottom: none;
+  background: rgba(11, 15, 25, 0.98);
+  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(20px);
+  transform: translateY(100%);
+  opacity: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.neo-mobile-nav-sheet--open .neo-mobile-nav-sheet__panel {
+  animation: neo-sheet-panel-up 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.neo-mobile-nav-sheet__header,
+.neo-mobile-nav-sheet__section,
+.neo-mobile-nav-sheet__link {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.neo-mobile-nav-sheet--open .neo-mobile-nav-sheet__header {
+  animation: neo-sheet-item-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) 0.08s forwards;
+}
+
+.neo-mobile-nav-sheet--open .neo-mobile-nav-sheet__section,
+.neo-mobile-nav-sheet--open .neo-mobile-nav-sheet__link {
+  animation: neo-sheet-item-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(0.1s + (var(--sheet-item-index, 0) * 0.04s));
+}
+
+.neo-mobile-bottom-nav__icon-pop {
+  animation: neo-tab-icon-pop 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes neo-sheet-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes neo-sheet-panel-up {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes neo-sheet-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes neo-tab-icon-pop {
+  0% {
+    transform: scale(1);
+  }
+
+  40% {
+    transform: scale(1.18);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .neo-nav-dropdown--animate,
+  .neo-mobile-nav-sheet--open .neo-mobile-nav-sheet__backdrop,
+  .neo-mobile-nav-sheet--open .neo-mobile-nav-sheet__panel,
+  .neo-mobile-nav-sheet--open .neo-mobile-nav-sheet__header,
+  .neo-mobile-nav-sheet--open .neo-mobile-nav-sheet__section,
+  .neo-mobile-nav-sheet--open .neo-mobile-nav-sheet__link,
+  .neo-mobile-bottom-nav__icon-pop {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.light .neo-mobile-nav-sheet__panel {
+  background: rgba(255, 255, 255, 0.99);
+  border-color: rgba(15, 23, 42, 0.1);
+}
+
+.neo-mobile-nav-sheet__link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  color: var(--neo-text);
+  text-decoration: none;
+  transition: background var(--neo-transition);
+}
+
+.neo-mobile-nav-sheet__link:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.neo-mobile-nav-sheet__link-active {
+  background: rgba(184, 149, 106, 0.12);
+  color: #d4bc94;
+}
+
+.light .neo-mobile-nav-sheet__link-active {
+  color: #9c8266;
+  background: rgba(184, 149, 106, 0.14);
 }
 
 .neo-nav-mobile-panel {

@@ -7,7 +7,10 @@ export default function NavShell({ children, mobilePanel }) {
     <>
       <div className="neo-nav-shell">
         <div className="neo-nav-wrap">
-          <nav className="neo-nav overflow-hidden md:overflow-visible" aria-label="Site navigation">
+          <nav
+            className={`neo-nav md:overflow-visible ${mobilePanel ? "overflow-hidden" : "overflow-visible"}`}
+            aria-label="Site navigation"
+          >
             {children}
             {mobilePanel}
           </nav>

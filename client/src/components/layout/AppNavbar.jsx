@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, ChevronDown, LogOut } from "lucide-react";
+import { ChevronDown, LogOut } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth.js";
 import { usePersona } from "../../context/PersonaContext.jsx";
 import PersonaSwitcher from "../ui/PersonaSwitcher.jsx";
@@ -22,17 +23,79 @@ function DesktopNavLink({ to, label, active }) {
   );
 }
 
-function MobileNavLink({ to, label, active, onNavigate }) {
-  return (
-    <Link
-      to={to}
-      onClick={onNavigate}
-      className={`block rounded-lg px-3 py-2.5 text-sm font-medium transition ${
-        active ? "bg-amber-500/15 text-amber-300" : "neo-text hover:bg-white/5"
-      }`}
+function UserMenuDropdown({
+  open,
+  anchorRef,
+  displayName,
+  displaySubtitle,
+  onLogout,
+}) {
+  const [menuStyle, setMenuStyle] = useState(null);
+
+  useEffect(() => {
+    if (!open) {
+      setMenuStyle(null);
+      return undefined;
+    }
+
+    function updatePosition() {
+      const anchor = anchorRef.current;
+      if (!anchor) return;
+
+      const rect = anchor.getBoundingClientRect();
+      const padding = 12;
+      const menuWidth = 200;
+      const left = Math.min(
+        Math.max(rect.right - menuWidth, padding),
+        window.innerWidth - menuWidth - padding
+      );
+
+      setMenuStyle({
+        position: "fixed",
+        top: `${rect.bottom + 8}px`,
+        left: `${left}px`,
+        width: `${menuWidth}px`,
+        zIndex: 70,
+      });
+    }
+
+    updatePosition();
+    window.addEventListener("resize", updatePosition);
+    window.addEventListener("scroll", updatePosition, true);
+
+    return () => {
+      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", updatePosition, true);
+    };
+  }, [open, anchorRef]);
+
+  if (!open || !menuStyle || typeof document === "undefined") return null;
+
+  return createPortal(
+    <div
+      role="menu"
+      className="neo-nav-dropdown neo-nav-dropdown--portal neo-nav-dropdown--animate p-2"
+      style={menuStyle}
+      onMouseDown={(e) => e.stopPropagation()}
     >
-      {label}
-    </Link>
+      <p className="neo-muted mb-0.5 px-3 py-1 text-xs font-semibold text-amber-300">
+        {displayName}
+      </p>
+      {displaySubtitle && (
+        <p className="neo-muted mb-2 px-3 pb-1 text-[11px]">{displaySubtitle}</p>
+      )}
+      {!displaySubtitle && <div className="mb-2" />}
+      <button
+        type="button"
+        role="menuitem"
+        onClick={onLogout}
+        className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-rose-400 hover:bg-rose-500/10"
+      >
+        <LogOut size={15} />
+        Sign Out
+      </button>
+    </div>,
+    document.body
   );
 }
 
@@ -42,7 +105,6 @@ export default function AppNavbar({ lightMode, setLightMode }) {
   const { user, role, logout } = useAuth();
   const { persona } = usePersona();
 
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [aiOpen, setAiOpen] = useState(false);
   const [userOpen, setUserOpen] = useState(false);
 
@@ -75,7 +137,6 @@ export default function AppNavbar({ lightMode, setLightMode }) {
       : displayName.charAt(0).toUpperCase();
 
   useEffect(() => {
-    setMobileOpen(false);
     setAiOpen(false);
     setUserOpen(false);
   }, [location.pathname]);
@@ -83,71 +144,21 @@ export default function AppNavbar({ lightMode, setLightMode }) {
   useEffect(() => {
     function handleClickOutside(e) {
       if (aiRef.current && !aiRef.current.contains(e.target)) setAiOpen(false);
-      if (userRef.current && !userRef.current.contains(e.target)) setUserOpen(false);
+      if (userRef.current && !userRef.current.contains(e.target)) {
+        const portalMenu = document.querySelector(".neo-nav-dropdown--portal");
+        if (portalMenu?.contains(e.target)) return;
+        setUserOpen(false);
+      }
     }
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   function handleLogout() {
+    setUserOpen(false);
     logout();
     navigate("/");
   }
-
-  const mobilePanel = mobileOpen ? (
-    <div className="neo-nav-mobile-panel px-4 py-4 md:hidden">
-      <div className="grid gap-1">
-        {mainLinks.map((item) => (
-          <MobileNavLink
-            key={item.path}
-            to={item.path}
-            label={item.label}
-            active={isActivePath(location.pathname, item.path)}
-            onNavigate={() => setMobileOpen(false)}
-          />
-        ))}
-        {showAiDropdown && (
-          <>
-            <p className="neo-muted mb-1 mt-3 px-3 text-[11px] font-semibold uppercase tracking-wider">
-              Demo Profile
-            </p>
-            <div className="px-3 pb-2">
-              <PersonaSwitcher compact />
-            </div>
-            <p className="neo-muted mb-1 mt-2 px-3 text-[11px] font-semibold uppercase tracking-wider">
-              AI Tools
-            </p>
-            {candidateAiLinks.map((item) => (
-              <MobileNavLink
-                key={item.path}
-                to={item.path}
-                label={item.label}
-                active={isActivePath(location.pathname, item.path)}
-                onNavigate={() => setMobileOpen(false)}
-              />
-            ))}
-          </>
-        )}
-      </div>
-      <div className="mt-4 flex items-center gap-2 border-t border-white/10 pt-4">
-        <button
-          type="button"
-          onClick={() => setLightMode(!lightMode)}
-          className="neo-secondary flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold"
-        >
-          {lightMode ? "Dark mode" : "Light mode"}
-        </button>
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="neo-secondary flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold text-rose-400"
-        >
-          <LogOut size={16} />
-          Sign Out
-        </button>
-      </div>
-    </div>
-  ) : null;
 
   return (
     <>
@@ -158,13 +169,12 @@ export default function AppNavbar({ lightMode, setLightMode }) {
         Skip to main content
       </a>
 
-      <NavShell mobilePanel={mobilePanel}>
+      <NavShell>
         <div className="flex h-14 items-center gap-3 px-4 sm:px-5">
-          <Link to="/" className="shrink-0 cursor-pointer">
+          <Link to="/" className="min-w-0 shrink-0 cursor-pointer">
             <NavLogo subtitle={portalLabel} />
           </Link>
 
-          {/* Desktop links — text only, centered */}
           <div className="hidden flex-1 items-center justify-center gap-0.5 overflow-visible md:flex">
             {mainLinks.map((item) => (
               <DesktopNavLink
@@ -196,7 +206,7 @@ export default function AppNavbar({ lightMode, setLightMode }) {
                 {aiOpen && (
                   <div
                     role="menu"
-                    className="neo-nav-dropdown absolute left-1/2 top-[calc(100%+0.35rem)] z-[60] min-w-[190px] -translate-x-1/2 p-2"
+                    className="neo-nav-dropdown neo-nav-dropdown--animate absolute left-1/2 top-[calc(100%+0.35rem)] z-[60] min-w-[190px] -translate-x-1/2 p-2"
                   >
                     {candidateAiLinks.map((item) => (
                       <Link
@@ -218,16 +228,15 @@ export default function AppNavbar({ lightMode, setLightMode }) {
             )}
           </div>
 
-          {/* Right actions */}
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ml-auto flex min-w-0 items-center gap-2">
             {showAiDropdown && (
               <div className="hidden lg:block">
                 <PersonaSwitcher />
               </div>
             )}
-            <ThemeToggle lightMode={lightMode} setLightMode={setLightMode} className="hidden sm:inline-flex" />
+            <ThemeToggle lightMode={lightMode} setLightMode={setLightMode} />
 
-            <div className="relative z-50 hidden sm:block" ref={userRef}>
+            <div className="relative z-50 min-w-0" ref={userRef}>
               <button
                 type="button"
                 onClick={(e) => {
@@ -235,57 +244,36 @@ export default function AppNavbar({ lightMode, setLightMode }) {
                   setUserOpen((v) => !v);
                 }}
                 aria-expanded={userOpen}
-                className="neo-nav-icon-btn !w-auto cursor-pointer gap-2 rounded-full px-1.5 py-1.5 pr-3"
+                aria-haspopup="menu"
+                aria-label="Account menu"
+                className="neo-nav-icon-btn !w-auto max-w-[11rem] cursor-pointer gap-2 rounded-full px-1.5 py-1.5 pr-2.5 sm:pr-3"
               >
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-500 text-[10px] font-bold text-slate-950">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-amber-500 text-[10px] font-bold text-slate-950">
                   {initial}
                 </span>
-                <span className="hidden min-w-0 text-left sm:block">
-                  <span className="neo-text block max-w-[100px] truncate text-xs font-medium leading-tight">
+                <span className="min-w-0 text-left">
+                  <span className="neo-text block truncate text-xs font-medium leading-tight">
                     {displayName}
                   </span>
                   {displaySubtitle && (
-                    <span className="neo-muted block max-w-[100px] truncate text-[10px] leading-tight">
+                    <span className="neo-muted hidden truncate text-[10px] leading-tight sm:block">
                       {displaySubtitle}
                     </span>
                   )}
                 </span>
               </button>
-
-              {userOpen && (
-                <div className="neo-nav-dropdown absolute right-0 top-full z-50 mt-2 min-w-[180px] p-2">
-                  <p className="neo-muted mb-0.5 px-3 py-1 text-xs font-semibold text-amber-300">
-                    {displayName}
-                  </p>
-                  {displaySubtitle && (
-                    <p className="neo-muted mb-2 px-3 pb-1 text-[11px]">{displaySubtitle}</p>
-                  )}
-                  {!displaySubtitle && <div className="mb-2" />}
-                  <button
-                    type="button"
-                    onClick={handleLogout}
-                    className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-rose-400 hover:bg-rose-500/10"
-                  >
-                    <LogOut size={15} />
-                    Sign Out
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <div className="neo-nav-mobile-toggle-wrap">
-              <button
-                type="button"
-                onClick={() => setMobileOpen((v) => !v)}
-                aria-label={mobileOpen ? "Close menu" : "Open menu"}
-                className="neo-nav-icon-btn"
-              >
-                {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-              </button>
             </div>
           </div>
         </div>
       </NavShell>
+
+      <UserMenuDropdown
+        open={userOpen}
+        anchorRef={userRef}
+        displayName={displayName}
+        displaySubtitle={displaySubtitle}
+        onLogout={handleLogout}
+      />
     </>
   );
 }

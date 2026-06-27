@@ -17,6 +17,7 @@ import {
   GraduationCap,
   BookOpen,
   Sparkles,
+  LayoutGrid,
 } from "lucide-react";
 
 export const candidateMainLinks = [
@@ -63,4 +64,62 @@ export function isActivePath(pathname, path) {
 
 export function isAiToolsActive(pathname) {
   return candidateAiLinks.some((l) => isActivePath(pathname, l.path));
+}
+
+/** Bottom tab bar links — mobile only (md+ uses top navbar). */
+export const candidateMobileLinks = [
+  { path: "/dashboard", label: "Home", icon: LayoutDashboard },
+  { path: "/jobs", label: "Jobs", icon: Search },
+  { path: "/applications", label: "Apps", icon: ClipboardList },
+  { path: "/feed", label: "Feed", icon: Newspaper },
+  {
+    type: "menu",
+    id: "candidate-more",
+    label: "More",
+    icon: LayoutGrid,
+    children: [
+      { path: "/companies", label: "Companies", icon: Building2 },
+      { section: "AI Tools", links: candidateAiLinks },
+    ],
+  },
+  { path: "/profile", label: "Profile", icon: UserCircle },
+];
+
+export const employerMobileLinks = [
+  { path: "/employer", label: "Home", icon: LayoutDashboard },
+  { path: "/employer/feed", label: "Feed", icon: Newspaper },
+  { path: "/employer/jobs", label: "Jobs", icon: Briefcase },
+  { path: "/employer/talent", label: "Talent", icon: Users },
+  { path: "/employer/pipeline", label: "Pipeline", icon: Kanban },
+  { path: "/employer/analytics", label: "Stats", icon: TrendingUp },
+];
+
+export const universityMobileLinks = [
+  { path: "/university", label: "Home", icon: Building2 },
+  { path: "/university/tracker", label: "Tracker", icon: GraduationCap },
+  { path: "/university/students", label: "Students", icon: Users },
+  { path: "/university/curriculum", label: "Curriculum", icon: BookOpen },
+  { path: "/university/trends", label: "Trends", icon: TrendingUp },
+  { path: "/university/reports", label: "Insights", icon: Sparkles },
+];
+
+export function getMobileBottomLinks(role) {
+  if (role === "employer") return employerMobileLinks;
+  if (role === "university") return universityMobileLinks;
+  return candidateMobileLinks;
+}
+
+export function isMobileNavItemActive(pathname, item) {
+  if (item.type === "menu") {
+    return item.children.some((child) => {
+      if (child.section) {
+        return child.links.some((link) => isActivePath(pathname, link.path));
+      }
+      return isActivePath(pathname, child.path);
+    });
+  }
+  if (item.path === "/employer/talent" && pathname.startsWith("/employer/candidates")) {
+    return true;
+  }
+  return isActivePath(pathname, item.path);
 }
