@@ -31,7 +31,7 @@ const portalModules = [
   {
     to: "/university/students",
     label: "Student Insights",
-    desc: "Skill clusters, interests, and cohort progress",
+    desc: "What students are learning and which careers they want",
     icon: Users,
   },
   {

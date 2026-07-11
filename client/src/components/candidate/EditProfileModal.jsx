@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
-import { X, Pencil, Loader2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { X, Pencil, Loader2, Camera } from "lucide-react";
 import { buildEditFormState, formStateToProfilePatch } from "../../lib/profileEdits.js";
+import ProfileAvatar from "../ui/ProfileAvatar.jsx";
+
+const MAX_PHOTO_BYTES = 2 * 1024 * 1024;
 
 function Field({ label, children, hint, className = "" }) {
   return (
@@ -13,12 +16,15 @@ function Field({ label, children, hint, className = "" }) {
 }
 
 export default function EditProfileModal({ open, profile, onClose, onSave }) {
+  const photoInputRef = useRef(null);
   const [form, setForm] = useState(() => buildEditFormState(profile));
   const [saving, setSaving] = useState(false);
+  const [photoError, setPhotoError] = useState("");
 
   useEffect(() => {
     if (open) {
       setForm(buildEditFormState(profile));
+      setPhotoError("");
     }
   }, [open, profile]);
 
@@ -35,6 +41,31 @@ export default function EditProfileModal({ open, profile, onClose, onSave }) {
 
   function updateField(key, value) {
     setForm((prev) => ({ ...prev, [key]: value }));
+  }
+
+  function handlePhotoChange(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setPhotoError("Please choose an image file (JPG, PNG, or WebP).");
+      e.target.value = "";
+      return;
+    }
+
+    if (file.size > MAX_PHOTO_BYTES) {
+      setPhotoError("Image must be 2 MB or smaller.");
+      e.target.value = "";
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      updateField("photoUrl", reader.result);
+      setPhotoError("");
+    };
+    reader.readAsDataURL(file);
+    e.target.value = "";
   }
 
   function handleSubmit(e) {
@@ -87,6 +118,37 @@ export default function EditProfileModal({ open, profile, onClose, onSave }) {
           onSubmit={handleSubmit}
           className="neo-scroll-hidden min-h-0 flex-1 overflow-y-auto px-5 py-4 sm:px-6"
         >
+          <div className="neo-soft mb-6 flex flex-col items-center gap-4 rounded-2xl p-5 sm:flex-row sm:items-center">
+            <ProfileAvatar
+              photoUrl={form.photoUrl}
+              initials={profile.avatar}
+              size="xl"
+              alt={profile.name}
+            />
+            <div className="text-center sm:text-left">
+              <p className="neo-title font-semibold">{profile.name}</p>
+              <p className="neo-muted text-sm">Update how employers see you on CareerSync.</p>
+              <input
+                ref={photoInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                className="sr-only"
+                onChange={handlePhotoChange}
+              />
+              <button
+                type="button"
+                onClick={() => photoInputRef.current?.click()}
+                className="neo-secondary mt-3 inline-flex cursor-pointer items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold"
+              >
+                <Camera size={16} aria-hidden="true" />
+                Change Photo
+              </button>
+              {photoError && (
+                <p className="mt-2 text-xs text-rose-400">{photoError}</p>
+              )}
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field label="Tagline" className="sm:col-span-2">
               <input

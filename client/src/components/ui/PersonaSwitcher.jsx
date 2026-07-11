@@ -3,22 +3,11 @@ import { createPortal } from "react-dom";
 import { ChevronDown, Check, Users } from "lucide-react";
 import { usePersona } from "../../context/PersonaContext.jsx";
 import { getEmployabilityScore } from "../../data/employabilityScore.js";
+import { readProfileEdits } from "../../lib/profileEdits.js";
+import ProfileAvatar from "./ProfileAvatar.jsx";
 
-function PersonaAvatar({ initials, size = "md" }) {
-  const sizeClass =
-    size === "sm"
-      ? "h-7 w-7 text-[10px]"
-      : size === "lg"
-        ? "h-11 w-11 text-sm"
-        : "h-9 w-9 text-xs";
-
-  return (
-    <span
-      className={`flex shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 font-bold text-slate-950 shadow-sm ${sizeClass}`}
-    >
-      {initials}
-    </span>
-  );
+function personaPhotoUrl(persona) {
+  return readProfileEdits()[persona.id]?.photoUrl ?? persona.photoUrl ?? null;
 }
 
 function PersonaOption({ p, active, onSelect, layout }) {
@@ -33,7 +22,12 @@ function PersonaOption({ p, active, onSelect, layout }) {
         onClick={() => onSelect(p.id)}
         className={`neo-persona-option w-full cursor-pointer text-left ${active ? "neo-persona-option-active" : ""}`}
       >
-        <PersonaAvatar initials={p.avatar} size="lg" />
+        <ProfileAvatar
+          photoUrl={personaPhotoUrl(p)}
+          initials={p.avatar}
+          size="lg"
+          alt={p.name}
+        />
         <span className="min-w-0 flex-1">
           <span className="neo-title block truncate text-sm font-semibold">{p.name}</span>
           <span className="neo-muted block truncate text-xs">{p.targetRole}</span>
@@ -58,7 +52,12 @@ function PersonaOption({ p, active, onSelect, layout }) {
       onClick={() => onSelect(p.id)}
       className={`neo-persona-chip cursor-pointer ${active ? "neo-persona-chip-active" : ""}`}
     >
-      <PersonaAvatar initials={p.avatar} size="sm" />
+      <ProfileAvatar
+        photoUrl={personaPhotoUrl(p)}
+        initials={p.avatar}
+        size="sm"
+        alt={p.name}
+      />
       <span className="truncate font-semibold">{p.name.split(" ")[0]}</span>
       {active && <Check size={12} className="shrink-0" />}
     </button>
@@ -196,7 +195,12 @@ export default function PersonaSwitcher({ compact = false }) {
         onClick={() => setOpen((v) => !v)}
         className={`neo-persona-trigger ${open ? "neo-persona-trigger-open" : ""}`}
       >
-        <PersonaAvatar initials={persona.avatar} size="sm" />
+        <ProfileAvatar
+          photoUrl={personaPhotoUrl(persona)}
+          initials={persona.avatar}
+          size="sm"
+          alt={persona.name}
+        />
         <span className="hidden min-w-0 flex-1 text-left xl:block">
           <span className="neo-text block truncate text-xs font-semibold leading-tight">
             {persona.name.split(" ")[0]}

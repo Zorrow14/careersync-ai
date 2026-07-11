@@ -24,6 +24,7 @@ import { getWorkTrait } from "../../data/workTraits.js";
 import PageHeader from "../../components/ui/PageHeader.jsx";
 import KpiCard from "../../components/ui/KpiCard.jsx";
 import ProgressBar from "../../components/ui/ProgressBar.jsx";
+import ProfileAvatar from "../../components/ui/ProfileAvatar.jsx";
 
 const dimensionIcons = { Target, FolderGit2, Mic, TrendingUp };
 
@@ -70,9 +71,12 @@ export default function Dashboard() {
       <div className="neo-card mb-6 rounded-2xl p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500 text-xl font-bold text-slate-950">
-              {persona.avatar}
-            </div>
+            <ProfileAvatar
+              photoUrl={profile.photoUrl}
+              initials={persona.avatar}
+              size="lg"
+              alt={persona.name}
+            />
             <div>
               <h2 className="neo-title text-lg font-bold">{persona.name}</h2>
               <p className="neo-muted text-sm">{persona.degree} · {persona.institution}</p>

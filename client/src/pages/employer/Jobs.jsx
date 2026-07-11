@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Briefcase,
   MapPin,
@@ -8,8 +9,10 @@ import {
   CheckCircle2,
   XCircle,
   Clock,
+  ClipboardList,
 } from "lucide-react";
-import { employerJobs } from "../../data/employerData.js";
+import { employerJobs, companyProfile } from "../../data/employerData.js";
+import { getEmployerApplications } from "../../data/employerApplications.js";
 import DropdownSelect from "../../components/ui/DropdownSelect.jsx";
 
 const statusConfig = {
@@ -22,6 +25,16 @@ export default function Jobs() {
   const [filter, setFilter] = useState("all");
   const [showForm, setShowForm] = useState(false);
   const [jobType, setJobType] = useState("Internship");
+
+  const applicationsByJob = useMemo(() => {
+    const apps = getEmployerApplications();
+    return apps.reduce((acc, app) => {
+      if (app.employerJobId) {
+        acc[app.employerJobId] = (acc[app.employerJobId] || 0) + 1;
+      }
+      return acc;
+    }, {});
+  }, []);
 
   const filtered = filter === "all"
     ? employerJobs
@@ -137,13 +150,24 @@ export default function Jobs() {
                 <span className="neo-muted flex items-center gap-1"><Users size={13} /> {job.applications} applications</span>
               </div>
 
-              <div className="mt-4 flex flex-wrap gap-2">
-                {job.requiredSkills.map((s) => (
-                  <span key={s} className="neo-badge-match rounded-full px-3 py-1 text-xs font-medium">{s}</span>
-                ))}
-                {job.preferredSkills.map((s) => (
-                  <span key={s} className="neo-soft rounded-full px-3 py-1 text-xs font-medium neo-muted">{s}</span>
-                ))}
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex flex-wrap gap-2">
+                  {job.requiredSkills.map((s) => (
+                    <span key={s} className="neo-badge-match rounded-full px-3 py-1 text-xs font-medium">{s}</span>
+                  ))}
+                  {job.preferredSkills.map((s) => (
+                    <span key={s} className="neo-soft rounded-full px-3 py-1 text-xs font-medium neo-muted">{s}</span>
+                  ))}
+                </div>
+                {job.company === companyProfile.name && (
+                  <Link
+                    to={`/employer/applications?role=${encodeURIComponent(job.title)}`}
+                    className="neo-secondary flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold"
+                  >
+                    <ClipboardList size={14} />
+                    View Applications ({applicationsByJob[job.id] ?? job.applications})
+                  </Link>
+                )}
               </div>
             </div>
           );

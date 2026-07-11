@@ -36,6 +36,7 @@ import CompanyFeed from "./pages/candidate/CompanyFeed";
 import EmployerDashboard from "./pages/employer/Dashboard";
 import EmployerFeed from "./pages/employer/Feed";
 import EmployerJobs from "./pages/employer/Jobs";
+import EmployerApplications from "./pages/employer/Applications";
 import TalentDiscovery from "./pages/employer/TalentDiscovery";
 import EmployerPipeline from "./pages/employer/Pipeline";
 import EmployerCandidateProfile from "./pages/employer/CandidateProfile";
@@ -262,6 +263,16 @@ export default function App() {
                   <ProtectedRoute>
                     <RoleRoute allowedRole="employer">
                       <EmployerJobs />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/employer/applications"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="employer">
+                      <EmployerApplications />
                     </RoleRoute>
                   </ProtectedRoute>
                 }

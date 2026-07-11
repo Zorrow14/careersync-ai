@@ -46,6 +46,7 @@ export function saveProfileEdits(personaId, patch) {
 
 export function buildEditFormState(profile) {
   return {
+    photoUrl: profile.photoUrl || "",
     tagline: profile.tagline || "",
     about: profile.about || "",
     location: profile.location || "",
@@ -70,6 +71,7 @@ export function formStateToProfilePatch(form) {
       .filter(Boolean);
 
   return {
+    photoUrl: form.photoUrl || undefined,
     tagline: form.tagline.trim(),
     about: form.about.trim(),
     location: form.location.trim(),

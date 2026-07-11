@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import { ArrowLeft, Sparkles, X } from "lucide-react";
 import CandidateProfileView from "../../components/employer/CandidateProfileView.jsx";
 import FitReportPanel from "../../components/employer/FitReportPanel.jsx";
@@ -22,6 +22,7 @@ function BackLink({ to, label }) {
 
 export default function CandidateProfile() {
   const { candidateId } = useParams();
+  const location = useLocation();
   const [showFitReport, setShowFitReport] = useState(false);
 
   const candidate = useMemo(() => findEmployerCandidate(candidateId), [candidateId]);
@@ -47,9 +48,17 @@ export default function CandidateProfile() {
     );
   }
 
-  const backTo = candidate.context === "pipeline" ? "/employer/pipeline" : "/employer/talent";
-  const backLabel =
-    candidate.context === "pipeline" ? "Back to pipeline" : "Back to talent discovery";
+  const fromApplications = location.state?.from === "/employer/applications";
+  const backTo = fromApplications
+    ? "/employer/applications"
+    : candidate.context === "pipeline"
+      ? "/employer/pipeline"
+      : "/employer/talent";
+  const backLabel = fromApplications
+    ? "Back to applications"
+    : candidate.context === "pipeline"
+      ? "Back to pipeline"
+      : "Back to talent discovery";
 
   const fitCandidate = {
     name: candidate.name,

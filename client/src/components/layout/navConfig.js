@@ -41,6 +41,7 @@ export const employerLinks = [
   { path: "/employer", label: "Dashboard", icon: LayoutDashboard },
   { path: "/employer/feed", label: "Feed", icon: Newspaper },
   { path: "/employer/jobs", label: "Jobs", icon: Briefcase },
+  { path: "/employer/applications", label: "Applications", icon: ClipboardList },
   { path: "/employer/talent", label: "Talent", icon: Users },
   { path: "/employer/pipeline", label: "Pipeline", icon: Kanban },
   { path: "/employer/analytics", label: "Analytics", icon: TrendingUp },
@@ -68,18 +69,24 @@ export function isAiToolsActive(pathname) {
 
 /** Bottom tab bar links — mobile only (md+ uses top navbar). */
 export const candidateMobileLinks = [
+  {
+    type: "menu",
+    id: "candidate-ai",
+    label: "AI",
+    icon: Sparkles,
+    children: [{ section: "AI Tools", links: candidateAiLinks }],
+  },
   { path: "/dashboard", label: "Home", icon: LayoutDashboard },
   { path: "/jobs", label: "Jobs", icon: Search },
   { path: "/applications", label: "Apps", icon: ClipboardList },
-  { path: "/feed", label: "Feed", icon: Newspaper },
   {
     type: "menu",
     id: "candidate-more",
     label: "More",
     icon: LayoutGrid,
     children: [
+      { path: "/feed", label: "Feed", icon: Newspaper },
       { path: "/companies", label: "Companies", icon: Building2 },
-      { section: "AI Tools", links: candidateAiLinks },
     ],
   },
   { path: "/profile", label: "Profile", icon: UserCircle },
@@ -87,8 +94,8 @@ export const candidateMobileLinks = [
 
 export const employerMobileLinks = [
   { path: "/employer", label: "Home", icon: LayoutDashboard },
-  { path: "/employer/feed", label: "Feed", icon: Newspaper },
   { path: "/employer/jobs", label: "Jobs", icon: Briefcase },
+  { path: "/employer/applications", label: "Apps", icon: ClipboardList },
   { path: "/employer/talent", label: "Talent", icon: Users },
   { path: "/employer/pipeline", label: "Pipeline", icon: Kanban },
   { path: "/employer/analytics", label: "Stats", icon: TrendingUp },
@@ -117,6 +124,9 @@ export function isMobileNavItemActive(pathname, item) {
       }
       return isActivePath(pathname, child.path);
     });
+  }
+  if (item.id === "candidate-ai") {
+    return isAiToolsActive(pathname);
   }
   if (item.path === "/employer/talent" && pathname.startsWith("/employer/candidates")) {
     return true;

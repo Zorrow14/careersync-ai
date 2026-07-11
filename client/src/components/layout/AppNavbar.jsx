@@ -5,6 +5,7 @@ import { ChevronDown, LogOut } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth.js";
 import { usePersona } from "../../context/PersonaContext.jsx";
 import PersonaSwitcher from "../ui/PersonaSwitcher.jsx";
+import ProfileAvatar from "../ui/ProfileAvatar.jsx";
 import NavShell, { NavLogo, ThemeToggle } from "./NavShell.jsx";
 import {
   candidateMainLinks,
@@ -103,7 +104,7 @@ export default function AppNavbar({ lightMode, setLightMode }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, role, logout } = useAuth();
-  const { persona } = usePersona();
+  const { persona, profile } = usePersona();
 
   const [aiOpen, setAiOpen] = useState(false);
   const [userOpen, setUserOpen] = useState(false);
@@ -135,6 +136,7 @@ export default function AppNavbar({ lightMode, setLightMode }) {
     role === "candidate"
       ? persona.avatar
       : displayName.charAt(0).toUpperCase();
+  const candidatePhoto = role === "candidate" ? profile.photoUrl : null;
 
   useEffect(() => {
     setAiOpen(false);
@@ -176,15 +178,6 @@ export default function AppNavbar({ lightMode, setLightMode }) {
           </Link>
 
           <div className="hidden flex-1 items-center justify-center gap-0.5 overflow-visible md:flex">
-            {mainLinks.map((item) => (
-              <DesktopNavLink
-                key={item.path}
-                to={item.path}
-                label={item.label}
-                active={isActivePath(location.pathname, item.path)}
-              />
-            ))}
-
             {showAiDropdown && (
               <div className="relative z-50" ref={aiRef}>
                 <button
@@ -206,7 +199,7 @@ export default function AppNavbar({ lightMode, setLightMode }) {
                 {aiOpen && (
                   <div
                     role="menu"
-                    className="neo-nav-dropdown neo-nav-dropdown--animate absolute left-1/2 top-[calc(100%+0.35rem)] z-[60] min-w-[190px] -translate-x-1/2 p-2"
+                    className="neo-nav-dropdown neo-nav-dropdown--animate absolute left-0 top-[calc(100%+0.35rem)] z-[60] min-w-[190px] p-2"
                   >
                     {candidateAiLinks.map((item) => (
                       <Link
@@ -226,6 +219,15 @@ export default function AppNavbar({ lightMode, setLightMode }) {
                 )}
               </div>
             )}
+
+            {mainLinks.map((item) => (
+              <DesktopNavLink
+                key={item.path}
+                to={item.path}
+                label={item.label}
+                active={isActivePath(location.pathname, item.path)}
+              />
+            ))}
           </div>
 
           <div className="ml-auto flex min-w-0 items-center gap-2">
@@ -248,9 +250,18 @@ export default function AppNavbar({ lightMode, setLightMode }) {
                 aria-label="Account menu"
                 className="neo-nav-icon-btn !w-auto max-w-[11rem] cursor-pointer gap-2 rounded-full px-1.5 py-1.5 pr-2.5 sm:pr-3"
               >
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-amber-500 text-[10px] font-bold text-slate-950">
-                  {initial}
-                </span>
+                {role === "candidate" ? (
+                  <ProfileAvatar
+                    photoUrl={candidatePhoto}
+                    initials={initial}
+                    size="xs"
+                    alt={displayName}
+                  />
+                ) : (
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-amber-500 text-[10px] font-bold text-slate-950">
+                    {initial}
+                  </span>
+                )}
                 <span className="min-w-0 text-left">
                   <span className="neo-text block truncate text-xs font-medium leading-tight">
                     {displayName}

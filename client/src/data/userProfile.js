@@ -3,6 +3,8 @@ export const userProfiles = {
     name: "Sarah Tan",
     email: "sarah.tan@example.com",
     avatar: "ST",
+    photoUrl:
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=256&h=256&fit=crop&crop=face",
     tagline: "Frontend Developer crafting delightful user experiences",
     about: "Final-year Computer Science student passionate about building accessible, performant web interfaces. I love turning complex problems into clean, intuitive UI.",
     location: "Kuala Lumpur, Malaysia",
@@ -58,6 +60,8 @@ export const userProfiles = {
     name: "Jason Lim",
     email: "jason.lim@example.com",
     avatar: "JL",
+    photoUrl:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=256&h=256&fit=crop&crop=face",
     tagline: "Data Analyst turning raw data into clear decisions",
     about: "Data science student who enjoys finding stories hidden in datasets. Comfortable across the analytics stack from SQL to dashboards.",
     location: "Johor Bahru, Malaysia",
@@ -112,6 +116,8 @@ export const userProfiles = {
     name: "Aina Rahman",
     email: "aina.rahman@example.com",
     avatar: "AR",
+    photoUrl:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=256&h=256&fit=crop&crop=face",
     tagline: "Full Stack Developer building scalable products end-to-end",
     about: "Software engineering student with a love for full-stack architecture and DevOps. I enjoy shipping features from database to UI and automating everything in between.",
     location: "Serdang, Malaysia",

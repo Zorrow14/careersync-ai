@@ -7,6 +7,7 @@ import {
   Clock,
   ArrowRight,
   UserPlus,
+  ClipboardList,
 } from "lucide-react";
 import {
   employerJobs,
@@ -14,13 +15,14 @@ import {
   hiringAnalytics,
   companyProfile,
 } from "../../data/employerData.js";
+import { getEmployerApplicationStats } from "../../data/employerApplications.js";
 import { getCompanyFeedByName } from "../../data/companyFeedData.js";
 import PageHeader from "../../components/ui/PageHeader.jsx";
 import KpiCard from "../../components/ui/KpiCard.jsx";
 
 export default function EmployerDashboard() {
   const activeJobs = employerJobs.filter((j) => j.status === "Active").length;
-  const totalApps = hiringAnalytics.totalApplications;
+  const appStats = getEmployerApplicationStats();
   const recentPipeline = pipelineCandidates.slice(0, 5);
   const recentFeed = getCompanyFeedByName(companyProfile.name).slice(0, 3);
 
@@ -40,7 +42,7 @@ export default function EmployerDashboard() {
       <div className="mb-8 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
         {[
           { label: "Active Positions", value: activeJobs, icon: Briefcase, iconClassName: "text-amber-300", to: "/employer/jobs" },
-          { label: "Total Applications", value: totalApps, icon: UserPlus, iconClassName: "text-blue-300", to: "/employer/analytics" },
+          { label: "Total Applications", value: appStats.total, icon: UserPlus, iconClassName: "text-blue-300", to: "/employer/applications" },
           { label: "Hired This Quarter", value: hiringAnalytics.totalHired, icon: CheckCircle2, iconClassName: "text-emerald-300" },
           { label: "Avg. Time to Hire", value: hiringAnalytics.avgTimeToHire, icon: Clock, iconClassName: "text-purple-300" },
         ].map((kpi) => (
@@ -101,10 +103,10 @@ export default function EmployerDashboard() {
       {/* ─── Quick Links ─── */}
       <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-4">
         {[
+          { label: "View Applications", path: "/employer/applications", icon: ClipboardList },
           { label: "Talent Discovery", path: "/employer/talent", icon: Users },
           { label: "Job Management", path: "/employer/jobs", icon: Briefcase },
           { label: "Candidate Pipeline", path: "/employer/pipeline", icon: TrendingUp },
-          { label: "Hiring Analytics", path: "/employer/analytics", icon: TrendingUp },
         ].map(({ label, path, icon: Icon }) => (
           <Link key={path} to={path} className="neo-card neo-interactive flex items-center gap-3 rounded-2xl p-5">
             <div className="rounded-xl bg-amber-500/15 p-2 text-amber-300"><Icon size={20} /></div>
