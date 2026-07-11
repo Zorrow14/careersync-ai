@@ -1,15 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import {
-  Calendar,
-  FileText,
-  Search,
-  User,
-  Briefcase,
-  Sparkles,
-  StickyNote,
-  ExternalLink,
-} from "lucide-react";
+import { Search, Briefcase } from "lucide-react";
 import PageHeader from "../../components/ui/PageHeader.jsx";
 import ProfileAvatar from "../../components/ui/ProfileAvatar.jsx";
 import DropdownSelect from "../../components/ui/DropdownSelect.jsx";
@@ -117,9 +108,28 @@ export default function EmployerApplications() {
         ))}
       </div>
 
-      <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center">
+        {/* Dropdown on the left for compact inline layout, search expands to fill remaining space */}
+        <div className="w-full sm:w-64">
+          <DropdownSelect
+            label={<span className="sr-only">Applied role</span>}
+            value={roleFilter}
+            onChange={setRoleFilter}
+            options={[
+              { value: "all", label: "All roles", description: `${stats.total} applications` },
+              ...roles.map((role) => ({
+                value: role,
+                label: role,
+                description: `${stats.byRole[role] || 0} applicants`,
+              })),
+            ]}
+            className="mt-0"
+            helperText={null}
+          />
+        </div>
+
         <div className="relative min-w-0 flex-1">
-          <label htmlFor="employer-app-search" className="neo-text mb-1 block text-sm font-medium">
+          <label htmlFor="employer-app-search" className="sr-only">
             Search candidates
           </label>
           <div className="relative">
@@ -137,22 +147,6 @@ export default function EmployerApplications() {
               className="neo-input w-full rounded-xl py-3 pl-10 pr-4 text-sm"
             />
           </div>
-        </div>
-        <div className="w-full lg:w-64">
-          <DropdownSelect
-            label="Applied role"
-            value={roleFilter}
-            onChange={setRoleFilter}
-            options={[
-              { value: "all", label: "All roles", description: `${stats.total} applications` },
-              ...roles.map((role) => ({
-                value: role,
-                label: role,
-                description: `${stats.byRole[role] || 0} applicants`,
-              })),
-            ]}
-            helperText="Filter by job posting"
-          />
         </div>
       </div>
 
@@ -184,88 +178,111 @@ export default function EmployerApplications() {
         />
       ) : (
         <div className="space-y-4">
-          {paged.map((app) => (
-            <article key={app.id} className="neo-card rounded-2xl p-5 sm:p-6">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                <div className="flex min-w-0 items-start gap-4">
-                  <ProfileAvatar
-                    photoUrl={app.photoUrl}
-                    initials={app.avatar}
-                    size="md"
-                    alt={app.candidateName}
-                  />
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h2 className="neo-title text-lg font-bold">{app.candidateName}</h2>
-                      {app.origin === "candidate" && (
-                        <span className="neo-soft rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide">
-                          Applied via CareerSync
-                        </span>
-                      )}
+          {/* Table view for medium+ screens: denser, more columns */}
+          <div className="hidden md:block">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left neo-muted text-xs">
+                  <th className="py-3 pl-4">Candidate</th>
+                  <th className="py-3">Role</th>
+                  <th className="py-3">University</th>
+                  <th className="py-3 text-center">Applied</th>
+                  <th className="py-3 text-center">Fit</th>
+                  <th className="py-3 text-center">Stage</th>
+                  <th className="py-3 text-center">Status</th>
+                  <th className="py-3 pr-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                {paged.map((app) => (
+                  <tr key={app.id} className="align-top">
+                    <td className="py-4 pl-4 pr-6">
+                      <div className="flex items-center gap-3">
+                        <ProfileAvatar photoUrl={app.photoUrl} initials={app.avatar} size="sm" alt={app.candidateName} />
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2">
+                            <span className="neo-title block truncate font-semibold">{app.candidateName}</span>
+                            {app.origin === "candidate" && (
+                              <span className="neo-soft rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide">Applied</span>
+                            )}
+                          </div>
+                          <div className="neo-muted text-xs truncate">{app.degree} · {app.university}</div>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td className="py-4 pr-6">
+                      <div className="neo-text text-sm font-medium truncate">{app.role}</div>
+                    </td>
+
+                    <td className="py-4 pr-6 neo-muted text-sm truncate">{app.university}</td>
+
+                    <td className="py-4 pr-6 text-center neo-muted text-sm">{app.appliedDate}</td>
+
+                    <td className="py-4 pr-6 text-center">
+                      <div className={`font-semibold ${fitScoreClass(app.matchScore)}`}>{app.matchScore}%</div>
+                    </td>
+
+                    <td className="py-4 pr-6 text-center">
+                      <span className={`rounded-full px-3 py-1 text-xs font-semibold ${stageColors[app.employerStage] || "neo-soft"}`}>{app.employerStage}</span>
+                    </td>
+
+                    <td className="py-4 pr-6 text-center">
+                      <span className={`rounded-full px-3 py-1 text-xs font-semibold ${candidateStatusColors[app.candidateStatus] || "neo-soft"}`}>{app.candidateStatus}</span>
+                    </td>
+
+                    <td className="py-4 pr-4 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <Link
+                          to={`/employer/candidates/${app.candidateId}`}
+                          state={{ from: "/employer/applications", role: app.role }}
+                          className="neo-primary rounded-xl px-3 py-1 text-xs font-semibold"
+                        >
+                          View
+                        </Link>
+                        {app.pipelineId && (
+                          <Link to="/employer/pipeline" className="neo-secondary rounded-xl px-3 py-1 text-xs font-semibold">Open</Link>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Compact stacked cards for small screens */}
+          <div className="md:hidden space-y-3">
+            {paged.map((app) => (
+              <article key={app.id} className="neo-card rounded-xl p-3">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <ProfileAvatar photoUrl={app.photoUrl} initials={app.avatar} size="sm" alt={app.candidateName} />
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <h3 className="neo-title text-sm font-semibold truncate">{app.candidateName}</h3>
+                        <div className="neo-muted text-[11px] truncate">{app.degree} · {app.university}</div>
+                      </div>
+                      <div className="neo-text text-xs truncate">{app.role}</div>
                     </div>
-                    <p className="neo-muted text-sm">
-                      {app.degree} · {app.university}
-                    </p>
-                    <p className="neo-text mt-2 text-sm font-medium">{app.role}</p>
-                    <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
-                      <span className="neo-muted flex items-center gap-1">
-                        <Calendar size={12} aria-hidden="true" />
-                        Applied {app.appliedDate}
-                      </span>
-                      <span className={`flex items-center gap-1 font-semibold ${fitScoreClass(app.matchScore)}`}>
-                        <Sparkles size={12} aria-hidden="true" />
-                        {app.matchScore}% fit
-                      </span>
-                      <span className="neo-muted flex items-center gap-1">
-                        <FileText size={12} aria-hidden="true" />
-                        Source: {app.source}
-                      </span>
-                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <div className={`text-sm font-semibold ${fitScoreClass(app.matchScore)}`}>{app.matchScore}%</div>
+                    <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${stageColors[app.employerStage] || "neo-soft"}`}>{app.employerStage}</span>
                   </div>
                 </div>
 
-                <div className="flex shrink-0 flex-wrap items-center gap-2 sm:flex-col sm:items-end">
-                  <span
-                    className={`rounded-full px-3 py-1 text-xs font-semibold ${stageColors[app.employerStage] || "neo-soft"}`}
-                  >
-                    {app.employerStage}
-                  </span>
-                  <span
-                    className={`rounded-full px-3 py-1 text-xs font-semibold ${candidateStatusColors[app.candidateStatus] || "neo-soft"}`}
-                  >
-                    {app.candidateStatus}
-                  </span>
+                <div className="mt-3 flex items-center justify-between gap-2">
+                  <div className="neo-muted text-xs">Applied {app.appliedDate} · {app.source}</div>
+                  <div className="flex items-center gap-2">
+                    <Link to={`/employer/candidates/${app.candidateId}`} state={{ from: "/employer/applications", role: app.role }} className="neo-primary rounded-xl px-3 py-1 text-xs font-semibold">View</Link>
+                    {app.pipelineId && <Link to="/employer/pipeline" className="neo-secondary rounded-xl px-3 py-1 text-xs font-semibold">Open</Link>}
+                  </div>
                 </div>
-              </div>
-
-              {app.notes && (
-                <div className="neo-soft mt-4 flex items-start gap-2 rounded-xl p-3 text-xs">
-                  <StickyNote size={14} className="mt-0.5 shrink-0 text-amber-300" aria-hidden="true" />
-                  <span className="neo-text">{app.notes}</span>
-                </div>
-              )}
-
-              <div className="mt-4 flex flex-wrap gap-2 border-t border-white/10 pt-4">
-                <Link
-                  to={`/employer/candidates/${app.candidateId}`}
-                  state={{ from: "/employer/applications", role: app.role }}
-                  className="neo-primary flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold"
-                >
-                  <User size={14} aria-hidden="true" />
-                  View Profile
-                </Link>
-                {app.pipelineId && (
-                  <Link
-                    to="/employer/pipeline"
-                    className="neo-secondary flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold"
-                  >
-                    <ExternalLink size={14} aria-hidden="true" />
-                    Open in Pipeline
-                  </Link>
-                )}
-              </div>
-            </article>
-          ))}
+              </article>
+            ))}
+          </div>
         </div>
       )}
 
