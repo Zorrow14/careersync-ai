@@ -42,7 +42,8 @@ const basePipeline = [
 
 export const pipelineCandidates = basePipeline.slice(0, 45).map((c, i) => ({
   ...c,
-  stage: pipelineStageQuotas[i] ?? c.stage,
+  // Distribute demo candidates evenly across the canonical pipeline stages for cleaner UI
+  stage: pipelineStages[i % pipelineStages.length],
 }));
 
 /* ─── Talent Discovery Pool ─── */
