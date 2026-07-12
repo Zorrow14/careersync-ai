@@ -38,6 +38,22 @@ export default function Pipeline() {
   const [view, setView] = useState("board");
   const [toast, setToast] = useState(null);
 
+  function reassemblePipeline() {
+    // Group candidates by the canonical pipelineStages order, sort each group by fitScore desc
+    const ordered = [];
+    for (const s of pipelineStages) {
+      const group = candidates.filter((c) => c.stage === s).slice();
+      group.sort((a, b) => b.fitScore - a.fitScore);
+      ordered.push(...group);
+    }
+    // If any candidates have unknown stages, append them sorted by fitScore
+    const unknowns = candidates.filter((c) => !pipelineStages.includes(c.stage)).slice();
+    unknowns.sort((a, b) => b.fitScore - a.fitScore);
+    if (unknowns.length) ordered.push(...unknowns);
+    setCandidates(ordered);
+    setToast("Pipeline reassembled");
+  }
+
   const selected = candidates.find((c) => c.id === selectedId);
 
   const stageCounts = useMemo(() => {
@@ -70,7 +86,7 @@ export default function Pipeline() {
         title="Hiring Pipeline"
         description="Track candidates through application stages, spot drop-offs, and advance top fits with explainable scores."
         actions={
-          <div className="flex rounded-xl border border-white/10 p-1">
+          <div className="flex rounded-xl border border-white/10 p-1 items-center gap-2">
             <button
               type="button"
               onClick={() => setView("board")}
@@ -93,6 +109,13 @@ export default function Pipeline() {
               <List size={14} aria-hidden="true" />
               List
             </button>
++            <button
++              type="button"
++              onClick={reassemblePipeline}
++              className="flex cursor-pointer items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition neo-secondary hover:text-amber-300"
++            >
++              Reassemble
++            </button>
           </div>
         }
       />

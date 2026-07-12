@@ -19,7 +19,7 @@ import { usePagination } from "../../hooks/usePagination.js";
 import Pagination from "../../components/ui/Pagination.jsx";
 
 const workModes = ["All", "Remote", "Hybrid", "On-site"];
-const types = ["All", "Internship", "Full-time", "Contract", "Part-time", "Remote"];
+const types = ["All", "Internship", "Full-time", "Contract", "Part-time"];
 
 function matchColor(score) {
   if (score >= 80) return "text-emerald-300";

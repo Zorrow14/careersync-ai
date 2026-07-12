@@ -33,7 +33,7 @@ const JOB_TITLES = [
 
 const LOCATIONS = ["Kuala Lumpur", "Penang", "Cyberjaya", "Johor Bahru", "Remote", "Selangor"];
 const WORK_MODES = ["Remote", "Hybrid", "On-site"];
-const TYPES = ["Internship", "Full-time", "Contract", "Part-time", "Remote"];
+const TYPES = ["Internship", "Full-time", "Contract", "Part-time"];
 
 function pseudoMatch(seed, skills) {
   const base = 45 + (seed * 7) % 48;
