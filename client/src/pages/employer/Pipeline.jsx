@@ -109,13 +109,13 @@ export default function Pipeline() {
               <List size={14} aria-hidden="true" />
               List
             </button>
-+            <button
-+              type="button"
-+              onClick={reassemblePipeline}
-+              className="flex cursor-pointer items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition neo-secondary hover:text-amber-300"
-+            >
-+              Reassemble
-+            </button>
+            <button
+              type="button"
+              onClick={reassemblePipeline}
+              className="flex cursor-pointer items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition neo-secondary hover:text-amber-300"
+            >
+              Reassemble
+            </button>
           </div>
         }
       />
