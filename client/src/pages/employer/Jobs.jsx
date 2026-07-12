@@ -78,6 +78,8 @@ export default function Jobs() {
                   { value: "Internship", label: "Internship", description: "Intern or trainee role" },
                   { value: "Full-time", label: "Full-time", description: "Permanent position" },
                   { value: "Contract", label: "Contract", description: "Fixed-term engagement" },
+                  { value: "Part-time", label: "Part-time", description: "Part-time / reduced hours" },
+                  { value: "Remote", label: "Remote", description: "Fully remote role" },
                 ]}
                 helperText="Choose the job type"
               />

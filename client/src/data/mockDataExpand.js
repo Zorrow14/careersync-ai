@@ -33,7 +33,7 @@ const JOB_TITLES = [
 
 const LOCATIONS = ["Kuala Lumpur", "Penang", "Cyberjaya", "Johor Bahru", "Remote", "Selangor"];
 const WORK_MODES = ["Remote", "Hybrid", "On-site"];
-const TYPES = ["Internship", "Full-time"];
+const TYPES = ["Internship", "Full-time", "Contract", "Part-time", "Remote"];
 
 function pseudoMatch(seed, skills) {
   const base = 45 + (seed * 7) % 48;
@@ -265,7 +265,13 @@ export function generateExtraJobs(startId, count) {
     const skills = skillsPool[i % skillsPool.length];
     const title = JOB_TITLES[i % JOB_TITLES.length];
     const salary =
-      TYPES[i % 2] === "Internship" ? "RM 2,000 – 3,200" : "RM 3,500 – 5,500";
+      TYPES[i % TYPES.length] === "Internship"
+        ? "RM 2,000 – 3,200"
+        : TYPES[i % TYPES.length] === "Part-time"
+        ? "RM 1,200 – 2,000"
+        : TYPES[i % TYPES.length] === "Contract"
+        ? "RM 3,000 – 6,000"
+        : "RM 3,500 – 5,500";
 
     const location = LOCATIONS[i % LOCATIONS.length];
     const workMode = WORK_MODES[i % WORK_MODES.length];
