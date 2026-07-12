@@ -16,6 +16,7 @@ import {
 import { usePersona } from "../../context/PersonaContext.jsx";
 import { jobs, getJobMatch, getJobResponsibilities } from "../../data/jobsData.js";
 import { companies } from "../../data/companiesData.js";
+import ProfileAvatar from "../../components/ui/ProfileAvatar.jsx";
 
 function matchColor(score) {
   if (score >= 80) return "text-emerald-300";
@@ -56,9 +57,13 @@ export default function JobDetails() {
         <div className="space-y-6 lg:col-span-2">
           <div className="neo-card rounded-2xl p-6">
             <div className="flex items-start gap-4">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-amber-500/15 text-lg font-bold text-amber-300">
-                {job.logo}
-              </div>
+              <ProfileAvatar
+                photoUrl={company?.profileImageUrl}
+                initials={job.logo}
+                size="lg"
+                alt={`${job.company} logo`}
+                className="rounded-xl"
+              />
               <div className="flex-1">
                 <h1 className="neo-title text-2xl font-bold">{job.title}</h1>
                 {company ? (
@@ -130,7 +135,13 @@ export default function JobDetails() {
                   return (
                     <Link key={s.id} to={`/jobs/${s.id}`} className="neo-soft flex items-center justify-between rounded-xl p-4 transition hover:bg-white/5">
                       <div className="flex items-center gap-3">
-                        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-500/15 text-xs font-bold text-amber-300">{s.logo}</span>
+                        <ProfileAvatar
+                          photoUrl={companies.find((c) => c.name === s.company)?.profileImageUrl}
+                          initials={s.logo}
+                          size="sm"
+                          alt={`${s.company} logo`}
+                          className="rounded-lg"
+                        />
                         <div>
                           <p className="neo-title text-sm font-semibold">{s.title}</p>
                           <p className="neo-muted text-xs">{s.company} · {s.location}</p>

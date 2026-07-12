@@ -18,6 +18,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import ProgressBar from "../ui/ProgressBar.jsx";
+import ProfileAvatar from "../ui/ProfileAvatar.jsx";
 
 const dimensionIcons = {
   Target,
@@ -35,9 +36,13 @@ export default function CandidateProfileView({ view }) {
       <div className="neo-card rounded-2xl p-6">
         <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-amber-500 text-2xl font-bold text-slate-950">
-              {profile.avatar}
-            </div>
+            <ProfileAvatar
+              photoUrl={profile.photoUrl}
+              initials={profile.avatar}
+              size="xl"
+              alt={profile.name}
+              className="rounded-2xl"
+            />
             <div className="min-w-0">
               <h2 className="neo-title text-2xl font-bold">{profile.name}</h2>
               <p className="text-amber-300">{profile.tagline}</p>

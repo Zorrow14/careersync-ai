@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { Calendar, FileText, StickyNote, Search } from "lucide-react";
 import { usePersona } from "../../context/PersonaContext.jsx";
 import { applications, applicationStages } from "../../data/applicationsData.js";
+import { getCompanyByName } from "../../data/companiesData.js";
 import { usePagination } from "../../hooks/usePagination.js";
 import Pagination from "../../components/ui/Pagination.jsx";
+import ProfileAvatar from "../../components/ui/ProfileAvatar.jsx";
 
 const statusColors = {
   Applied: "neo-soft",
@@ -71,9 +73,13 @@ export default function Applications() {
           <div key={app.id} className="neo-card rounded-2xl p-6">
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-500/15 text-sm font-bold text-amber-300">
-                  {app.logo}
-                </div>
+                <ProfileAvatar
+                  photoUrl={getCompanyByName(app.company)?.profileImageUrl}
+                  initials={app.logo}
+                  size="md"
+                  alt={`${app.company} logo`}
+                  className="rounded-xl"
+                />
                 <div>
                   <Link to={`/jobs/${app.jobId}`} className="neo-title text-lg font-bold hover:text-amber-300">
                     {app.role}

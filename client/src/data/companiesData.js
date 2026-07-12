@@ -7,6 +7,7 @@
 
 import { jobs } from "./jobsData.js";
 import { generateExtraCompanies } from "./mockDataExpand.js";
+import { getCompanyProfileImage } from "./profileImages.js";
 
 export const industries = [
   "All",
@@ -251,7 +252,10 @@ const baseCompanies = [
   },
 ];
 
-export const companies = [...baseCompanies, ...generateExtraCompanies(13, 10)];
+export const companies = [...baseCompanies, ...generateExtraCompanies(13, 10)].map((company) => ({
+  ...company,
+  profileImageUrl: getCompanyProfileImage(company.name),
+}));
 
 /** Jobs posted by a given company (matched by company name). */
 export function getCompanyJobs(companyName) {

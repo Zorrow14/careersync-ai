@@ -1,9 +1,11 @@
 import { getCompanyFeedByName } from "./companyFeedData.js";
 import { generateExtraPipelineCandidates, generateExtraTalentPool } from "./mockDataExpand.js";
+import { getCandidatePhotoUrl, getCompanyProfileImage } from "./profileImages.js";
 
 /* ─── Company Profile ─── */
 export const companyProfile = {
   name: "TechNova Solutions",
+  profileImageUrl: getCompanyProfileImage("TechNova Solutions"),
   tagline: "Building the next generation of digital products",
   industry: "Software & Technology",
   size: "150–500 employees",
@@ -42,6 +44,7 @@ const basePipeline = [
 
 export const pipelineCandidates = basePipeline.slice(0, 45).map((c, i) => ({
   ...c,
+  photoUrl: getCandidatePhotoUrl(c.name, i + 1),
   // Distribute demo candidates evenly across the canonical pipeline stages for cleaner UI
   stage: pipelineStages[i % pipelineStages.length],
 }));
@@ -57,7 +60,10 @@ export const talentPool = [
   { id: "t7", name: "Daniel Wong", degree: "BSc Computer Science", university: "Sunway University", skills: ["React.js", "JavaScript", "Node.js", "Git", "Figma"], fitScore: 71, targetRole: "Frontend Developer", experience: "1 internship", avatar: "DW" },
   { id: "t8", name: "Mei Xin Lee", degree: "BSc Computer Science", university: "USM", skills: ["React.js", "TypeScript", "Tailwind CSS", "Firebase", "Git"], fitScore: 76, targetRole: "Frontend Developer", experience: "1 internship", avatar: "ML" },
   ...generateExtraTalentPool(9, 32),
-];
+].map((candidate, i) => ({
+  ...candidate,
+  photoUrl: getCandidatePhotoUrl(candidate.name, i + 1),
+}));
 
 /* ─── Analytics ─── */
 export const hiringAnalytics = {

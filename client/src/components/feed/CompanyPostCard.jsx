@@ -10,6 +10,8 @@ import {
   Building2,
   Briefcase,
 } from "lucide-react";
+import ProfileAvatar from "../ui/ProfileAvatar.jsx";
+import { getCompanyProfileImage } from "../../data/profileImages.js";
 
 const typeIcons = {
   announcement: Megaphone,
@@ -40,9 +42,14 @@ export default function CompanyPostCard({
           {showCompany ? (
             <Link
               to={`/companies/${post.companyId}`}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-500 text-sm font-bold text-slate-950 transition hover:opacity-90"
+              className="transition hover:opacity-90"
             >
-              {post.companyLogo}
+              <ProfileAvatar
+                photoUrl={getCompanyProfileImage(post.companyName)}
+                initials={post.companyLogo}
+                size="sm"
+                alt={`${post.companyName} logo`}
+              />
             </Link>
           ) : (
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-500 text-sm font-bold text-slate-950">

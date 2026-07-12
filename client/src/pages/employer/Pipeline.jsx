@@ -17,6 +17,7 @@ import EmptyState from "../../components/ui/EmptyState.jsx";
 import PipelineFunnel, { stageIcons, stageAccent } from "../../components/pipeline/PipelineFunnel.jsx";
 import PipelineStageStepper from "../../components/pipeline/PipelineStageStepper.jsx";
 import FitReportPanel from "../../components/employer/FitReportPanel.jsx";
+import ProfileAvatar from "../../components/ui/ProfileAvatar.jsx";
 
 const activeStages = pipelineStages.filter((s) => s !== "Rejected");
 
@@ -226,9 +227,12 @@ export default function Pipeline() {
                     >
                       <td className="px-4 py-3">
                         <span className="flex items-center gap-2">
-                          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500/15 text-xs font-bold text-amber-300">
-                            {c.avatar}
-                          </span>
+                          <ProfileAvatar
+                            photoUrl={c.photoUrl}
+                            initials={c.avatar}
+                            size="sm"
+                            alt={c.name}
+                          />
                           <span className="neo-title font-semibold">{c.name}</span>
                         </span>
                       </td>
@@ -252,9 +256,12 @@ export default function Pipeline() {
           {selected ? (
             <div className="neo-card space-y-5 rounded-2xl p-6">
               <div className="flex items-center gap-3">
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-500 text-lg font-bold text-slate-950">
-                  {selected.avatar}
-                </span>
+                <ProfileAvatar
+                  photoUrl={selected.photoUrl}
+                  initials={selected.avatar}
+                  size="lg"
+                  alt={selected.name}
+                />
                 <div className="min-w-0">
                   <p className="neo-title truncate text-lg font-bold">{selected.name}</p>
                   <p className="neo-muted truncate text-sm">{selected.role}</p>
@@ -368,9 +375,12 @@ function CandidateCard({ candidate, selected, onSelect }) {
       }`}
     >
       <div className="mb-2 flex items-start gap-2">
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-500/15 text-xs font-bold text-amber-300">
-          {candidate.avatar}
-        </span>
+        <ProfileAvatar
+          photoUrl={candidate.photoUrl}
+          initials={candidate.avatar}
+          size="sm"
+          alt={candidate.name}
+        />
         <div className="min-w-0 flex-1">
           <p className="neo-title truncate text-sm font-semibold">{candidate.name}</p>
           <p className="neo-muted truncate text-[11px]">{candidate.role}</p>

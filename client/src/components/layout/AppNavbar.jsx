@@ -15,6 +15,7 @@ import {
   isActivePath,
   isAiToolsActive,
 } from "./navConfig.js";
+import { companyProfile } from "../../data/employerData.js";
 
 function DesktopNavLink({ to, label, active }) {
   return (
@@ -137,6 +138,8 @@ export default function AppNavbar({ lightMode, setLightMode }) {
       ? persona.avatar
       : displayName.charAt(0).toUpperCase();
   const candidatePhoto = role === "candidate" ? profile.photoUrl : null;
+  const profilePhoto =
+    role === "candidate" ? candidatePhoto : role === "employer" ? companyProfile.profileImageUrl : null;
 
   useEffect(() => {
     setAiOpen(false);
@@ -250,18 +253,12 @@ export default function AppNavbar({ lightMode, setLightMode }) {
                 aria-label="Account menu"
                 className="neo-nav-icon-btn !w-auto max-w-[11rem] cursor-pointer gap-2 rounded-full px-1.5 py-1.5 pr-2.5 sm:pr-3"
               >
-                {role === "candidate" ? (
-                  <ProfileAvatar
-                    photoUrl={candidatePhoto}
-                    initials={initial}
-                    size="xs"
-                    alt={displayName}
-                  />
-                ) : (
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-amber-500 text-[10px] font-bold text-slate-950">
-                    {initial}
-                  </span>
-                )}
+                <ProfileAvatar
+                  photoUrl={profilePhoto}
+                  initials={initial}
+                  size="xs"
+                  alt={displayName}
+                />
                 <span className="min-w-0 text-left">
                   <span className="neo-text block truncate text-xs font-medium leading-tight">
                     {displayName}

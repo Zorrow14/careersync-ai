@@ -13,6 +13,7 @@ import {
 import { talentPool, resolvePersonaId } from "../../data/employerData.js";
 import DropdownSelect from "../../components/ui/DropdownSelect.jsx";
 import FitReportPanel from "../../components/employer/FitReportPanel.jsx";
+import ProfileAvatar from "../../components/ui/ProfileAvatar.jsx";
 
 export default function TalentDiscovery() {
   const [search, setSearch] = useState("");
@@ -132,9 +133,12 @@ export default function TalentDiscovery() {
           <div key={c.id} className="neo-card flex flex-col rounded-2xl p-6">
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-500 text-sm font-bold text-slate-950">
-                  {c.avatar}
-                </span>
+                <ProfileAvatar
+                  photoUrl={c.photoUrl}
+                  initials={c.avatar}
+                  size="sm"
+                  alt={c.name}
+                />
                 <div>
                   <Link
                     to={`/employer/candidates/${c.id}`}

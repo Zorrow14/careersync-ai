@@ -13,6 +13,7 @@ function buildMinimalProfile(candidate) {
   return {
     name: candidate.name,
     avatar: candidate.avatar,
+    photoUrl: candidate.photoUrl,
     tagline: `${role} · ${university}`,
     about: `${degree} from ${university}. ${experience}. Skills and fit score are sourced from CareerSync talent signals.`,
     location: "Malaysia",
@@ -98,6 +99,7 @@ export function findEmployerCandidate(id) {
       id: linked?.id ?? id,
       name: persona.name,
       avatar: persona.avatar,
+      photoUrl: persona.photoUrl ?? userProfiles[id].photoUrl,
       degree: persona.degree,
       university: persona.institution,
       skills: userProfiles[id].skills,

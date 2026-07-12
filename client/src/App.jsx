@@ -41,6 +41,7 @@ import TalentDiscovery from "./pages/employer/TalentDiscovery";
 import EmployerPipeline from "./pages/employer/Pipeline";
 import EmployerCandidateProfile from "./pages/employer/CandidateProfile";
 import EmployerAnalytics from "./pages/employer/Analytics";
+import EmployerProfile from "./pages/employer/Profile";
 
 // University
 import UniversityDashboard from "./pages/university/Dashboard";
@@ -313,6 +314,16 @@ export default function App() {
                   <ProtectedRoute>
                     <RoleRoute allowedRole="employer">
                       <EmployerAnalytics />
+                    </RoleRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/employer/profile"
+                element={
+                  <ProtectedRoute>
+                    <RoleRoute allowedRole="employer">
+                      <EmployerProfile />
                     </RoleRoute>
                   </ProtectedRoute>
                 }

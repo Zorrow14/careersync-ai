@@ -15,6 +15,7 @@ import PageHeader from "../../components/ui/PageHeader.jsx";
 import EmptyState from "../../components/ui/EmptyState.jsx";
 import { usePagination } from "../../hooks/usePagination.js";
 import Pagination from "../../components/ui/Pagination.jsx";
+import ProfileAvatar from "../../components/ui/ProfileAvatar.jsx";
 
 export default function Companies() {
   const [query, setQuery] = useState("");
@@ -108,9 +109,13 @@ export default function Companies() {
                 className="neo-card group rounded-2xl border border-amber-500/20 p-5 transition hover:-translate-y-1 hover:bg-white/5"
               >
                 <div className="mb-3 flex items-center gap-3">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/15 text-sm font-bold text-amber-300">
-                    {c.logo}
-                  </span>
+                  <ProfileAvatar
+                    photoUrl={c.profileImageUrl}
+                    initials={c.logo}
+                    size="md"
+                    alt={`${c.name} logo`}
+                    className="rounded-xl"
+                  />
                   <div>
                     <p className="neo-title font-bold">{c.name}</p>
                     <p className="neo-muted text-xs">{c.industry}</p>
@@ -169,9 +174,13 @@ export default function Companies() {
                 )}
                 <div className="mb-4 flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/15 text-sm font-bold text-amber-300">
-                      {c.logo}
-                    </span>
+                    <ProfileAvatar
+                      photoUrl={c.profileImageUrl}
+                      initials={c.logo}
+                      size="md"
+                      alt={`${c.name} logo`}
+                      className="rounded-xl"
+                    />
                     <div>
                       <p className="neo-title font-bold leading-tight">{c.name}</p>
                       <p className="neo-muted text-xs">{c.industry}</p>

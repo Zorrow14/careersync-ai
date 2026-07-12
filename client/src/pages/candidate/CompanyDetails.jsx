@@ -16,6 +16,7 @@ import { usePersona } from "../../context/PersonaContext.jsx";
 import { getCompanyById, getCompanyJobs } from "../../data/companiesData.js";
 import { getCompanyFeedById } from "../../data/companyFeedData.js";
 import { getJobMatch } from "../../data/jobsData.js";
+import ProfileAvatar from "../../components/ui/ProfileAvatar.jsx";
 
 function matchColor(score) {
   if (score >= 80) return "text-emerald-300";
@@ -54,9 +55,13 @@ export default function CompanyDetails() {
       <div className="neo-card mb-6 rounded-2xl p-6">
         <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
           <div className="flex items-start gap-4">
-            <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-amber-500/15 text-xl font-bold text-amber-300">
-              {company.logo}
-            </span>
+            <ProfileAvatar
+              photoUrl={company.profileImageUrl}
+              initials={company.logo}
+              size="lg"
+              alt={`${company.name} logo`}
+              className="rounded-2xl"
+            />
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="neo-title text-2xl font-bold">{company.name}</h1>

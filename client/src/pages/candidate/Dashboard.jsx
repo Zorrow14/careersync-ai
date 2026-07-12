@@ -18,6 +18,7 @@ import { resumeAnalyses } from "../../data/resumeAnalysis.js";
 import { skillGaps } from "../../data/skillGap.js";
 import { roadmaps } from "../../data/roadmapData.js";
 import { jobs, getJobMatch } from "../../data/jobsData.js";
+import { getCompanyByName } from "../../data/companiesData.js";
 import { applications, savedJobs } from "../../data/applicationsData.js";
 import { getEmployabilityScore } from "../../data/employabilityScore.js";
 import { getWorkTrait } from "../../data/workTraits.js";
@@ -193,9 +194,13 @@ export default function Dashboard() {
                 className="neo-soft flex items-center justify-between rounded-xl p-4 transition hover:bg-white/5"
               >
                 <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/15 text-xs font-bold text-amber-300">
-                    {job.logo}
-                  </span>
+                  <ProfileAvatar
+                    photoUrl={getCompanyByName(job.company)?.profileImageUrl}
+                    initials={job.logo}
+                    size="sm"
+                    alt={`${job.company} logo`}
+                    className="rounded-lg"
+                  />
                   <div>
                     <p className="neo-title font-semibold">{job.title}</p>
                     <p className="neo-muted text-sm">{job.company} · {job.location}</p>

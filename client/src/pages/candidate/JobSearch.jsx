@@ -17,6 +17,7 @@ import { companies, getCompanyByName } from "../../data/companiesData.js";
 import { savedJobs as savedJobsData } from "../../data/applicationsData.js";
 import { usePagination } from "../../hooks/usePagination.js";
 import Pagination from "../../components/ui/Pagination.jsx";
+import ProfileAvatar from "../../components/ui/ProfileAvatar.jsx";
 
 const workModes = ["All", "Remote", "Hybrid", "On-site"];
 const types = ["All", "Internship", "Full-time", "Contract", "Part-time"];
@@ -146,9 +147,13 @@ export default function JobSearch() {
         <div className="neo-card mb-6 rounded-2xl border border-amber-500/20 p-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-start gap-4">
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-500 text-sm font-bold text-slate-950">
-                {featuredEmployer.logo}
-              </span>
+              <ProfileAvatar
+                photoUrl={featuredEmployer.profileImageUrl}
+                initials={featuredEmployer.logo}
+                size="md"
+                alt={`${featuredEmployer.name} logo`}
+                className="rounded-xl"
+              />
               <div>
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-300">
                   Sponsored · Featured Employer
@@ -175,9 +180,13 @@ export default function JobSearch() {
           <div key={job.id} className="neo-card rounded-2xl p-6">
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-500/15 text-sm font-bold text-amber-300">
-                  {job.logo}
-                </div>
+                <ProfileAvatar
+                  photoUrl={companyRecord?.profileImageUrl}
+                  initials={job.logo}
+                  size="md"
+                  alt={`${job.company} logo`}
+                  className="rounded-xl"
+                />
                 <div>
                   <Link to={`/jobs/${job.id}`} className="neo-title text-lg font-bold hover:text-amber-300">
                     {job.title}

@@ -45,6 +45,7 @@ export const employerLinks = [
   { path: "/employer/talent", label: "Talent", icon: Users },
   { path: "/employer/pipeline", label: "Pipeline", icon: Kanban },
   { path: "/employer/analytics", label: "Analytics", icon: TrendingUp },
+  { path: "/employer/profile", label: "Profile", icon: UserCircle },
 ];
 
 export const universityLinks = [
@@ -99,6 +100,7 @@ export const employerMobileLinks = [
   { path: "/employer/talent", label: "Talent", icon: Users },
   { path: "/employer/pipeline", label: "Pipeline", icon: Kanban },
   { path: "/employer/analytics", label: "Stats", icon: TrendingUp },
+  { path: "/employer/profile", label: "Profile", icon: UserCircle },
 ];
 
 export const universityMobileLinks = [
