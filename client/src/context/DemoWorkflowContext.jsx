@@ -42,6 +42,7 @@ export function createDemoState() {
   return {
     candidateApplications,
     savedJobs: clone(seededSavedJobs),
+    followedCompanies: {},
     employerJobs: clone(seededEmployerJobs),
     pipelineCandidates: clone(seededPipeline).filter((candidate) => candidate.name !== "Sarah Tan"),
   };
@@ -61,6 +62,9 @@ function readStoredState() {
     ) {
       return createDemoState();
     }
+    // Backfill fields added after this shape was first persisted to localStorage,
+    // so existing demo sessions don't lose their saved progress.
+    if (!parsed.followedCompanies) parsed.followedCompanies = {};
     return parsed;
   } catch {
     return createDemoState();
@@ -251,6 +255,23 @@ export function DemoWorkflowProvider({ children }) {
     });
   }
 
+  function toggleFollowCompany(personaId, companyId) {
+    const followed = new Set(state.followedCompanies[personaId] ?? []);
+    const nowFollowing = !followed.has(companyId);
+    nowFollowing ? followed.add(companyId) : followed.delete(companyId);
+
+    setState((current) => ({
+      ...current,
+      followedCompanies: { ...current.followedCompanies, [personaId]: [...followed] },
+    }));
+    setNotice({
+      type: "success",
+      message: nowFollowing
+        ? "Following this company. New roles will show up first in your search."
+        : "Unfollowed. You can follow again anytime.",
+    });
+  }
+
   function movePipelineCandidate(candidateId, stage) {
     const candidate = state.pipelineCandidates.find((item) => item.id === candidateId);
     if (!candidate || candidate.stage === stage) return;
@@ -327,6 +348,7 @@ export function DemoWorkflowProvider({ children }) {
     hasChanges: JSON.stringify(state) !== JSON.stringify(createDemoState()),
     applyToJob,
     toggleSavedJob,
+    toggleFollowCompany,
     movePipelineCandidate,
     reassemblePipeline,
     publishJob,
