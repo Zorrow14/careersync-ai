@@ -24,7 +24,7 @@ export default function Analyzer() {
         <p className="text-sm font-semibold text-amber-300">AI Job Match Analyzer</p>
         <h1 className="neo-title text-4xl font-bold">Analyze Job Description</h1>
         <p className="neo-text mt-2">
-          Compare a job description with your portfolio profile using deterministic demo insights.
+          Paste an employer's job description and compare it with your portfolio profile.
         </p>
       </div>
 
@@ -33,7 +33,7 @@ export default function Analyzer() {
           <Loader2 size={48} className="animate-spin text-amber-400" />
           <h2 className="neo-title mt-6 text-2xl font-bold">Analyzing Match…</h2>
           <p className="neo-text mt-3 max-w-md">
-            Preparing the saved, persona-specific match rationale. No live AI call is made.
+            Comparing your portfolio against the job description using AI analysis engine.
           </p>
           <div className="neo-progress-track mt-8 h-2 w-64 overflow-hidden rounded-full">
             <div className="neo-progress-fill-alt h-full animate-pulse rounded-full" style={{ width: "65%" }} />
@@ -59,7 +59,6 @@ export default function Analyzer() {
                 <FileText size={18} />
                 <p className="font-semibold">Detected Portfolio Skills</p>
               </div>
-              <p className="neo-muted mt-3 text-xs">Deterministic demo evidence from your selected persona profile.</p>
               <p className="neo-text text-sm leading-6">
                 {profile.skills.join(", ")}
               </p>

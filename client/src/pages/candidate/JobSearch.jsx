@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Search,
@@ -12,9 +12,9 @@ import {
   X,
 } from "lucide-react";
 import { usePersona } from "../../context/PersonaContext.jsx";
-import { useDemoWorkflow } from "../../context/DemoWorkflowContext.jsx";
 import { jobs, getJobMatch } from "../../data/jobsData.js";
 import { companies, getCompanyByName } from "../../data/companiesData.js";
+import { savedJobs as savedJobsData } from "../../data/applicationsData.js";
 import { usePagination } from "../../hooks/usePagination.js";
 import Pagination from "../../components/ui/Pagination.jsx";
 import ProfileAvatar from "../../components/ui/ProfileAvatar.jsx";
@@ -30,31 +30,29 @@ function matchColor(score) {
 
 export default function JobSearch() {
   const { personaId } = usePersona();
-  const { candidateApplications, savedJobs, applyToJob, toggleSavedJob } = useDemoWorkflow();
   const [search, setSearch] = useState("");
   const [workMode, setWorkMode] = useState("All");
   const [type, setType] = useState("All");
   const [minMatch, setMinMatch] = useState(0);
   const [showFilters, setShowFilters] = useState(true);
+  const [saved, setSaved] = useState(() => new Set(savedJobsData[personaId] || []));
   const [applyJob, setApplyJob] = useState(null);
-  const saved = useMemo(() => new Set(savedJobs[personaId] || []), [personaId, savedJobs]);
-  const applied = useMemo(
-    () => new Set((candidateApplications[personaId] || []).map((application) => application.jobId)),
-    [candidateApplications, personaId]
-  );
+  const [applied, setApplied] = useState(new Set());
+  const [appliedConfirm, setAppliedConfirm] = useState(null);
 
   function toggleSave(id) {
-    toggleSavedJob(personaId, id);
+    setSaved((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
   }
 
-  function submitApply(coverLetter) {
-    applyToJob({
-      personaId,
-      job: applyJob,
-      match: getJobMatch(applyJob, personaId),
-      coverLetter,
-    });
+  function submitApply() {
+    setApplied((prev) => new Set(prev).add(applyJob.id));
+    setAppliedConfirm(applyJob.title);
     setApplyJob(null);
+    setTimeout(() => setAppliedConfirm(null), 4000);
   }
 
   const filtered = jobs
@@ -80,7 +78,7 @@ export default function JobSearch() {
 
   useEffect(() => {
     goToPage(1);
-  }, [search, workMode, type, minMatch, personaId, goToPage]);
+  }, [search, workMode, type, minMatch, personaId]);
 
   const featuredEmployer = companies.find((c) => c.featured) || companies[0];
 
@@ -93,6 +91,13 @@ export default function JobSearch() {
           AI-matched opportunities ranked by how well they fit your profile.
         </p>
       </div>
+
+      {/* success toast */}
+      {appliedConfirm && (
+        <div className="neo-good mb-6 flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-medium">
+          <CheckCircle2 size={16} /> Application submitted for {appliedConfirm}! Added to your tracker.
+        </div>
+      )}
 
       {/* sticky search */}
       <div className="neo-card sticky top-4 z-10 mb-6 rounded-2xl p-4">
@@ -217,11 +222,6 @@ export default function JobSearch() {
                 <span key={s} className="neo-badge-missing rounded-full px-2.5 py-0.5 text-xs font-medium">{s}</span>
               ))}
             </div>
-            <p className="neo-muted mt-3 text-xs leading-5">
-              <span className="font-semibold text-amber-300">Deterministic score rationale:</span>{" "}
-              {match.matched.length} evidenced skills align with this role
-              {match.missing.length ? `; the fastest improvement is ${match.missing[0]}.` : "; no core skill gaps detected."}
-            </p>
 
             {job.description && (
               <p className="neo-text mt-4 line-clamp-2 text-sm leading-6">{job.description}</p>
@@ -300,26 +300,16 @@ function FilterGroup({ label, options, value, onChange }) {
 
 function ApplyModal({ job, onClose, onSubmit }) {
   const [coverLetter, setCoverLetter] = useState("");
-  const submitRef = useRef(null);
-
-  useEffect(() => {
-    submitRef.current?.focus();
-    function handleKeyDown(event) {
-      if (event.key === "Escape") onClose();
-    }
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur">
-      <div role="dialog" aria-modal="true" aria-labelledby="apply-title" className="neo-card w-full max-w-lg rounded-2xl p-6">
+      <div className="neo-card w-full max-w-lg rounded-2xl p-6">
         <div className="mb-4 flex items-start justify-between">
           <div>
-            <h2 id="apply-title" className="neo-title text-xl font-bold">Apply to {job.title}</h2>
+            <h2 className="neo-title text-xl font-bold">Apply to {job.title}</h2>
             <p className="neo-muted text-sm">{job.company}</p>
           </div>
-          <button type="button" onClick={onClose} aria-label="Close application form" className="neo-nav-icon-btn"><X size={20} /></button>
+          <button onClick={onClose} className="neo-muted hover:text-amber-300"><X size={20} /></button>
         </div>
 
         <div className="space-y-4">
@@ -344,10 +334,10 @@ function ApplyModal({ job, onClose, onSubmit }) {
         </div>
 
         <div className="mt-5 flex gap-3">
-          <button ref={submitRef} type="button" onClick={() => onSubmit(coverLetter)} className="neo-primary flex-1 rounded-xl py-3 text-sm font-semibold">
+          <button onClick={onSubmit} className="neo-primary flex-1 rounded-xl py-3 text-sm font-semibold">
             Submit Application
           </button>
-          <button type="button" onClick={onClose} className="neo-secondary rounded-xl px-5 py-3 text-sm font-semibold">
+          <button onClick={onClose} className="neo-secondary rounded-xl px-5 py-3 text-sm font-semibold">
             Cancel
           </button>
         </div>
