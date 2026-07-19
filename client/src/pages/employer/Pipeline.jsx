@@ -11,8 +11,7 @@ import {
   XCircle,
   User,
 } from "lucide-react";
-import { pipelineStages, resolvePersonaId } from "../../data/employerData.js";
-import { useDemoWorkflow } from "../../context/DemoWorkflowContext.jsx";
+import { pipelineCandidates, pipelineStages, resolvePersonaId } from "../../data/employerData.js";
 import PageHeader from "../../components/ui/PageHeader.jsx";
 import EmptyState from "../../components/ui/EmptyState.jsx";
 import PipelineFunnel, { stageIcons, stageAccent } from "../../components/pipeline/PipelineFunnel.jsx";
@@ -35,13 +34,24 @@ function fitBarClass(score) {
 }
 
 export default function Pipeline() {
-  const { pipelineCandidates: candidates, movePipelineCandidate, reassemblePipeline: sortPipeline } = useDemoWorkflow();
-  const [selectedId, setSelectedId] = useState(candidates[0]?.id ?? null);
+  const [candidates, setCandidates] = useState(pipelineCandidates);
+  const [selectedId, setSelectedId] = useState(pipelineCandidates[0]?.id ?? null);
   const [view, setView] = useState("board");
   const [toast, setToast] = useState(null);
 
   function reassemblePipeline() {
-    sortPipeline();
+    // Group candidates by the canonical pipelineStages order, sort each group by fitScore desc
+    const ordered = [];
+    for (const s of pipelineStages) {
+      const group = candidates.filter((c) => c.stage === s).slice();
+      group.sort((a, b) => b.fitScore - a.fitScore);
+      ordered.push(...group);
+    }
+    // If any candidates have unknown stages, append them sorted by fitScore
+    const unknowns = candidates.filter((c) => !pipelineStages.includes(c.stage)).slice();
+    unknowns.sort((a, b) => b.fitScore - a.fitScore);
+    if (unknowns.length) ordered.push(...unknowns);
+    setCandidates(ordered);
     setToast("Pipeline reassembled");
   }
 
@@ -64,12 +74,10 @@ export default function Pipeline() {
   function moveStage(id, newStage) {
     const person = candidates.find((c) => c.id === id);
     if (!person || person.stage === newStage) return;
-    movePipelineCandidate(id, newStage);
-    setToast(
-      person.applicationId
-        ? `${person.name} moved to ${newStage}; their candidate tracker is synced.`
-        : `${person.name} moved to ${newStage}`
+    setCandidates((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, stage: newStage } : c))
     );
+    setToast(`${person.name} moved to ${newStage}`);
   }
 
   return (

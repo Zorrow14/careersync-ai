@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Search, Briefcase } from "lucide-react";
 import PageHeader from "../../components/ui/PageHeader.jsx";
@@ -7,7 +7,11 @@ import DropdownSelect from "../../components/ui/DropdownSelect.jsx";
 import Pagination from "../../components/ui/Pagination.jsx";
 import EmptyState from "../../components/ui/EmptyState.jsx";
 import { usePagination } from "../../hooks/usePagination.js";
-import { useDemoWorkflow } from "../../context/DemoWorkflowContext.jsx";
+import {
+  getEmployerApplications,
+  getEmployerApplicationStats,
+  getEmployerApplicationRoles,
+} from "../../data/employerApplications.js";
 import { companyProfile, pipelineStages } from "../../data/employerData.js";
 
 const stageColors = {
@@ -40,11 +44,12 @@ export default function EmployerApplications() {
   const [roleFilter, setRoleFilter] = useState(initialRole);
   const [stageFilter, setStageFilter] = useState("all");
   const [query, setQuery] = useState("");
-  const { employerApplications: applications, employerStats: stats } = useDemoWorkflow();
 
-  const roles = [...new Set(applications.map((application) => application.role))].sort();
+  const applications = useMemo(() => getEmployerApplications(), []);
+  const stats = useMemo(() => getEmployerApplicationStats(), []);
+  const roles = useMemo(() => getEmployerApplicationRoles(), []);
 
-  const filtered = (() => {
+  const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return applications.filter((app) => {
       if (roleFilter !== "all" && app.role !== roleFilter) return false;
@@ -55,7 +60,7 @@ export default function EmployerApplications() {
       }
       return true;
     });
-  })();
+  }, [applications, roleFilter, stageFilter, query]);
 
   const { page, totalPages, paged, goToPage, showingFrom, showingTo, totalItems } =
     usePagination(filtered, 8);
@@ -115,7 +120,7 @@ export default function EmployerApplications() {
               ...roles.map((role) => ({
                 value: role,
                 label: role,
-                description: `${applications.filter((application) => application.role === role).length} applicants`,
+                description: `${stats.byRole[role] || 0} applicants`,
               })),
             ]}
             className="mt-0"

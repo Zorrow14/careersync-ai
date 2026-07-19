@@ -6,7 +6,6 @@ import { useAuth } from "../../hooks/useAuth.js";
 import { usePersona } from "../../context/PersonaContext.jsx";
 import PersonaSwitcher from "../ui/PersonaSwitcher.jsx";
 import ProfileAvatar from "../ui/ProfileAvatar.jsx";
-import DemoScenarioControl from "../demo/DemoScenarioControl.jsx";
 import NavShell, { NavLogo, ThemeToggle } from "./NavShell.jsx";
 import {
   candidateMainLinks,
@@ -240,7 +239,6 @@ export default function AppNavbar({ lightMode, setLightMode }) {
                 <PersonaSwitcher />
               </div>
             )}
-            <DemoScenarioControl />
             <ThemeToggle lightMode={lightMode} setLightMode={setLightMode} />
 
             <div className="relative z-50 min-w-0" ref={userRef}>

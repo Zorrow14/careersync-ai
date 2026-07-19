@@ -10,10 +10,10 @@ export default function Results() {
   return (
     <div>
       <div className="mb-8">
-        <p className="text-sm font-semibold text-amber-300">Deterministic Demo Insight</p>
+        <p className="text-sm font-semibold text-amber-300">AI-Generated Result</p>
         <h1 className="neo-title text-4xl font-bold">Career Match Analysis</h1>
         <p className="neo-text mt-2">
-          Explainable compatibility analysis based on this persona&apos;s saved portfolio evidence and the selected role requirements. No live AI call is made.
+          AI-generated compatibility analysis based on your portfolio and the job description.
         </p>
       </div>
 
@@ -57,10 +57,6 @@ export default function Results() {
             ))}
           </div>
         </div>
-
-        <p className="neo-muted mt-6 text-xs">
-          Score rationale: matched technical evidence supports the score; missing skills identify the fastest actions in your roadmap.
-        </p>
 
         <div className="neo-card rounded-2xl p-6">
           <h2 className="neo-title mb-4 text-xl font-bold">Missing Skills</h2>
