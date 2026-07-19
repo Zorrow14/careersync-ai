@@ -9,20 +9,15 @@ import {
   UserPlus,
   ClipboardList,
 } from "lucide-react";
-import {
-  employerJobs,
-  pipelineCandidates,
-  hiringAnalytics,
-  companyProfile,
-} from "../../data/employerData.js";
-import { getEmployerApplicationStats } from "../../data/employerApplications.js";
+import { hiringAnalytics, companyProfile } from "../../data/employerData.js";
+import { useDemoWorkflow } from "../../context/DemoWorkflowContext.jsx";
 import { getCompanyFeedByName } from "../../data/companyFeedData.js";
 import PageHeader from "../../components/ui/PageHeader.jsx";
 import KpiCard from "../../components/ui/KpiCard.jsx";
 
 export default function EmployerDashboard() {
-  const activeJobs = employerJobs.filter((j) => j.status === "Active").length;
-  const appStats = getEmployerApplicationStats();
+  const { employerJobs: workflowJobs, pipelineCandidates, employerStats: appStats } = useDemoWorkflow();
+  const activeJobs = workflowJobs.filter((j) => j.status === "Active").length;
   const recentPipeline = pipelineCandidates.slice(0, 5);
   const recentFeed = getCompanyFeedByName(companyProfile.name).slice(0, 3);
 

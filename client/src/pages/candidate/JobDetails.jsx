@@ -1,4 +1,5 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import {
   ArrowLeft,
   MapPin,
@@ -14,6 +15,7 @@ import {
   ListChecks,
 } from "lucide-react";
 import { usePersona } from "../../context/PersonaContext.jsx";
+import { useDemoWorkflow } from "../../context/DemoWorkflowContext.jsx";
 import { jobs, getJobMatch, getJobResponsibilities } from "../../data/jobsData.js";
 import { companies } from "../../data/companiesData.js";
 import ProfileAvatar from "../../components/ui/ProfileAvatar.jsx";
@@ -28,6 +30,8 @@ export default function JobDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { personaId } = usePersona();
+  const { candidateApplications, savedJobs, applyToJob, toggleSavedJob } = useDemoWorkflow();
+  const [shareMessage, setShareMessage] = useState("");
 
   const job = jobs.find((j) => j.id === id);
   if (!job) {
@@ -45,6 +49,22 @@ export default function JobDetails() {
   const responsibilities = getJobResponsibilities(job);
   const similar = jobs.filter((j) => j.id !== job.id && j.industry === job.industry).slice(0, 3);
   const company = companies.find((c) => c.name === job.company);
+  const application = (candidateApplications[personaId] || []).find((item) => item.jobId === job.id);
+  const isSaved = (savedJobs[personaId] || []).includes(job.id);
+
+  function apply() {
+    applyToJob({ personaId, job, match });
+  }
+
+  async function share() {
+    const text = `${job.title} at ${job.company} — ${match.score}% CareerSync demo match`;
+    try {
+      if (navigator.clipboard) await navigator.clipboard.writeText(text);
+      setShareMessage("Role details copied to your clipboard.");
+    } catch {
+      setShareMessage("Sharing is unavailable in this browser. Copy the role title to share it.");
+    }
+  }
 
   return (
     <div className="mx-auto max-w-5xl">
@@ -164,17 +184,26 @@ export default function JobDetails() {
             <div className="neo-progress-track mt-4 h-3 overflow-hidden rounded-full">
               <div className="neo-progress-fill-alt h-full rounded-full" style={{ width: `${match.score}%` }} />
             </div>
-            <Link to="/jobs" className="neo-primary mt-5 block rounded-xl py-3 text-sm font-semibold">
-              Apply Now
-            </Link>
+            <button
+              type="button"
+              onClick={apply}
+              disabled={Boolean(application)}
+              className="neo-primary mt-5 block w-full rounded-xl py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {application ? `Applied · ${application.status}` : "Apply with my profile"}
+            </button>
+            {!application && (
+              <p className="neo-muted mt-2 text-xs">Local demo action: your evidence is sent to the employer inbox.</p>
+            )}
             <div className="mt-3 flex gap-2">
-              <button className="neo-secondary flex flex-1 items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-semibold">
-                <Bookmark size={14} /> Save
+              <button type="button" onClick={() => toggleSavedJob(personaId, job.id)} className="neo-secondary flex flex-1 items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-semibold">
+                <Bookmark size={14} /> {isSaved ? "Saved" : "Save"}
               </button>
-              <button className="neo-secondary flex flex-1 items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-semibold">
+              <button type="button" onClick={share} className="neo-secondary flex flex-1 items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-semibold">
                 <Share2 size={14} /> Share
               </button>
             </div>
+            {shareMessage && <p className="neo-good mt-3 rounded-lg px-3 py-2 text-xs" role="status">{shareMessage}</p>}
           </div>
 
           <div className="neo-card rounded-2xl p-6">
@@ -208,6 +237,14 @@ export default function JobDetails() {
                 ? `A solid opportunity. You match on ${match.matched.slice(0, 2).join(", ")}, and closing gaps in ${match.missing.slice(0, 2).join(", ")} would make you a top candidate.`
                 : `This role stretches your current profile. Consider building ${match.missing.slice(0, 2).join(", ")} before applying, or use it as a growth target.`}
             </p>
+            <p className="neo-muted mt-3 text-xs leading-5">
+              <span className="font-semibold text-amber-300">Score rationale:</span> {match.matched.length} matched skills are evidenced in your profile; {match.missing[0] ? `building ${match.missing[0]} is the fastest visible improvement.` : "you cover every listed core skill."}
+            </p>
+            {match.missing[0] && (
+              <Link to="/roadmap" className="mt-3 inline-flex text-xs font-semibold text-amber-300 hover:text-amber-200">
+                Add {match.missing[0]} to my next step →
+              </Link>
+            )}
           </div>
         </div>
       </div>

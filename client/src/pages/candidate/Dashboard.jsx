@@ -14,12 +14,12 @@ import {
   Mic,
 } from "lucide-react";
 import { usePersona } from "../../context/PersonaContext.jsx";
+import { useDemoWorkflow } from "../../context/DemoWorkflowContext.jsx";
 import { resumeAnalyses } from "../../data/resumeAnalysis.js";
 import { skillGaps } from "../../data/skillGap.js";
 import { roadmaps } from "../../data/roadmapData.js";
 import { jobs, getJobMatch } from "../../data/jobsData.js";
 import { getCompanyByName } from "../../data/companiesData.js";
-import { applications, savedJobs } from "../../data/applicationsData.js";
 import { getEmployabilityScore } from "../../data/employabilityScore.js";
 import { getWorkTrait } from "../../data/workTraits.js";
 import PageHeader from "../../components/ui/PageHeader.jsx";
@@ -31,10 +31,11 @@ const dimensionIcons = { Target, FolderGit2, Mic, TrendingUp };
 
 export default function Dashboard() {
   const { personaId, persona, profile } = usePersona();
+  const { candidateApplications, savedJobs } = useDemoWorkflow();
   const analysis = resumeAnalyses[personaId];
   const gap = skillGaps[personaId];
   const roadmap = roadmaps[personaId];
-  const apps = applications[personaId] || [];
+  const apps = candidateApplications[personaId] || [];
   const saved = savedJobs[personaId] || [];
 
   const interviews = apps.filter((a) => a.status === "Interview" || a.status === "Assessment").length;
@@ -185,6 +186,18 @@ export default function Dashboard() {
               View all <ArrowRight size={14} />
             </Link>
           </div>
+
+          <section className="neo-card mt-6 rounded-2xl border border-amber-500/25 p-6">
+            <p className="text-xs font-semibold uppercase tracking-wide text-amber-300">Guided judge demo</p>
+            <h2 className="neo-title mt-2 text-xl font-bold">Evidence in. Opportunity out. Feedback returns.</h2>
+            <p className="neo-text mt-2 max-w-3xl text-sm leading-6">
+              Start with Sarah&apos;s explainable TechNova match, apply from the job page, then open the employer portal and advance her stage. Her application tracker receives the same update with a useful next step.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link to="/jobs/j1" className="neo-primary rounded-xl px-4 py-2.5 text-sm font-semibold">1. Review TechNova match</Link>
+              <Link to="/applications" className="neo-secondary rounded-xl px-4 py-2.5 text-sm font-semibold">3. See employer feedback</Link>
+            </div>
+          </section>
 
           <div className="space-y-3">
             {recommended.map(({ job, match }) => (

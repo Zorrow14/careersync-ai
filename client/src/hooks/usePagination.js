@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 export function usePagination(items, pageSize = 8) {
   const [page, setPage] = useState(1);
@@ -12,9 +12,9 @@ export function usePagination(items, pageSize = 8) {
     return items.slice(start, start + pageSize);
   }, [items, safePage, pageSize]);
 
-  function goToPage(next) {
+  const goToPage = useCallback((next) => {
     setPage(Math.min(Math.max(1, next), totalPages));
-  }
+  }, [totalPages]);
 
   function resetPage() {
     setPage(1);

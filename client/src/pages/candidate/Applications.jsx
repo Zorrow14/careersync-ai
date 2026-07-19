@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Calendar, FileText, StickyNote, Search } from "lucide-react";
 import { usePersona } from "../../context/PersonaContext.jsx";
-import { applications, applicationStages } from "../../data/applicationsData.js";
+import { useDemoWorkflow } from "../../context/DemoWorkflowContext.jsx";
+import { applicationStages } from "../../data/applicationsData.js";
 import { getCompanyByName } from "../../data/companiesData.js";
 import { usePagination } from "../../hooks/usePagination.js";
 import Pagination from "../../components/ui/Pagination.jsx";
@@ -19,7 +20,8 @@ const statusColors = {
 
 export default function Applications() {
   const { personaId } = usePersona();
-  const apps = applications[personaId] || [];
+  const { candidateApplications } = useDemoWorkflow();
+  const apps = candidateApplications[personaId] || [];
   const [filter, setFilter] = useState("All");
 
   const counts = applicationStages.reduce((acc, s) => {
@@ -121,6 +123,11 @@ export default function Applications() {
                 <StickyNote size={14} className="mt-0.5 shrink-0 text-amber-300" />
                 <span className="neo-text">{app.notes}</span>
               </div>
+            )}
+            {app.company === "TechNova Solutions" && (
+              <p className="mt-3 text-xs font-medium text-amber-300">
+                Synced with TechNova&apos;s employer inbox and pipeline.
+              </p>
             )}
           </div>
         ))}
