@@ -11,8 +11,8 @@ import {
   Clock,
   ClipboardList,
 } from "lucide-react";
-import { employerJobs, companyProfile } from "../../data/employerData.js";
-import { getEmployerApplications } from "../../data/employerApplications.js";
+import { companyProfile } from "../../data/employerData.js";
+import { useDemoWorkflow } from "../../context/DemoWorkflowContext.jsx";
 import DropdownSelect from "../../components/ui/DropdownSelect.jsx";
 
 const statusConfig = {
@@ -25,20 +25,41 @@ export default function Jobs() {
   const [filter, setFilter] = useState("all");
   const [showForm, setShowForm] = useState(false);
   const [jobType, setJobType] = useState("Internship");
+  const [draft, setDraft] = useState({
+    title: "",
+    location: "",
+    deadline: "",
+    description: "",
+    requiredSkills: "",
+  });
+  const { employerJobs: workflowJobs, employerApplications, publishJob } = useDemoWorkflow();
 
   const applicationsByJob = useMemo(() => {
-    const apps = getEmployerApplications();
-    return apps.reduce((acc, app) => {
+    return employerApplications.reduce((acc, app) => {
       if (app.employerJobId) {
         acc[app.employerJobId] = (acc[app.employerJobId] || 0) + 1;
       }
       return acc;
     }, {});
-  }, []);
+  }, [employerApplications]);
 
   const filtered = filter === "all"
-    ? employerJobs
-    : employerJobs.filter((j) => j.status.toLowerCase() === filter);
+    ? workflowJobs
+    : workflowJobs.filter((j) => j.status.toLowerCase() === filter);
+
+  function publish() {
+    if (!draft.title.trim() || !draft.location.trim() || !draft.description.trim()) return;
+    publishJob({
+      title: draft.title.trim(),
+      location: draft.location.trim(),
+      deadline: draft.deadline || "TBD",
+      description: draft.description.trim(),
+      type: jobType,
+      requiredSkills: draft.requiredSkills.split(",").map((skill) => skill.trim()).filter(Boolean),
+    });
+    setDraft({ title: "", location: "", deadline: "", description: "", requiredSkills: "" });
+    setShowForm(false);
+  }
 
   return (
     <div>
@@ -63,11 +84,11 @@ export default function Jobs() {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <label className="neo-text mb-1 block text-sm font-medium">Job Title</label>
-              <input placeholder="e.g. Frontend Developer Intern" className="neo-input w-full rounded-xl px-4 py-3 text-sm" />
+              <input value={draft.title} onChange={(event) => setDraft({ ...draft, title: event.target.value })} placeholder="e.g. Frontend Developer Intern" className="neo-input w-full rounded-xl px-4 py-3 text-sm" />
             </div>
             <div>
               <label className="neo-text mb-1 block text-sm font-medium">Location</label>
-              <input placeholder="e.g. Kuala Lumpur" className="neo-input w-full rounded-xl px-4 py-3 text-sm" />
+              <input value={draft.location} onChange={(event) => setDraft({ ...draft, location: event.target.value })} placeholder="e.g. Kuala Lumpur" className="neo-input w-full rounded-xl px-4 py-3 text-sm" />
             </div>
             <div>
               <DropdownSelect
@@ -85,22 +106,22 @@ export default function Jobs() {
             </div>
             <div>
               <label className="neo-text mb-1 block text-sm font-medium">Deadline</label>
-              <input type="date" className="neo-input w-full rounded-xl px-4 py-3 text-sm" />
+              <input type="date" value={draft.deadline} onChange={(event) => setDraft({ ...draft, deadline: event.target.value })} className="neo-input w-full rounded-xl px-4 py-3 text-sm" />
             </div>
             <div className="md:col-span-2">
               <label className="neo-text mb-1 block text-sm font-medium">Job Description</label>
-              <textarea rows={4} placeholder="Describe the role, responsibilities, and requirements..." className="neo-input w-full resize-none rounded-xl px-4 py-3 text-sm" />
+              <textarea rows={4} value={draft.description} onChange={(event) => setDraft({ ...draft, description: event.target.value })} placeholder="Describe the role, responsibilities, and requirements..." className="neo-input w-full resize-none rounded-xl px-4 py-3 text-sm" />
             </div>
             <div className="md:col-span-2">
               <label className="neo-text mb-1 block text-sm font-medium">Required Skills (comma-separated)</label>
-              <input placeholder="e.g. React.js, JavaScript, Node.js" className="neo-input w-full rounded-xl px-4 py-3 text-sm" />
+              <input value={draft.requiredSkills} onChange={(event) => setDraft({ ...draft, requiredSkills: event.target.value })} placeholder="e.g. React.js, JavaScript, Node.js" className="neo-input w-full rounded-xl px-4 py-3 text-sm" />
             </div>
           </div>
           <div className="mt-4 flex gap-3">
-            <button className="neo-primary rounded-xl px-5 py-3 text-sm font-semibold">Publish Job</button>
+            <button type="button" onClick={publish} disabled={!draft.title.trim() || !draft.location.trim() || !draft.description.trim()} className="neo-primary rounded-xl px-5 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60">Publish Job</button>
             <button onClick={() => setShowForm(false)} className="neo-secondary rounded-xl px-5 py-3 text-sm font-semibold">Cancel</button>
           </div>
-          <p className="neo-muted mt-3 text-xs">Demo mode — form is interactive but does not persist data.</p>
+          <p className="neo-muted mt-3 text-xs">Local demo mode — published positions persist in this browser until reset.</p>
         </div>
       )}
 
@@ -114,7 +135,7 @@ export default function Jobs() {
               filter === f ? "bg-amber-500/15 text-amber-300" : "neo-secondary"
             }`}
           >
-            {f === "all" ? `All (${employerJobs.length})` : `${f} (${employerJobs.filter((j) => j.status.toLowerCase() === f).length})`}
+            {f === "all" ? `All (${workflowJobs.length})` : `${f} (${workflowJobs.filter((j) => j.status.toLowerCase() === f).length})`}
           </button>
         ))}
       </div>
