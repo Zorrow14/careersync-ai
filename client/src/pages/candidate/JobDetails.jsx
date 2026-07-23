@@ -5,6 +5,7 @@ import {
   Briefcase,
   Building2,
   Bookmark,
+  BadgeCheck,
   Share2,
   CheckCircle2,
   XCircle,
@@ -66,13 +67,18 @@ export default function JobDetails() {
               />
               <div className="flex-1">
                 <h1 className="neo-title text-2xl font-bold">{job.title}</h1>
-                {company ? (
-                  <Link to={`/companies/${company.id}`} className="font-medium text-amber-300 hover:text-amber-200">
-                    {job.company}
-                  </Link>
-                ) : (
-                  <p className="neo-text">{job.company}</p>
-                )}
+                <div className="flex items-center gap-1.5">
+                  {company ? (
+                    <Link to={`/companies/${company.id}`} className="font-medium text-amber-300 hover:text-amber-200">
+                      {job.company}
+                    </Link>
+                  ) : (
+                    <p className="neo-text">{job.company}</p>
+                  )}
+                  {company?.verified && (
+                    <BadgeCheck size={16} className="shrink-0 text-blue-400" title="Verified employer" aria-label="Verified employer" />
+                  )}
+                </div>
                 <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
                   <span className="neo-muted flex items-center gap-1"><MapPin size={12} /> {job.location}</span>
                   <span className="neo-muted flex items-center gap-1"><Briefcase size={12} /> {job.type}</span>
@@ -160,7 +166,7 @@ export default function JobDetails() {
         <div className="space-y-6">
           <div className="neo-card rounded-2xl p-6 text-center">
             <p className="neo-muted text-sm">Your Match Score</p>
-            <p className={`text-6xl font-bold ${matchColor(match.score)}`}>{match.score}%</p>
+            <p className={`text-4xl font-bold sm:text-6xl ${matchColor(match.score)}`}>{match.score}%</p>
             <div className="neo-progress-track mt-4 h-3 overflow-hidden rounded-full">
               <div className="neo-progress-fill-alt h-full rounded-full" style={{ width: `${match.score}%` }} />
             </div>
@@ -205,8 +211,8 @@ export default function JobDetails() {
               {match.score >= 80
                 ? `You're a strong match for this role. Your skills in ${match.matched.slice(0, 3).join(", ")} align closely with the requirements. Apply with confidence!`
                 : match.score >= 60
-                ? `A solid opportunity. You match on ${match.matched.slice(0, 2).join(", ")}, and closing gaps in ${match.missing.slice(0, 2).join(", ")} would make you a top candidate.`
-                : `This role stretches your current profile. Consider building ${match.missing.slice(0, 2).join(", ")} before applying, or use it as a growth target.`}
+                  ? `A solid opportunity. You match on ${match.matched.slice(0, 2).join(", ")}, and closing gaps in ${match.missing.slice(0, 2).join(", ")} would make you a top candidate.`
+                  : `This role stretches your current profile. Consider building ${match.missing.slice(0, 2).join(", ")} before applying, or use it as a growth target.`}
             </p>
           </div>
         </div>

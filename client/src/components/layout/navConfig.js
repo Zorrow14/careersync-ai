@@ -95,12 +95,21 @@ export const candidateMobileLinks = [
 
 export const employerMobileLinks = [
   { path: "/employer", label: "Home", icon: LayoutDashboard },
-  { path: "/employer/jobs", label: "Jobs", icon: Briefcase },
   { path: "/employer/applications", label: "Apps", icon: ClipboardList },
   { path: "/employer/talent", label: "Talent", icon: Users },
   { path: "/employer/pipeline", label: "Pipeline", icon: Kanban },
-  { path: "/employer/analytics", label: "Stats", icon: TrendingUp },
-  { path: "/employer/profile", label: "Profile", icon: UserCircle },
+  {
+    type: "menu",
+    id: "employer-more",
+    label: "More",
+    icon: LayoutGrid,
+    children: [
+      { path: "/employer/jobs", label: "Jobs", icon: Briefcase },
+      { path: "/employer/analytics", label: "Analytics", icon: TrendingUp },
+      { path: "/employer/feed", label: "Feed", icon: Newspaper },
+      { path: "/employer/profile", label: "Profile", icon: UserCircle },
+    ],
+  },
 ];
 
 export const universityMobileLinks = [
@@ -108,8 +117,16 @@ export const universityMobileLinks = [
   { path: "/university/tracker", label: "Tracker", icon: GraduationCap },
   { path: "/university/students", label: "Students", icon: Users },
   { path: "/university/curriculum", label: "Curriculum", icon: BookOpen },
-  { path: "/university/trends", label: "Trends", icon: TrendingUp },
-  { path: "/university/reports", label: "Insights", icon: Sparkles },
+  {
+    type: "menu",
+    id: "university-more",
+    label: "More",
+    icon: LayoutGrid,
+    children: [
+      { path: "/university/trends", label: "Trends", icon: TrendingUp },
+      { path: "/university/reports", label: "Insights", icon: Sparkles },
+    ],
+  },
 ];
 
 export function getMobileBottomLinks(role) {

@@ -109,16 +109,15 @@ export default function TalentDiscovery() {
           />
         </div>
 
-        <div className="mt-4 flex items-center gap-3">
+        <div className="mt-4 flex flex-wrap items-center gap-3">
           <SlidersHorizontal size={14} className="neo-muted" />
           <span className="neo-muted text-xs font-medium">Min. Fit Score:</span>
           {[0, 50, 60, 70, 80].map((v) => (
             <button
               key={v}
               onClick={() => setMinScore(v)}
-              className={`rounded-lg px-3 py-1 text-xs font-semibold transition ${
-                minScore === v ? "bg-amber-500/15 text-amber-300" : "neo-secondary"
-              }`}
+              className={`rounded-lg px-3 py-1 text-xs font-semibold transition ${minScore === v ? "bg-amber-500/15 text-amber-300" : "neo-secondary"
+                }`}
             >
               {v === 0 ? "Any" : `${v}%+`}
             </button>

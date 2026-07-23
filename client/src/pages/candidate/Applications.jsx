@@ -41,14 +41,14 @@ export default function Applications() {
       </div>
 
       {/* stage summary */}
-      <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
+      <div className="mb-6 flex gap-3 overflow-x-auto pb-1 md:grid md:grid-cols-3 md:overflow-visible lg:grid-cols-6">
         {applicationStages.map((stage) => (
           <button
             key={stage}
             onClick={() => setFilter(filter === stage ? "All" : stage)}
-            className={`neo-card rounded-xl p-4 text-center transition ${
-              filter === stage ? "ring-1 ring-amber-500/40" : "hover:bg-white/5"
-            }`}
+            className={`neo-card shrink-0 rounded-xl p-3 text-center transition md:shrink ${filter === stage ? "ring-1 ring-amber-500/40" : "hover:bg-white/5"
+              }`}
+            style={{ minWidth: "4.5rem" }}
           >
             <p className="neo-title text-2xl font-bold">{counts[stage] || 0}</p>
             <p className="neo-muted mt-1 text-xs">{stage}</p>
@@ -70,7 +70,7 @@ export default function Applications() {
       {/* application list */}
       <div className="space-y-4">
         {paged.map((app) => (
-          <div key={app.id} className="neo-card rounded-2xl p-6">
+          <div key={app.id} className="neo-card rounded-2xl p-4 sm:p-6">
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-start gap-4">
                 <ProfileAvatar

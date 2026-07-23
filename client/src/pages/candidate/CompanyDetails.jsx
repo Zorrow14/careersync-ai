@@ -63,8 +63,11 @@ export default function CompanyDetails() {
               className="rounded-2xl"
             />
             <div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <h1 className="neo-title text-2xl font-bold">{company.name}</h1>
+                {company.verified && (
+                  <BadgeCheck size={20} className="shrink-0 text-blue-400" title="Verified employer" aria-label="Verified employer" />
+                )}
                 {company.hiring && (
                   <span className="flex items-center gap-1 rounded-full bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-300">
                     <BadgeCheck size={12} /> Hiring

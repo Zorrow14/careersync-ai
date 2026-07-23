@@ -18,10 +18,10 @@ export default function Results() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="neo-card rounded-2xl p-8 text-center">
-          <div className="mx-auto flex h-44 w-44 items-center justify-center rounded-full border-[12px] border-amber-500/20 bg-amber-500/10">
+        <div className="neo-card rounded-2xl p-5 sm:p-8 text-center">
+          <div className="mx-auto flex h-36 w-36 items-center justify-center rounded-full border-[10px] border-amber-500/20 bg-amber-500/10 sm:h-44 sm:w-44 sm:border-[12px]">
             <div>
-              <h2 className="text-5xl font-bold text-amber-300">{analysis.matchScore}%</h2>
+              <h2 className="text-4xl font-bold text-amber-300 sm:text-5xl">{analysis.matchScore}%</h2>
               <p className="neo-muted text-sm">Match Score</p>
             </div>
           </div>

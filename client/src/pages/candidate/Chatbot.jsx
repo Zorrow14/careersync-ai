@@ -39,7 +39,7 @@ export default function Chatbot() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
-        <div className="neo-card rounded-2xl p-6">
+        <div className="neo-card rounded-2xl p-6 order-2 lg:order-1">
           <h2 className="neo-title font-bold">Suggested Questions</h2>
 
           <div className="mt-4 space-y-3">
@@ -60,7 +60,7 @@ export default function Chatbot() {
           </div>
         </div>
 
-        <div className="neo-card flex h-[620px] flex-col rounded-2xl p-6 lg:col-span-3">
+        <div className="neo-card flex h-[min(620px,62dvh)] flex-col rounded-2xl p-5 sm:p-6 lg:col-span-3 order-1 lg:order-2">
           <div className="flex-1 space-y-4 overflow-y-auto pr-2">
             {messages.map((msg, index) => (
               <div
@@ -68,11 +68,10 @@ export default function Chatbot() {
                 className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[75%] rounded-2xl p-4 text-sm leading-6 ${
-                    msg.role === "user"
+                  className={`max-w-[75%] rounded-2xl p-4 text-sm leading-6 ${msg.role === "user"
                       ? "bg-amber-500 text-slate-950"
                       : "neo-soft neo-text"
-                  }`}
+                    }`}
                 >
                   {msg.role === "ai" && (
                     <div className="mb-2 flex items-center gap-2 font-semibold text-amber-300">

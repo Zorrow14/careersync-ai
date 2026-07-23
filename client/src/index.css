@@ -457,6 +457,7 @@ button:disabled {
     opacity: 0;
     transform: translateY(6px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -748,7 +749,7 @@ button:disabled {
   pointer-events: none;
 }
 
-.neo-nav-shell > .neo-nav-wrap {
+.neo-nav-shell>.neo-nav-wrap {
   pointer-events: auto;
 }
 
@@ -1036,6 +1037,37 @@ button:disabled {
     font-size: 1.75rem;
     line-height: 1.2;
   }
+
+  /* Tighter card padding on very small screens */
+  .neo-page-app .neo-card.rounded-2xl {
+    border-radius: 1rem;
+  }
+
+  /* Pipeline board: allow full-width single column scroll on mobile */
+  .neo-pipeline-board {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .neo-pipeline-board>section {
+    scroll-snap-align: start;
+    width: min(82vw, 260px);
+  }
+
+  /* Ensure sticky job search bar stays within viewport */
+  .neo-page-app .sticky {
+    top: 0.75rem;
+  }
+
+  /* Shrink large stat numbers in KPI cards */
+  .neo-page-app .text-3xl {
+    font-size: 1.5rem;
+  }
+
+  /* Compact page header on mobile */
+  .neo-page-header {
+    margin-bottom: 1.25rem;
+  }
 }
 
 /* ─── Mobile bottom tab bar (authenticated app) ─── */
@@ -1066,6 +1098,7 @@ button:disabled {
 }
 
 @media (min-width: 768px) {
+
   .neo-mobile-bottom-nav,
   .neo-mobile-nav-sheet {
     display: none !important;
@@ -1233,6 +1266,7 @@ button:disabled {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .neo-nav-dropdown--animate,
   .neo-mobile-nav-sheet--open .neo-mobile-nav-sheet__backdrop,
   .neo-mobile-nav-sheet--open .neo-mobile-nav-sheet__panel,
@@ -1997,14 +2031,12 @@ button:disabled {
   height: 2px;
   margin: 0 auto;
   width: min(100%, calc(var(--fork-width, 60%) + 2rem));
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--roadmap-line) 12%,
-    var(--roadmap-line-strong) 50%,
-    var(--roadmap-line) 88%,
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      var(--roadmap-line) 12%,
+      var(--roadmap-line-strong) 50%,
+      var(--roadmap-line) 88%,
+      transparent);
   position: relative;
 }
 
@@ -2334,7 +2366,7 @@ button:disabled {
   border-top: 1px dashed rgba(148, 163, 184, 0.15);
 }
 
-.roadmap-sh__resources > svg {
+.roadmap-sh__resources>svg {
   color: var(--neo-accent-deep);
 }
 
